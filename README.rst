@@ -23,7 +23,7 @@ QuickStart
 Blueprints
 ----------
 
-::
+.. code-block:: python
 
     from django_fakery.blueprint import Blueprint
 
@@ -33,8 +33,9 @@ Blueprints
 
 If you want to ensure uniqueness when generating multiple objects, you can use a lambda function.
 
-In this example, ``n`` is the iteration number, and ``f`` is an instance of ``faker``::
+In this example, ``n`` is the iteration number, and ``f`` is an instance of ``faker``:
 
+.. code-block:: python
 
     user = Blueprint(
         'auth.User',
@@ -43,7 +44,9 @@ In this example, ``n`` is the iteration number, and ``f`` is an instance of ``fa
         }
     )
 
-For convenience, when the value is a string, you can simply pass a formatting string::
+For convenience, when the value is a string, you can simply pass a formatting string:
+
+.. code-block:: python
 
     user = Blueprint(
         'auth.User',
@@ -52,7 +55,9 @@ For convenience, when the value is a string, you can simply pass a formatting st
         }
     )
 
-Blueprints can refer other blueprints::
+Blueprints can refer other blueprints:
+
+.. code-block:: python
 
     pizza = Blueprint(
         'food.Pizza',
@@ -64,7 +69,7 @@ Blueprints can refer other blueprints::
 Seeding the faker
 -----------------
 
-::
+.. code-block:: python
 
     from django_fakery.factory import Factory
 
@@ -77,7 +82,7 @@ Seeding the faker
     }, seed=1234, quantity=4)
 
 
-::
+.. code-block:: python
 
     from django_fakery.factory import factory
 
