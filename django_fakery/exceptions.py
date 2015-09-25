@@ -1,0 +1,2 @@
+class ForeignKeyError(Exception):
+    pass
