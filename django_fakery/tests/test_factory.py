@@ -1,12 +1,13 @@
 from django.test import TestCase
 
 from django_fakery.factory import factory
+from django_fakery.lazy import Lazy
 
 from .blueprints import pizza
 
 
 class FactoryTest(TestCase):
-    def test_model(self):
+    def _test_model(self):
         margherita = factory.make('tests.Pizza')
 
         # field.default
@@ -44,3 +45,18 @@ class FactoryTest(TestCase):
         self.assertEqual(len(movie_night), 10)
         self.assertEqual(movie_night[0].chef.first_name, 'Chef 0')
         self.assertEqual(movie_night[1].chef.first_name, 'Chef 1')
+
+    def test_lazy_field(self):
+        chef_masters = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Chef %(n)s',
+                'last_name': Lazy('first_name')
+            },
+            quantity=10
+        )
+        self.assertEqual(len(chef_masters), 10)
+        self.assertEqual(chef_masters[0].first_name, 'Chef 0')
+        self.assertEqual(chef_masters[0].first_name, chef_masters[0].last_name)
+        self.assertEqual(chef_masters[1].first_name, 'Chef 1')
+        self.assertEqual(chef_masters[0].first_name, chef_masters[0].last_name)

@@ -8,6 +8,7 @@ from faker import Factory as FakerFactory
 
 from .compat import get_model_fields, string_types
 from .exceptions import ForeignKeyError
+from .lazy import Lazy
 from .values import Evaluator
 
 
@@ -36,6 +37,7 @@ class Factory(object):
             model = apps.get_model(*model.split('.'))
         instance = model()
         m2ms = []
+        lazies = []
 
         for field_name, model_field in get_model_fields(model):
             if isinstance(model_field, models.AutoField):
@@ -60,11 +62,19 @@ class Factory(object):
             if model_field.blank:
                 value = ''
 
+            if isinstance(value, Lazy):
+                lazies.append((field_name, value))
+                continue
+
             if isinstance(model_field, models.ForeignKey):
                 field_name += '_id'
                 value = value.pk
 
             setattr(instance, field_name, value)
+
+        for field_name, lazy in lazies:
+            setattr(instance, field_name, getattr(instance, lazy.field_name))
+
         return instance
 
     def build(self, model, fields=None, seed=None, quantity=None, make_fks=False):
@@ -81,7 +91,6 @@ class Factory(object):
             fields = {}
 
         instance = self.build_one(model, fields, seed, make_fks=True, iteration=iteration)
-
         instance.save()
         return instance
 

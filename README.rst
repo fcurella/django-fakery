@@ -19,6 +19,23 @@ QuickStart
 
     factory.make('auth.User', quantity=4)
 
+Lazies
+------
+
+You can refer to the created instance's own field by using `Lazy` objects.
+
+For example, if you'd like to create user with email as username, and have them always match, you could do:
+
+.. code-block:: python
+
+    from django_fakery.lazy import Lazy
+
+    factory.make(
+        'auth.User',
+        username=Lazy('email')
+    )
+
+
 
 Blueprints
 ----------
