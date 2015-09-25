@@ -43,9 +43,7 @@ In this example, ``n`` is the iteration number, and ``f`` is an instance of ``fa
         }
     )
 
-For convenience, when the value is a string, you can simply pass a formatting string:
-
-::
+For convenience, when the value is a string, you can simply pass a formatting string::
 
     user = Blueprint(
         'auth.User',
@@ -54,7 +52,7 @@ For convenience, when the value is a string, you can simply pass a formatting st
         }
     )
 
-Blueprints can refer other blueprints:
+Blueprints can refer other blueprints::
 
     pizza = Blueprint(
         'food.Pizza',
