@@ -24,6 +24,7 @@ Blueprints
 ----------
 
 ::
+
     from django_fakery.blueprint import Blueprint
 
     user = Blueprint('auth.User')
