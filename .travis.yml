@@ -15,6 +15,8 @@ env:
 install:
   - pip install -q $DJANGO
   - pip install -e .
-  - pip install pytest pytest-django
+  - pip install pytest pytest-django coveralls
 script:
-  - python setup.py test
+  - coverage run --source django_fakery setup.py test
+after_success:
+  coveralls

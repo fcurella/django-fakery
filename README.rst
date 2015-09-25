@@ -4,6 +4,10 @@ Django-fakery
 .. image:: https://travis-ci.org/fcurella/django-fakery.svg?branch=master
     :target: https://travis-ci.org/fcurella/django-fakery
 
+
+.. image:: https://coveralls.io/repos/fcurella/django-fakery/badge.svg?branch=master&service=github
+  :target: https://coveralls.io/github/fcurella/django-fakery?branch=master
+
 An easy-to-use implementation of `Creation Methods`_ for Django, backed by ``Faker``.
 
 .. _Creation Methods: http://xunitpatterns.com/Creation%20Method.html

@@ -4,6 +4,7 @@
 *.out
 .eggs
 .cache
+.coverage
 parsetab.py
 __pycache__
 MANIFEST
