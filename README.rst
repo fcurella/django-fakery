@@ -13,7 +13,7 @@ An easy-to-use implementation of `Creation Methods`_ for Django, backed by ``Fak
 QuickStart
 ----------
 
-::
+.. code-block:: python
 
     from django_fakery.factory import factory
 
