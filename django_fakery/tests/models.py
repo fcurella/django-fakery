@@ -7,9 +7,16 @@ class Chef(models.Model):
 
 
 class Pizza(models.Model):
+    THICKNESSES = (
+        (0, 'thin'),
+        (1, 'thick'),
+        (3, 'deep dish'),
+    )
+
     name = models.CharField(max_length=50)
     price = models.DecimalField(null=True, decimal_places=2, max_digits=4)
     gluten_free = models.BooleanField(default=False)
     description = models.TextField(blank=True)
+    thickness = models.CharField(max_length=50, choices=THICKNESSES)
 
     chef = models.ForeignKey(Chef)

@@ -111,6 +111,14 @@ Seeding the faker
         'username': 'regularuser'
     }, seed=1234, quantity=4)
 
+TODO
+----
+
+* whitelist field name
+* lazy methods
+* post-creation hooks
+* callable shortcuts in bluprints
+
 License
 -------
 

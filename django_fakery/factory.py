@@ -62,6 +62,9 @@ class Factory(object):
             if model_field.blank:
                 value = ''
 
+            if model_field.choices:
+                value = fake.random_element(model_field.choices)[0]
+
             if isinstance(value, Lazy):
                 lazies.append((field_name, value))
                 continue
