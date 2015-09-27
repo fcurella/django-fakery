@@ -19,7 +19,7 @@ class Evaluator(object):
         if isinstance(value, Blueprint):
             return value.make_one(iteration=self.iteration)
         if callable(value):
-            if value.func_name == '<lambda>':
+            if value.__name__ == '<lambda>':
                 return value(self.iteration, self.faker)
             else:
                 return value()
