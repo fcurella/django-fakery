@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.utils import timezone
 from django.test import TestCase
 
 from django_fakery.factory import factory
@@ -36,7 +37,17 @@ class FactoryTest(TestCase):
     def test_sequence(self):
         margheritas = factory.make(
             'tests.Pizza',
-            fields={'name': 'pizza %(n)s'},
+            fields={'name': 'pizza {}'},
+            quantity=10
+        )
+        self.assertEqual(len(margheritas), 10)
+        self.assertEqual(margheritas[0].name, 'pizza 0')
+        self.assertEqual(margheritas[1].name, 'pizza 1')
+
+    def test_sequence_callable_lambda(self):
+        margheritas = factory.make(
+            'tests.Pizza',
+            fields={'name': lambda n, f: 'pizza {}'.format(n)},
             quantity=10
         )
         self.assertEqual(len(margheritas), 10)
@@ -46,18 +57,18 @@ class FactoryTest(TestCase):
     def test_sequence_callable(self):
         margheritas = factory.make(
             'tests.Pizza',
-            fields={'name': lambda n, f: 'pizza %s' % n},
+            fields={'backed_on': timezone.now},
             quantity=10
         )
         self.assertEqual(len(margheritas), 10)
-        self.assertEqual(margheritas[0].name, 'pizza 0')
-        self.assertEqual(margheritas[1].name, 'pizza 1')
+        self.assertNotEqual(margheritas[0].backed_on, None)
+        self.assertNotEqual(margheritas[0].backed_on, margheritas[1].backed_on)
 
     def test_lazy_field(self):
         chef_masters = factory.make(
             'tests.Chef',
             fields={
-                'first_name': 'Chef %(n)s',
+                'first_name': 'Chef {}',
                 'last_name': Lazy('first_name')
             },
             quantity=10

@@ -19,6 +19,7 @@ class Pizza(models.Model):
     gluten_free = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     thickness = models.CharField(max_length=50, choices=THICKNESSES)
+    backed_on = models.DateTimeField()
 
     chef = models.ForeignKey(Chef)
 

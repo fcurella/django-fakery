@@ -21,7 +21,57 @@ QuickStart
 
     from django_fakery.factory import factory
 
-    factory.make('auth.User', quantity=4)
+    factory.make(
+        'app.Model',
+        fields={
+            'field': 'value',
+        }
+    )
+
+The value of a field can be any python object, a callable, or a lambda:
+
+.. code-block:: python
+
+    from django_fakery.factory import factory
+    from django.utils import timezone
+
+    factory.make(
+        'app.Model',
+        fields={
+            'created': timezone.now
+        }
+    )
+
+When using a lambda, it will receive two arguments: ``n`` is the iteration number, and ``f`` is an instance of ``faker``:
+
+.. code-block:: python
+
+    user = Blueprint(
+        'auth.User',
+        fields={
+            'username': lambda n, f: 'user_{}'.format(n),
+        }
+    )
+
+
+You can create multiple objects by using the ``quantity`` parameter:
+.. code-block:: python
+
+    from django_fakery.factory import factory
+
+    factory.make('app.Model', quantity=4)
+
+For convenience, when the value of a field is a string, it will be interpolated with the iteration number:
+
+.. code-block:: python
+
+    user = Blueprint(
+        'auth.User',
+        fields={
+            'username': 'user_{}',
+        },
+        quantity=4
+    )
 
 Pre-save and Post-save hooks
 ----------------------------
@@ -77,7 +127,7 @@ For example, if you'd like to create user with email as username, and have them 
     )
 
 
-If you want to assign a value returned by a method on the instance, you can pass the method's argument to the ``Lazy`` object:
+If you want to assign a value returned by a method on the instance, you can pass the method's arguments to the ``Lazy`` object:
 
 .. code-block:: python
 
@@ -101,30 +151,6 @@ Blueprints
     user = Blueprint('auth.User')
 
     user.make(quantity=10)
-
-If you want to ensure uniqueness when generating multiple objects, you can use a lambda function.
-
-In this example, ``n`` is the iteration number, and ``f`` is an instance of ``faker``:
-
-.. code-block:: python
-
-    user = Blueprint(
-        'auth.User',
-        fields={
-            'username': lambda n, f: 'user_%s' % n,
-        }
-    )
-
-For convenience, when the value is a string, you can simply pass a formatting string:
-
-.. code-block:: python
-
-    user = Blueprint(
-        'auth.User',
-        fields={
-            'username': 'user_%(n)s',
-        }
-    )
 
 Blueprints can refer other blueprints:
 
@@ -164,7 +190,6 @@ Seeding the faker
 TODO
 ----
 
-* callable shortcuts
 * contrib fields
 * localization
 * self-referencing models
