@@ -13,6 +13,9 @@ from .lazy import Lazy
 from .values import Evaluator
 
 
+user_model = get_user_model()
+
+
 class Factory(object):
     def __init__(self, fake=None):
         self.fake = fake or FakerFactory.create()
@@ -78,7 +81,7 @@ class Factory(object):
                 value = value.pk
 
             # special case for user passwords
-            if model == get_user_model() and field_name == 'password':
+            if model == user_model and field_name == 'password':
                 instance.set_password(value)
             else:
                 setattr(instance, field_name, value)
