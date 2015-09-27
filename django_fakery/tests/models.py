@@ -10,7 +10,7 @@ class Pizza(models.Model):
     THICKNESSES = (
         (0, 'thin'),
         (1, 'thick'),
-        (3, 'deep dish'),
+        (2, 'deep dish'),
     )
 
     name = models.CharField(max_length=50)
