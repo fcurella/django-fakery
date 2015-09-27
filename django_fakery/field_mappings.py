@@ -1,3 +1,5 @@
+import os
+
 from django import VERSION as django_version
 from django.db import models
 
@@ -12,9 +14,13 @@ def decimal(faker, field, *args, **kwargs):
     return faker.pydecimal(left_digits=left_digits, right_digits=right_digits, positive=True)
 
 
+def random_bytes(faker, field, length, *args, **kwargs):
+    return os.urandom(length)
+
+
 mappings_types = {
     models.BigIntegerField: ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
-    models.BinaryField: int,
+    models.BinaryField: (random_bytes, [1024], {}),
     models.BooleanField: ('pybool', [], {}),
     models.CharField: ('word', [], {}),
     models.CommaSeparatedIntegerField: (comma_sep_integers, [], {}),
