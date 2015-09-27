@@ -114,10 +114,12 @@ Seeding the faker
 TODO
 ----
 
-* whitelist field name
 * lazy methods
 * post-creation hooks
 * callable shortcuts in bluprints
+* contrib fields
+* localization
+* self-referencing models
 
 License
 -------

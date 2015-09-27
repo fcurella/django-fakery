@@ -38,11 +38,6 @@ class Evaluator(object):
         if field.name in field_mappings.mappings_names:
             return self.evaluate_fake(field_mappings.mappings_names[field.name], field)
 
-        try:
-            return getattr(self.faker, field.name)()
-        except AttributeError:
-            pass
-
         if field.__class__ in field_mappings.mappings_types:
             return self.evaluate_fake(field_mappings.mappings_types[field.__class__], field)
 

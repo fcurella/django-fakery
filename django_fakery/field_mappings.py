@@ -46,6 +46,10 @@ if django_version >= (1, 8, 0):
 
 mappings_names = {
     'name': ('word', [], {}),  # `name` is too generic to assume it's a person
+    'first_name': ('first_name', [], {}),
+    'last_name': ('last_name', [], {}),
+    'full_name': ('full_name', [], {}),
+    'email': ('email', [], {}),
     'created': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
     'created_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
     'updated': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
