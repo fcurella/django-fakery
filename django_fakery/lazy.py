@@ -1,4 +1,6 @@
 class Lazy(object):
-    def __init__(self, field_name):
-        self.field_name = field_name
+    def __init__(self, name, *args, **kwargs):
+        self.name = name
+        self.args = args
+        self.kwargs = kwargs
         super(Lazy, self).__init__()

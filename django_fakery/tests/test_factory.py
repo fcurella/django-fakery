@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.test import TestCase
 
 from django_fakery.factory import factory
@@ -41,6 +43,16 @@ class FactoryTest(TestCase):
         self.assertEqual(margheritas[0].name, 'pizza 0')
         self.assertEqual(margheritas[1].name, 'pizza 1')
 
+    def test_sequence_callable(self):
+        margheritas = factory.make(
+            'tests.Pizza',
+            fields={'name': lambda n, f: 'pizza %s' % n},
+            quantity=10
+        )
+        self.assertEqual(len(margheritas), 10)
+        self.assertEqual(margheritas[0].name, 'pizza 0')
+        self.assertEqual(margheritas[1].name, 'pizza 1')
+
     def test_lazy_field(self):
         chef_masters = factory.make(
             'tests.Chef',
@@ -55,3 +67,33 @@ class FactoryTest(TestCase):
         self.assertEqual(chef_masters[0].first_name, chef_masters[0].last_name)
         self.assertEqual(chef_masters[1].first_name, 'Chef 1')
         self.assertEqual(chef_masters[0].first_name, chef_masters[0].last_name)
+
+        margherita = factory.make(
+            'tests.pizza',
+            fields={
+                'price': Lazy('get_price', tax=0.07)
+            }
+        )
+        self.assertEqual(margherita.price, Decimal('8.55'))
+
+    def test_save_hooks(self):
+        user = factory.make(
+            'auth.User',
+            fields={
+                'username': 'username',
+            },
+            pre_save=[
+                lambda i: i.set_password('password')
+            ]
+        )
+        self.assertTrue(user.check_password('password'))
+
+    def test_password(self):
+        user = factory.make(
+            'auth.User',
+            fields={
+                'username': 'username',
+                'password': 'password'
+            }
+        )
+        self.assertTrue(user.check_password('password'))

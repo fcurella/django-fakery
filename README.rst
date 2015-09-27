@@ -23,10 +23,45 @@ QuickStart
 
     factory.make('auth.User', quantity=4)
 
+Pre-save and Post-save hooks
+----------------------------
+
+You can define functions to be called right before the instance is saved or right after:
+
+.. code-block:: python
+
+    from django_fakery.lazy import Lazy
+
+    factory.make(
+        'auth.User',
+        fields={
+            'username': 'username',
+        },
+        pre_save=[
+            lambda i: i.set_password('password')
+        ]
+    )
+
+
+
+Since settings a user's password is such a common case, we special-cased that scenario, so you can just pass it as a field:
+
+.. code-block:: python
+
+    from django_fakery.lazy import Lazy
+
+    factory.make(
+        'auth.User',
+        fields={
+            'username': 'username',
+            'password': 'password',
+        }
+    )
+
 Lazies
 ------
 
-You can refer to the created instance's own field by using `Lazy` objects.
+You can refer to the created instance's own attributes or method by using `Lazy` objects.
 
 For example, if you'd like to create user with email as username, and have them always match, you could do:
 
@@ -36,9 +71,24 @@ For example, if you'd like to create user with email as username, and have them 
 
     factory.make(
         'auth.User',
-        username=Lazy('email')
+        fields={
+            'username': Lazy('email'),
+        }
     )
 
+
+If you want to assign a value returned by a method on the instance, you can pass the method's argument to the ``Lazy`` object:
+
+.. code-block:: python
+
+    from django_fakery.lazy import Lazy
+
+    factory.make(
+        'myapp.Model',
+        fields={
+            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
+        }
+    )
 
 
 Blueprints
@@ -114,9 +164,7 @@ Seeding the faker
 TODO
 ----
 
-* lazy methods
-* post-creation hooks
-* callable shortcuts in bluprints
+* callable shortcuts
 * contrib fields
 * localization
 * self-referencing models

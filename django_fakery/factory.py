@@ -1,6 +1,7 @@
 import random
 
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 
@@ -21,9 +22,12 @@ class Factory(object):
         if set_global:
             random.seed(seed)
 
-    def build_one(self, model, fields=None, seed=None, make_fks=False, iteration=None):
+    def build_one(self, model, fields=None, pre_save=None, seed=None, make_fks=False, iteration=None):
         if fields is None:
             fields = {}
+
+        if pre_save is None:
+            pre_save = []
 
         if seed:
             fake = Factory.create()
@@ -43,7 +47,7 @@ class Factory(object):
             if isinstance(model_field, models.AutoField):
                 continue
 
-            if model_field.null or model_field.default != NOT_PROVIDED:
+            if field_name not in fields and model_field.null or model_field.default != NOT_PROVIDED:
                 continue
 
             if isinstance(model_field, models.ManyToManyField):
@@ -73,36 +77,52 @@ class Factory(object):
                 field_name += '_id'
                 value = value.pk
 
-            setattr(instance, field_name, value)
+            # special case for user passwords
+            if model == get_user_model() and field_name == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, field_name, value)
 
         for field_name, lazy in lazies:
-            setattr(instance, field_name, getattr(instance, lazy.field_name))
+            value = getattr(instance, lazy.name)
+            if callable(value):
+                value = value(*lazy.args, **lazy.kwargs)
+            setattr(instance, field_name, value)
+
+        for func in pre_save:
+            func(instance)
 
         return instance
 
-    def build(self, model, fields=None, seed=None, quantity=None, make_fks=False):
+    def build(self, model, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
         if fields is None:
             fields = {}
 
         if quantity:
-            return [self.build_one(model, fields, seed, make_fks, i) for i in range(quantity)]
+            return [self.build_one(model, fields, pre_save, seed, make_fks, i) for i in range(quantity)]
         else:
-            return self.build_one(model, fields, seed, make_fks)
+            return self.build_one(model, fields, pre_save, seed, make_fks)
 
-    def make_one(self, model, fields=None, seed=None, iteration=None):
+    def make_one(self, model, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
         if fields is None:
             fields = {}
 
-        instance = self.build_one(model, fields, seed, make_fks=True, iteration=iteration)
+        if post_save is None:
+            post_save = []
+
+        instance = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
         instance.save()
+
+        for func in post_save:
+            func(instance)
         return instance
 
-    def make(self, model, fields=None, seed=None, quantity=None):
+    def make(self, model, fields=None, pre_save=None, post_save=None, seed=None, quantity=None):
         if fields is None:
             fields = {}
         if quantity:
-            return [self.make_one(model, fields, seed, i) for i in range(quantity)]
+            return [self.make_one(model, fields, pre_save, post_save, seed, i) for i in range(quantity)]
         else:
-            return self.make_one(model, fields, seed)
+            return self.make_one(model, fields, pre_save, post_save, seed)
 
 factory = Factory()

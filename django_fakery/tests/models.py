@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 
 
@@ -20,3 +21,6 @@ class Pizza(models.Model):
     thickness = models.CharField(max_length=50, choices=THICKNESSES)
 
     chef = models.ForeignKey(Chef)
+
+    def get_price(self, tax):
+        return (Decimal('7.99') + (Decimal('7.99') * Decimal(tax))).quantize(Decimal('0.01'))
