@@ -1,6 +1,7 @@
 import random
 
 from django.apps import apps
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
@@ -10,15 +11,18 @@ from faker import Factory as FakerFactory
 from .compat import get_model_fields, string_types
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
+from .utils import language_to_locale
 from .values import Evaluator
 
 
 user_model = get_user_model()
 
+locale = language_to_locale(settings.LANGUAGE_CODE)
+
 
 class Factory(object):
     def __init__(self, fake=None):
-        self.fake = fake or FakerFactory.create()
+        self.fake = fake or FakerFactory.create(locale)
 
     def seed(self, seed, set_global=False):
         self.fake.seed(seed)
@@ -33,7 +37,7 @@ class Factory(object):
             pre_save = []
 
         if seed:
-            fake = Factory.create()
+            fake = FakerFactory.create(locale)
             fake.seed(seed)
         else:
             fake = self.fake

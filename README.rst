@@ -191,7 +191,6 @@ TODO
 ----
 
 * contrib fields
-* localization
 * self-referencing models
 
 License
