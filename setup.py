@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 
-VERSION = '0.0.5'
+VERSION = '0.0.6'
 
 setup(
     name='django-fakery',
