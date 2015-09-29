@@ -108,3 +108,15 @@ class FactoryTest(TestCase):
             }
         )
         self.assertTrue(user.check_password('password'))
+
+    def test_build(self):
+        chef_masters = factory.build(
+            'tests.Chef',
+            fields={
+                'first_name': 'Chef {}',
+                'last_name': Lazy('first_name')
+            },
+            quantity=10
+        )
+        for chef in chef_masters:
+            self.assertEqual(chef.id, None)

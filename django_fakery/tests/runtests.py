@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import sys
 
 
@@ -27,9 +26,6 @@ SETTINGS = {
         "1_7.W001",
     ],
 }
-
-if os.path.exists('/usr/local/lib/mod_spatialite.dylib'):
-    SETTINGS['SPATIALITE_LIBRARY_PATH'] = '/usr/local/lib/mod_spatialite.dylib'
 
 settings.configure(**SETTINGS)
 
