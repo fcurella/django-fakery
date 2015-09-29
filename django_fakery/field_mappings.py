@@ -1,32 +1,19 @@
-import os
-
 from django import VERSION as django_version
+from django.contrib.gis.db import models as geo_models
 from django.db import models
 
-
-def comma_sep_integers(faker, field, *args, **kwargs):
-    return ','.join([faker.random_int() for _ in range(10)])
-
-
-def decimal(faker, field, *args, **kwargs):
-    right_digits = field.decimal_places
-    left_digits = field.max_digits - right_digits
-    return faker.pydecimal(left_digits=left_digits, right_digits=right_digits, positive=True)
-
-
-def random_bytes(faker, field, length, *args, **kwargs):
-    return os.urandom(length)
+from . import fakes
 
 
 mappings_types = {
     models.BigIntegerField: ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
-    models.BinaryField: (random_bytes, [1024], {}),
+    models.BinaryField: (fakes.random_bytes, [1024], {}),
     models.BooleanField: ('pybool', [], {}),
     models.CharField: ('word', [], {}),
-    models.CommaSeparatedIntegerField: (comma_sep_integers, [], {}),
+    models.CommaSeparatedIntegerField: (fakes.comma_sep_integers, [], {}),
     models.DateField: (lambda faker, field: faker.date_time().date(), [], {}),
     models.DateTimeField: ('date_time', [], {}),
-    models.DecimalField: (decimal, [], {}),
+    models.DecimalField: (fakes.decimal, [], {}),
     models.EmailField: ('email', [], {}),
     models.FileField: ('file_name', [], {}),
     models.FilePathField: ('file_name', [], {}),
@@ -42,6 +29,14 @@ mappings_types = {
     models.TextField: ('paragraph', [], {}),
     models.TimeField: (lambda faker, field: faker.date_time().time(), [], {}),
     models.URLField: ('url', [], {}),
+
+    geo_models.PointField: (fakes.point, (), {'srid': 4326}),
+    geo_models.LineStringField: (fakes.linestring, (), {'srid': 4326}),
+    geo_models.PolygonField: (fakes.polygon, (), {'srid': 4326}),
+    geo_models.MultiPointField: (fakes.multipoint, (), {'srid': 4326}),
+    geo_models.MultiLineStringField: (fakes.multilinestring, (), {'srid': 4326}),
+    geo_models.MultiPolygonField: (fakes.multipolygon, (), {'srid': 4326}),
+    geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
 }
 
 if django_version >= (1, 8, 0):

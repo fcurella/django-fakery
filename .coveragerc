@@ -1,2 +1,3 @@
 [run]
 source = django_fakery
+omit = django_fakery/tests/runtests.py
