@@ -190,7 +190,6 @@ Seeding the faker
 TODO
 ----
 
-* contrib fields
 * self-referencing models
 
 License

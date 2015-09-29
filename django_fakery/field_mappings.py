@@ -1,4 +1,4 @@
-from django import VERSION as django_version
+from .compat import django_version, HAS_PSYCOPG2
 from django.contrib.gis.db import models as geo_models
 from django.db import models
 
@@ -40,10 +40,23 @@ mappings_types = {
 }
 
 if django_version >= (1, 8, 0):
+
     mappings_types.update({
         models.DurationField: ('time_delta', [], {}),
         models.UUIDField: ('uuid4', [], {}),
     })
+    if HAS_PSYCOPG2:
+        from django.contrib.postgres import fields as pg_fields
+
+        mappings_types.update({
+            pg_fields.ArrayField: (fakes.array, [], {}),
+            pg_fields.HStoreField: ('pydict', [10, True, 'str'], {}),
+            pg_fields.IntegerRangeField: (fakes.integerrange, [], {'min': -2147483647, 'max': 2147483647}),
+            pg_fields.BigIntegerRangeField: (fakes.integerrange, [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
+            pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
+            pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
+            pg_fields.DateRangeField: (fakes.daterange, [], {}),
+        })
 
 mappings_names = {
     'name': ('word', [], {}),  # `name` is too generic to assume it's a person

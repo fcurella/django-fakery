@@ -1,3 +1,5 @@
 [run]
 source = django_fakery
-omit = django_fakery/tests/runtests.py
+omit =
+    django_fakery/compat.py
+    django_fakery/tests/*
