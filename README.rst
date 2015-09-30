@@ -8,7 +8,7 @@ Django-fakery
 .. image:: https://coveralls.io/repos/fcurella/django-fakery/badge.svg?branch=master&service=github
   :target: https://coveralls.io/github/fcurella/django-fakery?branch=master
 
-An easy-to-use implementation of `Creation Methods`_ (aka OBject Factory) for Django, backed by ``Faker``.
+An easy-to-use implementation of `Creation Methods`_ (aka Object Factory) for Django, backed by ``Faker``.
 
 .. _Creation Methods: http://xunitpatterns.com/Creation%20Method.html
 
