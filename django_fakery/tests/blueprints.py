@@ -1,12 +1,13 @@
-from django_fakery.blueprint import Blueprint
+from django_fakery import factory, Blueprint
 
 
-chef = Blueprint(
+chef = factory.blueprint(
     'tests.Chef',
     fields={
         'first_name': 'Chef {}'
     }
 )
+
 
 pizza = Blueprint(
     'tests.Pizza',

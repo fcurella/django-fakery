@@ -3,8 +3,7 @@ from decimal import Decimal
 from django.utils import timezone
 from django.test import TestCase
 
-from django_fakery.factory import factory
-from django_fakery.lazy import Lazy
+from django_fakery import factory, Lazy
 
 
 class FactoryTest(TestCase):

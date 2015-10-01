@@ -3,7 +3,7 @@ from unittest import skipIf
 
 from django.test import TestCase
 from django.contrib.gis import geos
-from django_fakery.factory import factory
+from django_fakery import factory
 
 
 PYPY3 = hasattr(sys, 'pypy_version_info') and sys.version_info.major >= 3
