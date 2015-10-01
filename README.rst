@@ -17,6 +17,10 @@ An easy-to-use implementation of `Creation Methods`_ (aka Object Factory) for Dj
 QuickStart
 ----------
 
+Install with::
+
+    $ pip install django-fakery
+
 .. code-block:: python
 
     from django_fakery import factory
