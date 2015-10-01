@@ -80,7 +80,7 @@ You can define functions to be called right before the instance is saved or righ
 
 .. code-block:: python
 
-    from django_fakery import factory, Lazy
+    from django_fakery import factory
 
     factory.make(
         'auth.User',
@@ -98,7 +98,7 @@ Since settings a user's password is such a common case, we special-cased that sc
 
 .. code-block:: python
 
-    from django_fakery import factory, Lazy
+    from django_fakery import factory
 
     factory.make(
         'auth.User',
