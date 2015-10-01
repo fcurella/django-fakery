@@ -29,6 +29,10 @@ class Factory(object):
         if set_global:
             random.seed(seed)
 
+    def blueprint(self, *args, **kwargs):
+        from .blueprint import Blueprint
+        return Blueprint(*args, **kwargs)
+
     def build_one(self, model, fields=None, pre_save=None, seed=None, make_fks=False, iteration=None):
         if fields is None:
             fields = {}

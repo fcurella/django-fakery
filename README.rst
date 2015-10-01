@@ -19,7 +19,7 @@ QuickStart
 
 .. code-block:: python
 
-    from django_fakery.factory import factory
+    from django_fakery import factory
 
     factory.make(
         'app.Model',
@@ -32,7 +32,7 @@ The value of a field can be any python object, a callable, or a lambda:
 
 .. code-block:: python
 
-    from django_fakery.factory import factory
+    from django_fakery import factory
     from django.utils import timezone
 
     factory.make(
@@ -46,7 +46,7 @@ When using a lambda, it will receive two arguments: ``n`` is the iteration numbe
 
 .. code-block:: python
 
-    user = Blueprint(
+    user = factory.make(
         'auth.User',
         fields={
             'username': lambda n, f: 'user_{}'.format(n),
@@ -57,7 +57,7 @@ When using a lambda, it will receive two arguments: ``n`` is the iteration numbe
 You can create multiple objects by using the ``quantity`` parameter:
 .. code-block:: python
 
-    from django_fakery.factory import factory
+    from django_fakery import factory
 
     factory.make('app.Model', quantity=4)
 
@@ -65,7 +65,7 @@ For convenience, when the value of a field is a string, it will be interpolated 
 
 .. code-block:: python
 
-    user = Blueprint(
+    user = factory.make(
         'auth.User',
         fields={
             'username': 'user_{}',
@@ -80,7 +80,7 @@ You can define functions to be called right before the instance is saved or righ
 
 .. code-block:: python
 
-    from django_fakery.lazy import Lazy
+    from django_fakery import factory, Lazy
 
     factory.make(
         'auth.User',
@@ -98,7 +98,7 @@ Since settings a user's password is such a common case, we special-cased that sc
 
 .. code-block:: python
 
-    from django_fakery.lazy import Lazy
+    from django_fakery import factory, Lazy
 
     factory.make(
         'auth.User',
@@ -117,7 +117,7 @@ For example, if you'd like to create user with email as username, and have them 
 
 .. code-block:: python
 
-    from django_fakery.lazy import Lazy
+    from django_fakery import factory, Lazy
 
     factory.make(
         'auth.User',
@@ -131,7 +131,7 @@ If you want to assign a value returned by a method on the instance, you can pass
 
 .. code-block:: python
 
-    from django_fakery.lazy import Lazy
+    from django_fakery import factory, Lazy
 
     factory.make(
         'myapp.Model',
@@ -146,9 +146,9 @@ Blueprints
 
 .. code-block:: python
 
-    from django_fakery.blueprint import Blueprint
+    from django_fakery import factory
 
-    user = Blueprint('auth.User')
+    user = factory.blueprint('auth.User')
 
     user.make(quantity=10)
 
@@ -156,7 +156,7 @@ Blueprints can refer other blueprints:
 
 .. code-block:: python
 
-    pizza = Blueprint(
+    pizza = factory.blueprint(
         'food.Pizza',
         fields={
             'chef': user,
@@ -168,29 +168,12 @@ Seeding the faker
 
 .. code-block:: python
 
-    from django_fakery.factory import Factory
-
-    factory = Factory()
-
-    factory.seed(1234)
+    from django_fakery import factory
 
     factory.make('auth.User', fields={
         'username': 'regularuser'
     }, seed=1234, quantity=4)
 
-
-.. code-block:: python
-
-    from django_fakery.factory import factory
-
-    factory.make('auth.User', fields={
-        'username': 'regularuser'
-    }, seed=1234, quantity=4)
-
-TODO
-----
-
-* self-referencing models
 
 Credits
 -------

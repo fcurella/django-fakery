@@ -3,7 +3,7 @@ import sys
 from unittest import skipIf
 
 from django.test import TestCase
-from django_fakery.factory import factory
+from django_fakery import factory
 
 from ..compat import text_type, django_version, HAS_PSYCOPG2
 
