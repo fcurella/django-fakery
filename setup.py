@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 
-VERSION = '0.0.10'
+VERSION = '1.0.0'
 
 setup(
     name='django-fakery',
@@ -14,7 +14,8 @@ setup(
     packages=find_packages(exclude=['*.tests']),
     platforms=["any"],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
+        'Framework :: Django',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
