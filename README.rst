@@ -14,12 +14,15 @@ An easy-to-use implementation of `Creation Methods`_ (aka Object Factory) for Dj
 
 ``django_fakery`` will try to guess the field's value based on the field's name and type.
 
-QuickStart
-----------
+Installation
+------------
 
 Install with::
 
     $ pip install django-fakery
+
+QuickStart
+----------
 
 .. code-block:: python
 
