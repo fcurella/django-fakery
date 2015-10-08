@@ -151,6 +151,8 @@ If you want to assign a value returned by a method on the instance, you can pass
 Blueprints
 ----------
 
+Use a blueprint:
+
 .. code-block:: python
 
     from django_fakery import factory
@@ -178,7 +180,7 @@ Seeding the faker
     from django_fakery import factory
 
     factory.make('auth.User', fields={
-        'username': 'regularuser'
+        'username': 'regularuser_{}'
     }, seed=1234, quantity=4)
 
 
