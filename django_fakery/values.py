@@ -34,7 +34,7 @@ class Evaluator(object):
             func = getattr(self.faker, resolver[0])
         return func(*resolver[1], **resolver[2])
 
-    def fake_value(self, field):
+    def fake_value(self, model, field):
         if isinstance(field, models.ForeignKey):
             return self.factory.make_one(get_related_model(field), iteration=self.iteration)
 
@@ -44,4 +44,5 @@ class Evaluator(object):
         if field.__class__ in field_mappings.mappings_types:
             return self.evaluate_fake(field_mappings.mappings_types[field.__class__], field)
 
-        raise ValueError('Cant generate a value for field `%s`' % field.name)
+        model_name = '%s.%s' % (model._meta.app_label, model._meta.model_name)
+        raise ValueError('Cant generate a value for model %s field `%s`' % (model_name, field.name))

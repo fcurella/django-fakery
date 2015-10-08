@@ -72,7 +72,7 @@ class Factory(object):
             if field_name in fields:
                 value = evaluator.evaluate(fields[field_name])
             else:
-                value = evaluator.fake_value(model_field)
+                value = evaluator.fake_value(model, model_field)
 
             if model_field.choices:
                 value = fake.random_element(model_field.choices)[0]
