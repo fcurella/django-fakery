@@ -151,6 +151,8 @@ If you want to assign a value returned by a method on the instance, you can pass
 Blueprints
 ----------
 
+Use a blueprint:
+
 .. code-block:: python
 
     from django_fakery import factory
