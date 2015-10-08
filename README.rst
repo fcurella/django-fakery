@@ -62,6 +62,7 @@ When using a lambda, it will receive two arguments: ``n`` is the iteration numbe
 
 
 You can create multiple objects by using the ``quantity`` parameter:
+
 .. code-block:: python
 
     from django_fakery import factory
