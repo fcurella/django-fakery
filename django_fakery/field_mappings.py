@@ -1,7 +1,7 @@
-from .compat import django_version, HAS_PSYCOPG2
-from django.contrib.gis.db import models as geo_models
+from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 
+from .compat import django_version, HAS_PSYCOPG2
 from . import fakes
 
 
@@ -29,15 +29,20 @@ mappings_types = {
     models.TextField: ('paragraph', [], {}),
     models.TimeField: (lambda faker, field: faker.date_time().time(), [], {}),
     models.URLField: ('url', [], {}),
-
-    geo_models.PointField: (fakes.point, (), {'srid': 4326}),
-    geo_models.LineStringField: (fakes.linestring, (), {'srid': 4326}),
-    geo_models.PolygonField: (fakes.polygon, (), {'srid': 4326}),
-    geo_models.MultiPointField: (fakes.multipoint, (), {'srid': 4326}),
-    geo_models.MultiLineStringField: (fakes.multilinestring, (), {'srid': 4326}),
-    geo_models.MultiPolygonField: (fakes.multipolygon, (), {'srid': 4326}),
-    geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
 }
+
+if HAS_GEOS:
+    from django.contrib.gis.db import models as geo_models
+
+    mappings_types.update({
+        geo_models.PointField: (fakes.point, (), {'srid': 4326}),
+        geo_models.LineStringField: (fakes.linestring, (), {'srid': 4326}),
+        geo_models.PolygonField: (fakes.polygon, (), {'srid': 4326}),
+        geo_models.MultiPointField: (fakes.multipoint, (), {'srid': 4326}),
+        geo_models.MultiLineStringField: (fakes.multilinestring, (), {'srid': 4326}),
+        geo_models.MultiPolygonField: (fakes.multipolygon, (), {'srid': 4326}),
+        geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
+    })
 
 if django_version >= (1, 8, 0):
 

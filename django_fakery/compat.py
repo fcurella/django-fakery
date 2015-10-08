@@ -9,6 +9,7 @@ except ImportError:
     psycopg2 = None
     HAS_PSYCOPG2 = False
 
+
 if sys.version < '3':
     text_type = unicode
     binary_type = str
