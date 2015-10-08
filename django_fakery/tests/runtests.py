@@ -7,12 +7,12 @@ if hasattr(sys, 'pypy_version_info'):
     compat.register()
 
 from django.conf import settings
-
+from django.contrib.gis.geos import HAS_GEOS
 
 SETTINGS = {
     'DATABASES': {
         'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'ENGINE': 'django.contrib.gis.db.backends.postgis' if HAS_GEOS else 'django.db.backends.postgresql_psycopg2',
             'NAME': 'travis_postgis',
             'USER': 'postgres',
         }
@@ -27,11 +27,11 @@ SETTINGS = {
     ],
 }
 
-settings.configure(**SETTINGS)
-
 
 def runtests(*test_args):
     import django.test.utils
+
+    settings.configure(**SETTINGS)
 
     if django.VERSION[0:2] >= (1, 7):
         django.setup()

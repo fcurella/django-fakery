@@ -4,7 +4,11 @@ from __future__ import unicode_literals
 from django import VERSION as django_version
 
 from django.db import models, migrations
-import django.contrib.gis.db.models.fields
+from django.contrib.gis.geos import HAS_GEOS
+
+if HAS_GEOS:
+    import django.contrib.gis.db.models.fields
+
 if django_version >= (1, 8, 0):
     from django.contrib.postgres.operations import HStoreExtension
     import django.contrib.postgres.fields
@@ -42,20 +46,24 @@ class Migration(migrations.Migration):
                 ('chef', models.ForeignKey(to='tests.Chef')),
             ],
         ),
-        migrations.CreateModel(
-            name='Pizzeria',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('hq', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                ('directions', django.contrib.gis.db.models.fields.LineStringField(srid=4326)),
-                ('floor_plan', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
-                ('locations', django.contrib.gis.db.models.fields.MultiPointField(srid=4326)),
-                ('routes', django.contrib.gis.db.models.fields.MultiLineStringField(srid=4326)),
-                ('delivery_areas', django.contrib.gis.db.models.fields.MultiPolygonField(srid=4326)),
-                ('all_the_things', django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326)),
-            ],
-        )
     ]
+
+    if HAS_GEOS:
+        operations += [
+            migrations.CreateModel(
+                name='Pizzeria',
+                fields=[
+                    ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                    ('hq', django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                    ('directions', django.contrib.gis.db.models.fields.LineStringField(srid=4326)),
+                    ('floor_plan', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
+                    ('locations', django.contrib.gis.db.models.fields.MultiPointField(srid=4326)),
+                    ('routes', django.contrib.gis.db.models.fields.MultiLineStringField(srid=4326)),
+                    ('delivery_areas', django.contrib.gis.db.models.fields.MultiPolygonField(srid=4326)),
+                    ('all_the_things', django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326)),
+                ],
+            )
+        ]
 
     if django_version >= (1, 8, 0):
         operations += [

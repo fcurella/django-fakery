@@ -1,6 +1,7 @@
 from django import VERSION as django_version
 from decimal import Decimal
-from django.contrib.gis.db import models
+from django.contrib.gis.geos import HAS_GEOS
+from django.db import models
 
 
 class Chef(models.Model):
@@ -28,14 +29,17 @@ class Pizza(models.Model):
         return (Decimal('7.99') + (Decimal('7.99') * Decimal(tax))).quantize(Decimal('0.01'))
 
 
-class Pizzeria(models.Model):
-    hq = models.PointField()
-    directions = models.LineStringField()
-    floor_plan = models.PolygonField()
-    locations = models.MultiPointField()
-    routes = models.MultiLineStringField()
-    delivery_areas = models.MultiPolygonField()
-    all_the_things = models.GeometryCollectionField()
+if HAS_GEOS:
+    from django.contrib.gis.db import models as geo_models
+
+    class Pizzeria(geo_models.Model):
+        hq = geo_models.PointField()
+        directions = geo_models.LineStringField()
+        floor_plan = geo_models.PolygonField()
+        locations = geo_models.MultiPointField()
+        routes = geo_models.MultiLineStringField()
+        delivery_areas = geo_models.MultiPolygonField()
+        all_the_things = geo_models.GeometryCollectionField()
 
 
 if django_version >= (1, 8, 0):
