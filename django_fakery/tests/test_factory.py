@@ -32,6 +32,15 @@ class FactoryTest(TestCase):
             fields={'name': 'four cheeses'}
         )
         self.assertEqual(margherita.name, 'four cheeses')
+        self.assertEqual(margherita.description, '')
+
+    def test_blank(self):
+        margherita = factory.make(
+            'tests.Pizza',
+            fields={'name': 'four cheeses', 'description': lambda n, f: f.sentence()}
+        )
+        self.assertEqual(margherita.name, 'four cheeses')
+        self.assertNotEqual(margherita.description, '')
 
     def test_sequence(self):
         margheritas = factory.make(
