@@ -95,6 +95,22 @@ class FactoryTest(TestCase):
         )
         self.assertEqual(margherita.price, Decimal('8.55'))
 
+    def test_foreign_keys(self):
+        chef_gusteau = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Gusteau'
+            }
+        )
+
+        pizza = factory.make(
+            'tests.Pizza',
+            fields={
+                'chef': chef_gusteau
+            }
+        )
+        self.assertEqual(pizza.chef, chef_gusteau)
+
     def test_save_hooks(self):
         user = factory.make(
             'auth.User',
