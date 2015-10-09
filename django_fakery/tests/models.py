@@ -3,8 +3,11 @@ from decimal import Decimal
 from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 
+from autoslug import AutoSlugField
+
 
 class Chef(models.Model):
+    slug = AutoSlugField()
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
 

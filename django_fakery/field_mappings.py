@@ -24,7 +24,7 @@ mappings_types = {
     models.GenericIPAddressField: ('ipv4', [], {}),
     models.PositiveIntegerField: ('pyint', [], {'max': 2147483647}),
     models.PositiveSmallIntegerField: ('pyint', [], {'max': 32767}),
-    models.SlugField: ('word', [], {}),
+    models.SlugField: (fakes.slug, [3], {}),
     models.SmallIntegerField: ('pyint', [], {'min': -32768, 'max': 32767}),
     models.TextField: ('paragraph', [], {}),
     models.TimeField: (lambda faker, field: faker.date_time().time(), [], {}),
@@ -65,6 +65,7 @@ if django_version >= (1, 8, 0):
 
 mappings_names = {
     'name': ('word', [], {}),  # `name` is too generic to assume it's a person
+    'slug': (fakes.slug, [3], {}),  # `name` is too generic to assume it's a person
     'first_name': ('first_name', [], {}),
     'last_name': ('last_name', [], {}),
     'full_name': ('full_name', [], {}),

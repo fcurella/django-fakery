@@ -21,6 +21,10 @@ def random_bytes(faker, field, length, *args, **kwargs):
     return os.urandom(length)
 
 
+def slug(faker, field, count, *args, **kwargs):
+    return "-".join(faker.words(nb=count))
+
+
 if HAS_GEOS:
     from django.contrib.gis import geos
 
