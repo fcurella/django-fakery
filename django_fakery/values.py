@@ -41,8 +41,9 @@ class Evaluator(object):
         if field.name in field_mappings.mappings_names:
             return self.evaluate_fake(field_mappings.mappings_names[field.name], field)
 
-        if field.__class__ in field_mappings.mappings_types:
-            return self.evaluate_fake(field_mappings.mappings_types[field.__class__], field)
+        for field_class, fake in field_mappings.mappings_types.items():
+            if isinstance(field, field_class):
+                return self.evaluate_fake(fake, field)
 
         model_name = '%s.%s' % (model._meta.app_label, model._meta.model_name)
-        raise ValueError('Cant generate a value for model %s field `%s`' % (model_name, field.name))
+        raise ValueError('Cant generate a value for model `%s` field `%s`' % (model_name, field.name))

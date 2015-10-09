@@ -5,6 +5,7 @@ from django import VERSION as django_version
 
 from django.db import models, migrations
 from django.contrib.gis.geos import HAS_GEOS
+from autoslug import AutoSlugField
 
 if HAS_GEOS:
     import django.contrib.gis.db.models.fields
@@ -29,6 +30,7 @@ class Migration(migrations.Migration):
             name='Chef',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('slug', AutoSlugField()),
                 ('first_name', models.CharField(max_length=60)),
                 ('last_name', models.CharField(max_length=60)),
             ],

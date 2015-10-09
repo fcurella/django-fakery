@@ -28,6 +28,7 @@ setup(
     install_requires=[
         "fake-factory==0.5.3",
         "Django>=1.7",
+        "django-autoslug==1.8.0",
     ],
     test_suite='django_fakery.tests.runtests.runtests',
 )
