@@ -5,6 +5,19 @@ from .compat import django_version, HAS_PSYCOPG2
 from . import fakes
 
 
+"""
+This module maps fields to functions generating values.
+
+It first tries by looking at the field's class, then falls back to some
+special-cased names.
+
+Values are 3-tuples composed of ``(<function>, <args>, <kwargs>)``.
+
+When ``<function>`` is a string, it's assumed to be a faker provider. Whenever
+``faker`` doesn't provide a suitable provider, we ship our own function. They
+are defined in ``django_fakery.fakes``.
+"""
+
 mappings_types = {
     models.BigIntegerField: ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
     models.BinaryField: (fakes.random_bytes, [1024], {}),
