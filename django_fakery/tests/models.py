@@ -12,6 +12,10 @@ class Chef(models.Model):
     last_name = models.CharField(max_length=60)
 
 
+class Topping(models.Model):
+    name = models.CharField(max_length=60)
+
+
 class Pizza(models.Model):
     THICKNESSES = (
         (0, 'thin'),
@@ -27,6 +31,7 @@ class Pizza(models.Model):
     backed_on = models.DateTimeField()
 
     chef = models.ForeignKey(Chef)
+    toppings = models.ManyToManyField(Topping, related_name='pizzas')
 
     def get_price(self, tax):
         return (Decimal('7.99') + (Decimal('7.99') * Decimal(tax))).quantize(Decimal('0.01'))

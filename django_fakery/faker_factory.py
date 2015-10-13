@@ -51,7 +51,7 @@ class Factory(object):
         if isinstance(model, string_types):
             model = apps.get_model(*model.split('.'))
         instance = model()
-        m2ms = []
+        m2ms = {}
         lazies = []
 
         for field_name, model_field in get_model_fields(model):
@@ -61,8 +61,7 @@ class Factory(object):
             if field_name not in fields and (model_field.blank or model_field.null or model_field.default != NOT_PROVIDED):
                 continue
 
-            if isinstance(model_field, models.ManyToManyField):
-                m2ms.append(model_field)
+            if field_name not in fields and isinstance(model_field, models.ManyToManyField):
                 continue
 
             if isinstance(model_field, models.ForeignKey):
@@ -85,11 +84,14 @@ class Factory(object):
                 field_name += '_id'
                 value = value.pk
 
+            if isinstance(model_field, models.ManyToManyField):
+                m2ms[field_name] = value
             # special case for user passwords
             if model == user_model and field_name == 'password':
                 instance.set_password(value)
             else:
-                setattr(instance, field_name, value)
+                if field_name not in m2ms:
+                    setattr(instance, field_name, value)
 
         for field_name, lazy in lazies:
             value = getattr(instance, lazy.name)
@@ -100,16 +102,16 @@ class Factory(object):
         for func in pre_save:
             func(instance)
 
-        return instance
+        return instance, m2ms
 
     def build(self, model, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
         if fields is None:
             fields = {}
 
         if quantity:
-            return [self.build_one(model, fields, pre_save, seed, make_fks, i) for i in range(quantity)]
+            return [self.build_one(model, fields, pre_save, seed, make_fks, i)[0] for i in range(quantity)]
         else:
-            return self.build_one(model, fields, pre_save, seed, make_fks)
+            return self.build_one(model, fields, pre_save, seed, make_fks)[0]
 
     def make_one(self, model, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
         if fields is None:
@@ -118,8 +120,11 @@ class Factory(object):
         if post_save is None:
             post_save = []
 
-        instance = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
+        instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
         instance.save()
+
+        for field, relateds in m2ms.items():
+            setattr(instance, field, relateds)
 
         for func in post_save:
             func(instance)

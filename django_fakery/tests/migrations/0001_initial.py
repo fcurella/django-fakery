@@ -36,6 +36,13 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Topping',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=60)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Pizza',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -46,6 +53,7 @@ class Migration(migrations.Migration):
                 ('thickness', models.CharField(max_length=50, choices=[(0, b'thin'), (1, b'thick'), (2, b'deep dish')])),
                 ('backed_on', models.DateTimeField()),
                 ('chef', models.ForeignKey(to='tests.Chef')),
+                ('toppings', models.ManyToManyField(to='tests.Topping')),
             ],
         ),
     ]

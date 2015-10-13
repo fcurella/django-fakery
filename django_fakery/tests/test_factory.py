@@ -111,6 +111,28 @@ class FactoryTest(TestCase):
         )
         self.assertEqual(pizza.chef, chef_gusteau)
 
+    def test_manytomany(self):
+        pizza = factory.make(
+            'tests.Pizza',
+        )
+        self.assertEqual(pizza.toppings.count(), 0)
+
+        pizza = factory.make(
+            'tests.Pizza',
+            fields={
+                'toppings': [factory.make('tests.Topping')]
+            }
+        )
+        self.assertEqual(pizza.toppings.count(), 1)
+
+        pizza = factory.make(
+            'tests.Pizza',
+            fields={
+                'toppings': factory.make('tests.Topping', quantity=5)
+            }
+        )
+        self.assertEqual(pizza.toppings.count(), 5)
+
     def test_save_hooks(self):
         user = factory.make(
             'auth.User',
