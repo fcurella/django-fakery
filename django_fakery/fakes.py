@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.gis.geos import HAS_GEOS
-from django.utils import timezone
+from django.utils import text, timezone
 from faker.generator import random
 
 from .compat import django_version, HAS_PSYCOPG2
@@ -22,7 +22,7 @@ def random_bytes(faker, field, length, *args, **kwargs):
 
 
 def slug(faker, field, count, *args, **kwargs):
-    return "-".join(faker.words(nb=count))
+    return text.slugify(" ".join(faker.words(nb=count)))
 
 
 if HAS_GEOS:
