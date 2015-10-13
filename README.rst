@@ -81,6 +81,38 @@ For convenience, when the value of a field is a string, it will be interpolated 
         quantity=4
     )
 
+Lazies
+------
+
+You can refer to the created instance's own attributes or method by using `Lazy` objects.
+
+For example, if you'd like to create user with email as username, and have them always match, you could do:
+
+.. code-block:: python
+
+    from django_fakery import factory, Lazy
+
+    factory.make(
+        'auth.User',
+        fields={
+            'username': Lazy('email'),
+        }
+    )
+
+
+If you want to assign a value returned by a method on the instance, you can pass the method's arguments to the ``Lazy`` object:
+
+.. code-block:: python
+
+    from django_fakery import factory, Lazy
+
+    factory.make(
+        'myapp.Model',
+        fields={
+            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
+        }
+    )
+
 Foreign keys
 ------------
 
@@ -124,6 +156,38 @@ You can also pass a factory, to create multiple objects:
         }
     )
 
+Lazies
+------
+
+You can refer to the created instance's own attributes or method by using `Lazy` objects.
+
+For example, if you'd like to create user with email as username, and have them always match, you could do:
+
+.. code-block:: python
+
+    from django_fakery import factory, Lazy
+
+    factory.make(
+        'auth.User',
+        fields={
+            'username': Lazy('email'),
+        }
+    )
+
+
+If you want to assign a value returned by a method on the instance, you can pass the method's arguments to the ``Lazy`` object:
+
+.. code-block:: python
+
+    from django_fakery import factory, Lazy
+
+    factory.make(
+        'myapp.Model',
+        fields={
+            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
+        }
+    )
+
 
 Pre-save and Post-save hooks
 ----------------------------
@@ -157,38 +221,6 @@ Since settings a user's password is such a common case, we special-cased that sc
         fields={
             'username': 'username',
             'password': 'password',
-        }
-    )
-
-Lazies
-------
-
-You can refer to the created instance's own attributes or method by using `Lazy` objects.
-
-For example, if you'd like to create user with email as username, and have them always match, you could do:
-
-.. code-block:: python
-
-    from django_fakery import factory, Lazy
-
-    factory.make(
-        'auth.User',
-        fields={
-            'username': Lazy('email'),
-        }
-    )
-
-
-If you want to assign a value returned by a method on the instance, you can pass the method's arguments to the ``Lazy`` object:
-
-.. code-block:: python
-
-    from django_fakery import factory, Lazy
-
-    factory.make(
-        'myapp.Model',
-        fields={
-            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
         }
     )
 
