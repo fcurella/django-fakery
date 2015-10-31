@@ -6,7 +6,7 @@ VERSION = '1.1.0'
 setup(
     name='django-fakery',
     version=VERSION,
-    url='https://github.com/fcurella/django-factory/',
+    url='https://github.com/fcurella/django-fakery/',
     author='Flavio Curella',
     author_email='flavio.curella@gmail.com',
     description='A model instances generator for Django',
