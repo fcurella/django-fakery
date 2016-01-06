@@ -1,7 +1,16 @@
+import os
 from setuptools import find_packages, setup
 
 
 VERSION = '1.1.1'
+
+
+def read(fname):
+    try:
+        with open(os.path.join(os.path.dirname(__file__), fname)) as fh:
+            return fh.read()
+    except IOError:
+        return ''
 
 setup(
     name='django-fakery',
@@ -10,6 +19,7 @@ setup(
     author='Flavio Curella',
     author_email='flavio.curella@gmail.com',
     description='A model instances generator for Django',
+    long_description=read('README.rst'),
     license='MIT',
     packages=find_packages(exclude=['*.tests']),
     platforms=["any"],
