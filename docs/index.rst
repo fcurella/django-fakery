@@ -42,6 +42,7 @@ Contents:
    lazies
    relationships
    hooks
+   nonpersistentinstances
    blueprints
    seeding
 
