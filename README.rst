@@ -81,38 +81,6 @@ For convenience, when the value of a field is a string, it will be interpolated 
         quantity=4
     )
 
-Lazies
-------
-
-You can refer to the created instance's own attributes or method by using `Lazy` objects.
-
-For example, if you'd like to create user with email as username, and have them always match, you could do:
-
-.. code-block:: python
-
-    from django_fakery import factory, Lazy
-
-    factory.make(
-        'auth.User',
-        fields={
-            'username': Lazy('email'),
-        }
-    )
-
-
-If you want to assign a value returned by a method on the instance, you can pass the method's arguments to the ``Lazy`` object:
-
-.. code-block:: python
-
-    from django_fakery import factory, Lazy
-
-    factory.make(
-        'myapp.Model',
-        fields={
-            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
-        }
-    )
-
 Foreign keys
 ------------
 
@@ -209,7 +177,6 @@ You can define functions to be called right before the instance is saved or righ
     )
 
 
-
 Since settings a user's password is such a common case, we special-cased that scenario, so you can just pass it as a field:
 
 .. code-block:: python
@@ -224,6 +191,23 @@ Since settings a user's password is such a common case, we special-cased that sc
         }
     )
 
+Non persistent instances
+------------------------
+
+You can build instances that are not saved to the database by using the `.build()` method, just like you'd use `.make()`:
+
+.. code-block:: python
+
+    from django_fakery import factory
+
+    factory.build(
+        'app.Model',
+        fields={
+            'field': 'value',
+        }
+    )
+
+Note that since the instance is not saved to the database, `.build()` does not support ManyToManies or post-save hooks.
 
 Blueprints
 ----------
