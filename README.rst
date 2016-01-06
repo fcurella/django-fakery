@@ -84,7 +84,7 @@ For convenience, when the value of a field is a string, it will be interpolated 
 Foreign keys
 ------------
 
-Non-nullable ``ForeignKey``s create related objects automatically.
+Non-nullable ``ForeignKey`` s create related objects automatically.
 
 If you want to explicitly create a related object, you can pass it to the ``fields`` like any other value:
 
