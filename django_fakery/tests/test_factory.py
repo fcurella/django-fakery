@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.test import TestCase
 
 from django_fakery import factory, Lazy
+from django_fakery.exceptions import ForeignKeyError
 
 
 class FactoryTest(TestCase):
@@ -110,6 +111,37 @@ class FactoryTest(TestCase):
             }
         )
         self.assertEqual(pizza.chef, chef_gusteau)
+
+    def test_foreign_keys_fail(self):
+        chef_gusteau = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Gusteau'
+            }
+        )
+
+        self.assertRaises(ForeignKeyError, factory.build,
+            'tests.Pizza',
+        )
+        factory.build(
+            'tests.Pizza',
+            fields={
+                'chef': chef_gusteau,
+            }
+        )
+
+        chef_skinner = factory.build(
+            'tests.Chef',
+            fields={
+                'first_name': 'Skinner',
+            }
+        )
+        self.assertRaises(ForeignKeyError, factory.build,
+            'tests.Pizza',
+            fields={
+                'chef': chef_skinner,
+            }
+        )
 
     def test_manytomany(self):
         pizza = factory.make(

@@ -9,6 +9,8 @@ class Blueprint(object):
         self.seed = seed
         self.pre_save = pre_save
         self.post_save = post_save
+
+        self.pk = -1
         super(Blueprint, self).__init__()
 
     def make_one(self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
