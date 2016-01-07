@@ -8,7 +8,7 @@ from django.db.models.fields import NOT_PROVIDED
 
 from faker import Factory as FakerFactory
 
-from .compat import get_model_fields, string_types
+from .compat import get_model_fields, get_related_model, string_types
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .utils import language_to_locale
@@ -65,8 +65,19 @@ class Factory(object):
                 continue
 
             if isinstance(model_field, models.ForeignKey):
-                if not make_fks:
-                    raise ForeignKeyError('field %s is a ForeignKey' % field_name)
+                _field_name = field_name.split('_id')[0]
+                related_model = fields.get(_field_name)
+                value = related_model.pk if related_model else None
+
+                if not (make_fks or value):
+                    raise ForeignKeyError(
+                        "Field {} is a required ForeignKey, but the related {}.{} model"
+                        " doesn't have the necessary primary key.".format(
+                            field_name,
+                            get_related_model(model_field)._meta.app_label,
+                            get_related_model(model_field)._meta.model_name,
+                        )
+                    )
 
             if field_name in fields:
                 value = evaluator.evaluate(fields[field_name])
