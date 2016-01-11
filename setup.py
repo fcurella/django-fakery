@@ -2,7 +2,7 @@ import os
 from setuptools import find_packages, setup
 
 
-VERSION = '1.2.4'
+VERSION = '1.2.5'
 
 
 def read(fname):
