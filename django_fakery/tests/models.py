@@ -31,7 +31,8 @@ class Pizza(models.Model):
     backed_on = models.DateTimeField()
     rating = models.PositiveSmallIntegerField()
 
-    chef = models.ForeignKey(Chef)
+    chef = models.ForeignKey(Chef, related_name='invented_pizzas')
+    critic = models.ForeignKey(Chef, null=True, related_name='reviewed_pizzas')
     toppings = models.ManyToManyField(Topping, related_name='pizzas')
 
     def get_price(self, tax):
