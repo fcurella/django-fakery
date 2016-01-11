@@ -143,6 +143,14 @@ class FactoryTest(TestCase):
             }
         )
 
+        factory.build(
+            'tests.Pizza',
+            fields={
+                'chef': chef_gusteau,
+                'critic': None,
+            }
+        )
+
     def test_manytomany(self):
         pizza = factory.make(
             'tests.Pizza',

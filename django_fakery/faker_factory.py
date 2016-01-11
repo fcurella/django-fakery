@@ -20,6 +20,10 @@ user_model = get_user_model()
 locale = language_to_locale(settings.LANGUAGE_CODE)
 
 
+class Empty(object):
+    pass
+
+
 class Factory(object):
     def __init__(self, fake=None):
         self.fake = fake or FakerFactory.create(locale)
@@ -66,10 +70,9 @@ class Factory(object):
 
             if isinstance(model_field, models.ForeignKey):
                 _field_name = field_name.split('_id')[0]
-                related_model = fields.get(_field_name)
-                value = related_model.pk if related_model else None
+                value = fields.get(_field_name, Empty)
 
-                if not (make_fks or value):
+                if not make_fks and ((value == Empty) or (value and value.pk is None)):
                     raise ForeignKeyError(
                         "Field {} is a required ForeignKey, but the related {}.{} model"
                         " doesn't have the necessary primary key.".format(
@@ -93,7 +96,7 @@ class Factory(object):
 
             if isinstance(model_field, models.ForeignKey):
                 field_name += '_id'
-                value = value.pk
+                value = value.pk if value else None
 
             if isinstance(model_field, models.ManyToManyField):
                 m2ms[field_name] = value
