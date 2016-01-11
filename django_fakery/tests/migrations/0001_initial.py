@@ -54,6 +54,7 @@ class Migration(migrations.Migration):
                 ('backed_on', models.DateTimeField()),
                 ('chef', models.ForeignKey(to='tests.Chef')),
                 ('toppings', models.ManyToManyField(to='tests.Topping')),
+                ('rating', models.PositiveSmallIntegerField()),
             ],
         ),
     ]

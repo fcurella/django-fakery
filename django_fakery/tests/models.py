@@ -29,6 +29,7 @@ class Pizza(models.Model):
     description = models.TextField(blank=True)
     thickness = models.CharField(max_length=50, choices=THICKNESSES)
     backed_on = models.DateTimeField()
+    rating = models.PositiveSmallIntegerField()
 
     chef = models.ForeignKey(Chef)
     toppings = models.ManyToManyField(Topping, related_name='pizzas')
