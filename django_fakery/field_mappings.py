@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 
@@ -18,31 +20,31 @@ When ``<function>`` is a string, it's assumed to be a faker provider. Whenever
 are defined in ``django_fakery.fakes``.
 """
 
-mappings_types = {
-    models.BigIntegerField: ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
-    models.BinaryField: (fakes.random_bytes, [1024], {}),
-    models.BooleanField: ('pybool', [], {}),
-    models.CharField: ('word', [], {}),
-    models.CommaSeparatedIntegerField: (fakes.comma_sep_integers, [], {}),
-    models.DateField: (lambda faker, field: faker.date_time().date(), [], {}),
-    models.DateTimeField: ('date_time', [], {}),
-    models.DecimalField: (fakes.decimal, [], {}),
-    models.EmailField: ('email', [], {}),
-    models.FileField: ('file_name', [], {}),
-    models.FilePathField: ('file_name', [], {}),
-    models.FloatField: ('pyfloat', [], {}),
-    models.ImageField: ('file_name', [], {'extension': 'jpg'}),
-    models.IntegerField: ('pyint', [], {}),
-    models.IPAddressField: ('ipv4', [], {}),
-    models.GenericIPAddressField: ('ipv4', [], {}),
-    models.PositiveIntegerField: ('random_int', [], {'max': 2147483647}),
-    models.PositiveSmallIntegerField: ('random_int', [], {'max': 32767}),
-    models.SlugField: (fakes.slug, [3], {}),
-    models.SmallIntegerField: ('random_int', [], {'min': -32768, 'max': 32767}),
-    models.TextField: ('paragraph', [], {}),
-    models.TimeField: (lambda faker, field: faker.date_time().time(), [], {}),
-    models.URLField: ('url', [], {}),
-}
+mappings_types = OrderedDict([
+    (models.BigIntegerField, ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807})),
+    (models.BinaryField, (fakes.random_bytes, [1024], {})),
+    (models.BooleanField, ('pybool', [], {})),
+    (models.CommaSeparatedIntegerField, (fakes.comma_sep_integers, [], {})),
+    (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
+    (models.DateTimeField, ('date_time', [], {})),
+    (models.DecimalField, (fakes.decimal, [], {})),
+    (models.EmailField, ('email', [], {})),
+    (models.FileField, ('file_name', [], {})),
+    (models.FilePathField, ('file_name', [], {})),
+    (models.FloatField, ('pyfloat', [], {})),
+    (models.ImageField, ('file_name', [], {'extension': 'jpg'})),
+    (models.IntegerField, ('pyint', [], {})),
+    (models.IPAddressField, ('ipv4', [], {})),
+    (models.GenericIPAddressField, ('ipv4', [], {})),
+    (models.PositiveIntegerField, ('random_int', [], {'max': 2147483647})),
+    (models.PositiveSmallIntegerField, ('random_int', [], {'max': 32767})),
+    (models.SlugField, (fakes.slug, [3], {})),
+    (models.SmallIntegerField, ('random_int', [], {'min': -32768, 'max': 32767})),
+    (models.TextField, ('paragraph', [], {})),
+    (models.TimeField, (lambda faker, field: faker.date_time().time(), [], {})),
+    (models.URLField, ('url', [], {})),
+    (models.CharField, ('word', [], {})),
+])
 
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
