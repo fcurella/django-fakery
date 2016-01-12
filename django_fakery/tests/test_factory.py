@@ -206,3 +206,13 @@ class FactoryTest(TestCase):
         )
         for chef in chef_masters:
             self.assertEqual(chef.id, None)
+
+    def test_field_inheritance(self):
+        chef_gusteau = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Gusteau'
+            }
+        )
+        self.assertTrue('@' in chef_gusteau.email_address)
+        self.assertTrue('http://' in chef_gusteau.twitter_profile)

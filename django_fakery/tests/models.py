@@ -10,6 +10,8 @@ class Chef(models.Model):
     slug = AutoSlugField()
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
+    email_address = models.EmailField()
+    twitter_profile = models.URLField()
 
 
 class Topping(models.Model):
