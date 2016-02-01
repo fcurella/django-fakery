@@ -85,10 +85,10 @@ class Factory(object):
             if field_name in fields:
                 value = evaluator.evaluate(fields[field_name])
             else:
-                value = evaluator.fake_value(model, model_field)
-
-            if model_field.choices:
-                value = fake.random_element(model_field.choices)[0]
+                if model_field.choices:
+                    value = fake.random_element(model_field.choices)[0]
+                else:
+                    value = evaluator.fake_value(model, model_field)
 
             if isinstance(value, Lazy):
                 lazies.append((field_name, value))

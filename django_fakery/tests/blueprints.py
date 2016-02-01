@@ -12,6 +12,7 @@ chef = factory.blueprint(
 pizza = Blueprint(
     'tests.Pizza',
     fields={
-        'chef': chef
+        'chef': chef,
+        'thickness': 1
     }
 )
