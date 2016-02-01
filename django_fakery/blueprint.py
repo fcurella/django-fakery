@@ -42,3 +42,15 @@ class Blueprint(object):
             post_save = self.post_save
 
         return self.factory.make(self.model, _fields, pre_save, post_save, seed, quantity)
+
+    def build(self, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
+        _fields = self.fields.copy()
+        if fields:
+            _fields.update(fields)
+        if seed is None:
+            seed = self.seed
+
+        if pre_save is None:
+            pre_save = self.pre_save
+
+        return self.factory.build(self.model, _fields, pre_save, seed, quantity, make_fks)
