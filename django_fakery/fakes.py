@@ -122,3 +122,6 @@ if HAS_PSYCOPG2:
         lower = faker.date_time().date()
         upper = faker.date_time_between_dates(datetime_start=lower).date()
         return DateRange(lower, upper)
+
+    def random_dict(faker, field, *args, **kwargs):
+        return faker.pydict(10, True, int, str)

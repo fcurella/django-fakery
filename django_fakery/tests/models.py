@@ -1,4 +1,5 @@
 from decimal import Decimal
+from django import VERSION as django_version
 from django.contrib.gis.geos import HAS_GEOS
 from django.contrib.postgres import fields as postgres_fields
 from django.db import models
@@ -54,13 +55,26 @@ if HAS_GEOS:
         all_the_things = geo_models.GeometryCollectionField()
 
 
-class SpecialtyPizza(models.Model):
-    toppings = postgres_fields.ArrayField(
-        models.CharField(max_length=20),
-        size=4
-    )
-    metadata = postgres_fields.HStoreField()
-    price_range = postgres_fields.IntegerRangeField()
-    sales = postgres_fields.BigIntegerRangeField()
-    available_on = postgres_fields.DateTimeRangeField()
-    season = postgres_fields.DateRangeField()
+if django_version < (1, 9, 0):
+    class SpecialtyPizza(models.Model):
+        toppings = postgres_fields.ArrayField(
+            models.CharField(max_length=20),
+            size=4
+        )
+        metadata = postgres_fields.HStoreField()
+        price_range = postgres_fields.IntegerRangeField()
+        sales = postgres_fields.BigIntegerRangeField()
+        available_on = postgres_fields.DateTimeRangeField()
+        season = postgres_fields.DateRangeField()
+else:
+    class SpecialtyPizza(models.Model):
+        toppings = postgres_fields.ArrayField(
+            models.CharField(max_length=20),
+            size=4
+        )
+        metadata = postgres_fields.HStoreField()
+        price_range = postgres_fields.IntegerRangeField()
+        sales = postgres_fields.BigIntegerRangeField()
+        available_on = postgres_fields.DateTimeRangeField()
+        season = postgres_fields.DateRangeField()
+        nutritional_values = postgres_fields.JSONField()

@@ -10,10 +10,9 @@ from autoslug import AutoSlugField
 if HAS_GEOS:
     import django.contrib.gis.db.models.fields
 
-if django_version >= (1, 8, 0):
-    from django.contrib.postgres.operations import HStoreExtension
-    import django.contrib.postgres.fields
-    import django.contrib.postgres.fields.hstore
+from django.contrib.postgres.operations import HStoreExtension
+import django.contrib.postgres.fields
+import django.contrib.postgres.fields.hstore
 
 
 class Migration(migrations.Migration):
@@ -21,10 +20,7 @@ class Migration(migrations.Migration):
     dependencies = [
     ]
 
-    operations = []
-    if django_version >= (1, 8, 0):
-        operations.append(HStoreExtension())
-
+    operations = [HStoreExtension()]
     operations += [
         migrations.CreateModel(
             name='Chef',
@@ -79,18 +75,24 @@ class Migration(migrations.Migration):
             )
         ]
 
-    if django_version >= (1, 8, 0):
-        operations += [
-            migrations.CreateModel(
-                name='SpecialtyPizza',
-                fields=[
-                    ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                    ('toppings', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=20), size=4)),
-                    ('metadata', django.contrib.postgres.fields.hstore.HStoreField()),
-                    ('price_range', django.contrib.postgres.fields.IntegerRangeField()),
-                    ('sales', django.contrib.postgres.fields.BigIntegerRangeField()),
-                    ('available_on', django.contrib.postgres.fields.DateTimeRangeField()),
-                    ('season', django.contrib.postgres.fields.DateRangeField()),
-                ],
-            ),
-        ]
+    specialtypizza_fields = [
+        ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+        ('toppings', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=20), size=4)),
+        ('metadata', django.contrib.postgres.fields.hstore.HStoreField()),
+        ('price_range', django.contrib.postgres.fields.IntegerRangeField()),
+        ('sales', django.contrib.postgres.fields.BigIntegerRangeField()),
+        ('available_on', django.contrib.postgres.fields.DateTimeRangeField()),
+        ('season', django.contrib.postgres.fields.DateRangeField()),
+    ]
+
+    if django_version >= (1, 9, 0):
+        specialtypizza_fields.append(
+            ('nutritional_values', django.contrib.postgres.fields.JSONField()),
+        )
+
+    operations += [
+        migrations.CreateModel(
+            name='SpecialtyPizza',
+            fields=specialtypizza_fields,
+        ),
+    ]

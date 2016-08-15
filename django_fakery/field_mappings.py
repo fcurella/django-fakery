@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
+from django import VERSION as django_version
 
 from .compat import HAS_PSYCOPG2
 from . import fakes
@@ -73,6 +74,10 @@ if HAS_PSYCOPG2:
         pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
         pg_fields.DateRangeField: (fakes.daterange, [], {}),
     })
+    if django_version >= (1, 9, 0):
+        mappings_types.update({
+            pg_fields.JSONField: (fakes.random_dict, [], {}),
+        })
 
 mappings_names = {
     'name': ('word', [], {}),  # `name` is too generic to assume it's a person
