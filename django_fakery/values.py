@@ -1,7 +1,7 @@
 from functools import partial
 from django.db import models
 
-from .compat import get_related_model, string_types
+from .compat import string_types
 
 from . import field_mappings
 
@@ -36,7 +36,7 @@ class Evaluator(object):
 
     def fake_value(self, model, field):
         if isinstance(field, models.ForeignKey):
-            return self.factory.make_one(get_related_model(field), iteration=self.iteration)
+            return self.factory.make_one(field.related_model, iteration=self.iteration)
 
         if field.name in field_mappings.mappings_names:
             return self.evaluate_fake(field_mappings.mappings_names[field.name], field)

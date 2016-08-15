@@ -36,7 +36,7 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     install_requires=[
-        "fake-factory==0.5.3",
+        "fake-factory>=0.6.0,<0.7.0",
         "Django>=1.7",
         "django-autoslug==1.9.3",
     ],
