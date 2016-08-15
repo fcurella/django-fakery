@@ -5,17 +5,15 @@ from unittest import skipIf
 from django.test import TestCase
 from django_fakery import factory
 
-from ..compat import text_type, django_version, HAS_PSYCOPG2
+from ..compat import text_type, HAS_PSYCOPG2
 
 if HAS_PSYCOPG2:
     from psycopg2.extras import DateTimeTZRange, NumericRange
 
 PYPY3 = hasattr(sys, 'pypy_version_info') and sys.version_info.major >= 3
-DJANGO17 = django_version >= (1, 7, 0) and django_version < (1, 8, 0)
 
 
 @skipIf(not HAS_PSYCOPG2, "Psycopg2 not installed")
-@skipIf(DJANGO17, "Django 1.7 does not have contrib.postgres")
 @skipIf(PYPY3, "Psycopg2cffi does not support Python3")
 class PostgresTest(TestCase):
     def test_postgres_fields(self):

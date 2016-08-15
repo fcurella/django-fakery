@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 
-from .compat import django_version, HAS_PSYCOPG2
+from .compat import HAS_PSYCOPG2
 from . import fakes
 
 
@@ -44,6 +44,8 @@ mappings_types = OrderedDict([
     (models.TimeField, (lambda faker, field: faker.date_time().time(), [], {})),
     (models.URLField, ('url', [], {})),
     (models.CharField, ('word', [], {})),
+    (models.DurationField, ('time_delta', [], {})),
+    (models.UUIDField, ('uuid4', [], {})),
 ])
 
 if HAS_GEOS:
@@ -59,24 +61,18 @@ if HAS_GEOS:
         geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
     })
 
-if django_version >= (1, 8, 0):
+if HAS_PSYCOPG2:
+    from django.contrib.postgres import fields as pg_fields
 
     mappings_types.update({
-        models.DurationField: ('time_delta', [], {}),
-        models.UUIDField: ('uuid4', [], {}),
+        pg_fields.ArrayField: (fakes.array, [], {}),
+        pg_fields.HStoreField: ('pydict', [10, True, 'str'], {}),
+        pg_fields.IntegerRangeField: (fakes.integerrange, [], {'min': -2147483647, 'max': 2147483647}),
+        pg_fields.BigIntegerRangeField: (fakes.integerrange, [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
+        pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
+        pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
+        pg_fields.DateRangeField: (fakes.daterange, [], {}),
     })
-    if HAS_PSYCOPG2:
-        from django.contrib.postgres import fields as pg_fields
-
-        mappings_types.update({
-            pg_fields.ArrayField: (fakes.array, [], {}),
-            pg_fields.HStoreField: ('pydict', [10, True, 'str'], {}),
-            pg_fields.IntegerRangeField: (fakes.integerrange, [], {'min': -2147483647, 'max': 2147483647}),
-            pg_fields.BigIntegerRangeField: (fakes.integerrange, [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
-            pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
-            pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
-            pg_fields.DateRangeField: (fakes.daterange, [], {}),
-        })
 
 mappings_names = {
     'name': ('word', [], {}),  # `name` is too generic to assume it's a person

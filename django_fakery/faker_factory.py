@@ -8,10 +8,10 @@ from django.db.models.fields import NOT_PROVIDED
 
 from faker import Factory as FakerFactory
 
-from .compat import get_model_fields, get_related_model, string_types
+from .compat import string_types
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
-from .utils import language_to_locale
+from .utils import get_model_fields, language_to_locale
 from .values import Evaluator
 
 
@@ -77,8 +77,8 @@ class Factory(object):
                         "Field {} is a required ForeignKey, but the related {}.{} model"
                         " doesn't have the necessary primary key.".format(
                             field_name,
-                            get_related_model(model_field)._meta.app_label,
-                            get_related_model(model_field)._meta.model_name,
+                            model_field.related_model._meta.app_label,
+                            model_field.related_model._meta.model_name,
                         )
                     )
 

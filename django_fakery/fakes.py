@@ -4,7 +4,7 @@ from django.contrib.gis.geos import HAS_GEOS
 from django.utils import text, timezone
 from faker.generator import random
 
-from .compat import django_version, HAS_PSYCOPG2
+from .compat import HAS_PSYCOPG2
 
 
 def comma_sep_integers(faker, field, *args, **kwargs):
@@ -85,7 +85,7 @@ if HAS_GEOS:
         geometries = [single_point] + points
         return geos.GeometryCollection(*geometries)
 
-if django_version >= (1, 8, 0) and HAS_PSYCOPG2:
+if HAS_PSYCOPG2:
     from psycopg2.extras import DateRange, DateTimeTZRange, NumericRange
 
     def array(faker, field, *args, **kwargs):
