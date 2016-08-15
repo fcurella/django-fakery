@@ -25,7 +25,6 @@ mappings_types = OrderedDict([
     (models.BigIntegerField, ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807})),
     (models.BinaryField, (fakes.random_bytes, [1024], {})),
     (models.BooleanField, ('pybool', [], {})),
-    (models.CommaSeparatedIntegerField, (fakes.comma_sep_integers, [], {})),
     (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
     (models.DateTimeField, ('date_time', [], {})),
     (models.DecimalField, (fakes.decimal, [], {})),
@@ -48,6 +47,11 @@ mappings_types = OrderedDict([
     (models.DurationField, ('time_delta', [], {})),
     (models.UUIDField, ('uuid4', [], {})),
 ])
+
+if django_version < (1, 10, 0):
+    mappings_types.update({
+        models.CommaSeparatedIntegerField: (fakes.comma_sep_integers, [], {}),
+    })
 
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
