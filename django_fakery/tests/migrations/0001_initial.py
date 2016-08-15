@@ -59,19 +59,24 @@ class Migration(migrations.Migration):
     ]
 
     if HAS_GEOS:
+        pizzeria_fields = [
+            ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+            ('hq', django.contrib.gis.db.models.fields.PointField(srid=4326)),
+            ('directions', django.contrib.gis.db.models.fields.LineStringField(srid=4326)),
+            ('floor_plan', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
+            ('locations', django.contrib.gis.db.models.fields.MultiPointField(srid=4326)),
+            ('routes', django.contrib.gis.db.models.fields.MultiLineStringField(srid=4326)),
+            ('delivery_areas', django.contrib.gis.db.models.fields.MultiPolygonField(srid=4326)),
+            ('all_the_things', django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326)),
+        ]
+        if django_version >= (1, 9, 0):
+            pizzeria_fields.append(
+                ('rast', django.contrib.gis.db.models.fields.RasterField(srid=4326)),
+            )
         operations += [
             migrations.CreateModel(
                 name='Pizzeria',
-                fields=[
-                    ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                    ('hq', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                    ('directions', django.contrib.gis.db.models.fields.LineStringField(srid=4326)),
-                    ('floor_plan', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
-                    ('locations', django.contrib.gis.db.models.fields.MultiPointField(srid=4326)),
-                    ('routes', django.contrib.gis.db.models.fields.MultiLineStringField(srid=4326)),
-                    ('delivery_areas', django.contrib.gis.db.models.fields.MultiPolygonField(srid=4326)),
-                    ('all_the_things', django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326)),
-                ],
+                fields=pizzeria_fields,
             )
         ]
 

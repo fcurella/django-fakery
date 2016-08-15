@@ -1,5 +1,6 @@
 import os
 
+from django import VERSION as django_version
 from django.contrib.gis.geos import HAS_GEOS
 from django.utils import text, timezone
 from faker.generator import random
@@ -26,7 +27,7 @@ def slug(faker, field, count, *args, **kwargs):
 
 
 if HAS_GEOS:
-    from django.contrib.gis import geos
+    from django.contrib.gis import gdal, geos
 
     def point(faker, field, srid):
         lat = random.uniform(-180.0, 180.0)
@@ -84,6 +85,21 @@ if HAS_GEOS:
         points = collection(faker, field, srid, point, geos.MultiPoint)
         geometries = [single_point] + points
         return geos.GeometryCollection(*geometries)
+
+    if django_version >= (1, 9, 0):
+        def gdal_raster(faker, field, srid, *args, **kwargs):
+            scale = faker.pyfloat(positive=True)
+            return gdal.GDALRaster({
+                'width': faker.random_int(),
+                'height': faker.random_int(),
+                'name': faker.word(),
+                'srid': srid,
+                'scale': [scale, -scale],
+                'bands': [
+                    {"data": range(faker.random_int())},
+                ],
+            })
+
 
 if HAS_PSYCOPG2:
     from psycopg2.extras import DateRange, DateTimeTZRange, NumericRange

@@ -62,6 +62,11 @@ if HAS_GEOS:
         geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
     })
 
+    if django_version >= (1, 9, 0):
+        mappings_types.update({
+            geo_models.RasterField: (fakes.gdal_raster, [], {'srid': 4326}),
+        })
+
 if HAS_PSYCOPG2:
     from django.contrib.postgres import fields as pg_fields
 

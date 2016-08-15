@@ -45,6 +45,7 @@ class Pizza(models.Model):
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
 
+if django_version < (1, 9, 0):
     class Pizzeria(geo_models.Model):
         hq = geo_models.PointField()
         directions = geo_models.LineStringField()
@@ -53,6 +54,16 @@ if HAS_GEOS:
         routes = geo_models.MultiLineStringField()
         delivery_areas = geo_models.MultiPolygonField()
         all_the_things = geo_models.GeometryCollectionField()
+else:
+    class Pizzeria(geo_models.Model):
+        hq = geo_models.PointField()
+        directions = geo_models.LineStringField()
+        floor_plan = geo_models.PolygonField()
+        locations = geo_models.MultiPointField()
+        routes = geo_models.MultiLineStringField()
+        delivery_areas = geo_models.MultiPolygonField()
+        all_the_things = geo_models.GeometryCollectionField()
+        rast = geo_models.RasterField()
 
 
 if django_version < (1, 9, 0):
