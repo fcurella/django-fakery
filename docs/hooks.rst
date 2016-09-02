@@ -9,17 +9,12 @@ You can define functions to be called right before the instance is saved or righ
 
     from django_fakery import factory
 
-    factory.make(
+    factory.m(
         'auth.User',
-        fields={
-            'username': 'username',
-        },
         pre_save=[
             lambda i: i.set_password('password')
-        ]
-    )
-
-
+        ],
+    )(username='username')
 
 Since settings a user's password is such a common case, we special-cased that scenario, so you can just pass it as a field:
 
@@ -27,10 +22,7 @@ Since settings a user's password is such a common case, we special-cased that sc
 
     from django_fakery import factory
 
-    factory.make(
-        'auth.User',
-        fields={
-            'username': 'username',
-            'password': 'password',
-        }
+    factory.m('auth.User')(
+        username='username',
+        password='password',
     )

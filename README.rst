@@ -28,12 +28,22 @@ QuickStart
 
     from django_fakery import factory
 
+    factory.m('app.Model')(field='value')
+
+Alternatively, you can use a more explict API:
+
+.. code-block:: python
+
+    from django_fakery import factory
+
     factory.make(
         'app.Model',
         fields={
             'field': 'value',
         }
     )
+
+We will use the short API throught the documentation.
 
 The value of a field can be any python object, a callable, or a lambda:
 
@@ -42,22 +52,14 @@ The value of a field can be any python object, a callable, or a lambda:
     from django_fakery import factory
     from django.utils import timezone
 
-    factory.make(
-        'app.Model',
-        fields={
-            'created': timezone.now
-        }
-    )
+    factory.m('app.Model')(created=timezone.now)
 
 When using a lambda, it will receive two arguments: ``n`` is the iteration number, and ``f`` is an instance of ``faker``:
 
 .. code-block:: python
 
-    user = factory.make(
-        'auth.User',
-        fields={
-            'username': lambda n, f: 'user_{}'.format(n),
-        }
+    user = factory.m('auth.User')(
+        username=lambda n, f: 'user_{}'.format(n),
     )
 
 
@@ -67,18 +69,14 @@ You can create multiple objects by using the ``quantity`` parameter:
 
     from django_fakery import factory
 
-    factory.make('app.Model', quantity=4)
+    factory.m('app.Model', quantity=4)
 
 For convenience, when the value of a field is a string, it will be interpolated with the iteration number:
 
 .. code-block:: python
 
-    user = factory.make(
-        'auth.User',
-        fields={
-            'username': 'user_{}',
-        },
-        quantity=4
+    user = factory.m('auth.User', quantity=4)(
+        username='user_{}',        
     )
 
 Foreign keys
@@ -86,15 +84,12 @@ Foreign keys
 
 Non-nullable ``ForeignKey`` s create related objects automatically.
 
-If you want to explicitly create a related object, you can pass it to the ``fields`` like any other value:
+If you want to explicitly create a related object, you can pass it like any other value:
 
 .. code-block:: python
 
-    pizza = factory.make(
-        'food.Pizza',
-        fields={
-            'chef': factory.make('auth.User', fields={'username': 'Gusteau'}),
-        }
+    pizza = factory.m('food.Pizza')(
+        chef=factory.m('auth.User)(username='Gusteau'),
     )
 
 ManyToManies
@@ -102,26 +97,22 @@ ManyToManies
 
 Because ``ManyToManyField``s are implicitly nullable (ie: they're always allowed to have their ``.count()`` equal to ``0``), related objects on those fields are not automatically created for you.
 
-If you want to explicitly create a related objects, you can pass a list to the ``fields`` like any other value:
+If you want to explicitly create a related objects, you can pass a list as the field's value:
 
 .. code-block:: python
 
-    pizza = factory.make(
-        'food.Pizza',
-        fields={
-            'toppings': [factory.make('food.Tooping', fields={'name': 'Anchovies'})],
-        }
+    pizza = factory.m('food.Pizza')(
+        toppings=[
+            factory.m('food.Tooping)(name='Anchovies')
+        ],
     )
 
 You can also pass a factory, to create multiple objects:
 
 .. code-block:: python
 
-    pizza = factory.make(
-        'food.Pizza',
-        fields={
-            'toppings': factory.make('food.Tooping', quantity=5),
-        }
+    pizza = factory.m('food.Pizza')(
+        toppings=factory.m('food.Tooping', quantity=5),
     )
 
 Lazies
@@ -135,11 +126,8 @@ For example, if you'd like to create user with email as username, and have them 
 
     from django_fakery import factory, Lazy
 
-    factory.make(
-        'auth.User',
-        fields={
-            'username': Lazy('email'),
-        }
+    factory.m('auth.User')(
+        username=Lazy('email'),
     )
 
 
@@ -149,13 +137,9 @@ If you want to assign a value returned by a method on the instance, you can pass
 
     from django_fakery import factory, Lazy
 
-    factory.make(
-        'myapp.Model',
-        fields={
-            'myfield': Lazy('model_method', 'argument', keyword='keyword value'),
-        }
+    factory.make('myapp.Model')
+        myfield=Lazy('model_method', 'argument', keyword='keyword value'),
     )
-
 
 Pre-save and Post-save hooks
 ----------------------------
@@ -166,16 +150,12 @@ You can define functions to be called right before the instance is saved or righ
 
     from django_fakery import factory
 
-    factory.make(
+    factory.m(
         'auth.User',
-        fields={
-            'username': 'username',
-        },
         pre_save=[
             lambda i: i.set_password('password')
-        ]
-    )
-
+        ],
+    )(username='username')
 
 Since settings a user's password is such a common case, we special-cased that scenario, so you can just pass it as a field:
 
@@ -183,18 +163,27 @@ Since settings a user's password is such a common case, we special-cased that sc
 
     from django_fakery import factory
 
-    factory.make(
-        'auth.User',
-        fields={
-            'username': 'username',
-            'password': 'password',
-        }
+    factory.m('auth.User')(
+        username='username',
+        password='password',
     )
 
 Non persistent instances
 ------------------------
 
-You can build instances that are not saved to the database by using the `.build()` method, just like you'd use `.make()`:
+You can build instances that are not saved to the database by using the `.b()` method, just like you'd use `.m()`:
+
+.. code-block:: python
+
+    from django_fakery import factory
+
+    factory.b('app.Model')(
+        field='value',
+    )
+
+Note that since the instance is not saved to the database, `.build()` does not support ManyToManies or post-save hooks.
+
+If you're looking for a more explicit API, you can use the `.build()` method:
 
 .. code-block:: python
 
@@ -207,7 +196,6 @@ You can build instances that are not saved to the database by using the `.build(
         }
     )
 
-Note that since the instance is not saved to the database, `.build()` does not support ManyToManies or post-save hooks.
 
 Blueprints
 ----------
@@ -226,12 +214,36 @@ Blueprints can refer other blueprints:
 
 .. code-block:: python
 
-    pizza = factory.blueprint(
-        'food.Pizza',
-        fields={
-            'chef': user,
-        }
+    pizza = factory.blueprint('food.Pizza').fields(
+            chef=user,
+        )
     )
+
+You can also override the field values you previously specified:
+
+.. code-block:: python
+
+    pizza = factory.blueprint('food.Pizza').fields(
+            chef=user,
+            thickness=1
+        )
+    )
+
+    pizza.m(quantity=10)(thickness=2)
+
+Or, if you'd rather use the explicit api:
+
+.. code-block:: python
+
+    pizza = factory.blueprint('food.Pizza').fields(
+            chef=user,
+            thickness=1
+        )
+    )
+
+    thicker_pizza = pizza.fields(thickness=2)
+    thicker_pizza.make(quantity=10)
+
 
 Seeding the faker
 -----------------
@@ -240,10 +252,9 @@ Seeding the faker
 
     from django_fakery import factory
 
-    factory.make('auth.User', fields={
-        'username': 'regularuser_{}'
-    }, seed=1234, quantity=4)
-
+    factory.m('auth.User', seed=1234, quantity=4)(
+        username='regularuser_{}'
+    )
 
 Credits
 -------

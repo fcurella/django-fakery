@@ -35,6 +35,24 @@ class FactoryTest(TestCase):
         self.assertEqual(margherita.name, 'four cheeses')
         self.assertEqual(margherita.description, '')
 
+    def test_short_api_m(self):
+        margherita = factory.m('tests.Pizza')(name='four cheeses')
+        self.assertEqual(margherita.name, 'four cheeses')
+
+        pizzas = factory.m('tests.Pizza', quantity=2)(name='pizza {}')
+        self.assertEqual(len(pizzas), 2)
+        self.assertEqual(pizzas[0].name, 'pizza 0')
+        self.assertEqual(pizzas[1].name, 'pizza 1')
+
+    def test_short_api_b(self):
+        gusteau = factory.b('tests.Chef')(first_name='Gusteau')
+        self.assertEqual(gusteau.first_name, 'Gusteau')
+
+        chefs = factory.b('tests.Chef', quantity=2)(first_name='Chef {}')
+        self.assertEqual(len(chefs), 2)
+        self.assertEqual(chefs[0].first_name, 'Chef 0')
+        self.assertEqual(chefs[1].first_name, 'Chef 1')
+
     def test_blank(self):
         margherita = factory.make(
             'tests.Pizza',
