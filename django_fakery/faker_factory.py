@@ -1,3 +1,4 @@
+from functools import partial
 import random
 
 from django.apps import apps
@@ -151,5 +152,21 @@ class Factory(object):
             return [self.make_one(model, fields, pre_save, post_save, seed, i) for i in range(quantity)]
         else:
             return self.make_one(model, fields, pre_save, post_save, seed)
+
+    def m(self, model, pre_save=None, post_save=None, seed=None, quantity=None):
+        make = partial(self.make, model=model, pre_save=pre_save, post_save=post_save, seed=seed, quantity=quantity)
+
+        def fn(**kwargs):
+            return make(fields=kwargs)
+
+        return fn
+
+    def b(self, model, pre_save=None, seed=None, quantity=None, make_fks=False):
+        build = partial(self.build, model=model, pre_save=pre_save, seed=seed, quantity=quantity, make_fks=make_fks)
+
+        def fn(**kwargs):
+            return build(fields=kwargs)
+
+        return fn
 
 factory = Factory()
