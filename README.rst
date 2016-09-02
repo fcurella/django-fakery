@@ -103,7 +103,7 @@ If you want to explicitly create a related objects, you can pass a list as the f
 
     pizza = factory.m('food.Pizza')(
         toppings=[
-            factory.m('food.Tooping)(name='Anchovies')
+            factory.m('food.Topping')(name='Anchovies')
         ],
     )
 
@@ -112,7 +112,7 @@ You can also pass a factory, to create multiple objects:
 .. code-block:: python
 
     pizza = factory.m('food.Pizza')(
-        toppings=factory.m('food.Tooping', quantity=5),
+        toppings=factory.m('food.Topping', quantity=5),
     )
 
 Lazies
