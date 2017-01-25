@@ -37,6 +37,7 @@ class Pizza(models.Model):
     chef = models.ForeignKey(Chef, related_name='invented_pizzas')
     critic = models.ForeignKey(Chef, null=True, related_name='reviewed_pizzas')
     toppings = models.ManyToManyField(Topping, related_name='pizzas')
+    unique_comment = models.TextField(unique=True)
 
     def get_price(self, tax):
         return (Decimal('7.99') + (Decimal('7.99') * Decimal(tax))).quantize(Decimal('0.01'))

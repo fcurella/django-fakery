@@ -40,10 +40,10 @@ mappings_types = OrderedDict([
     (models.PositiveSmallIntegerField, ('random_int', [], {'max': 32767})),
     (models.SlugField, (fakes.slug, [3], {})),
     (models.SmallIntegerField, ('random_int', [], {'min': -32768, 'max': 32767})),
-    (models.TextField, ('paragraph', [], {})),
+    (models.TextField, (lambda faker, field: field.unique and faker.pystr(max_chars=2700) or faker.paragraph(), [], {})),
     (models.TimeField, (lambda faker, field: faker.date_time().time(), [], {})),
     (models.URLField, ('url', [], {})),
-    (models.CharField, ('word', [], {})),
+    (models.CharField, (lambda faker, field: field.unique and faker.pystr(max_chars=field.max_length) or faker.word()[:field.max_length], [], {})),
     (models.DurationField, ('time_delta', [], {})),
     (models.UUIDField, ('uuid4', [], {})),
 ])
@@ -89,7 +89,7 @@ if HAS_PSYCOPG2:
         })
 
 mappings_names = {
-    'name': ('word', [], {}),  # `name` is too generic to assume it's a person
+    'name': (lambda faker, field: field.unique and faker.pystr(max_chars=field.max_length or 2700) or faker.word()[:field.max_length], [], {}),  # `name` is too generic to assume it's a person
     'slug': (fakes.slug, [3], {}),  # `name` is too generic to assume it's a person
     'first_name': ('first_name', [], {}),
     'last_name': ('last_name', [], {}),

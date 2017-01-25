@@ -54,6 +54,7 @@ class Migration(migrations.Migration):
                 ('critic', models.ForeignKey(to='tests.Chef', null=True, related_name='reviewed_pizzas')),
                 ('toppings', models.ManyToManyField(to='tests.Topping')),
                 ('rating', models.PositiveSmallIntegerField()),
+                ('unique_comment', models.TextField(unique=True)),
             ],
         ),
     ]
