@@ -8,7 +8,7 @@ class Blueprint(object):
         self.factory = factory
 
         self._model = model
-        self._fields = fields
+        self._fields = fields or {}
         self.seed = seed
         self.pre_save = pre_save
         self.post_save = post_save
