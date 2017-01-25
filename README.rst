@@ -153,7 +153,7 @@ You can define functions to be called right before the instance is saved or righ
     factory.m(
         'auth.User',
         pre_save=[
-            lambda i: i.set_password('password')
+            lambda u: u.set_password('password')
         ],
     )(username='username')
 
