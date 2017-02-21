@@ -6,6 +6,8 @@ from django.test import TestCase
 from django_fakery import factory, Lazy
 from django_fakery.exceptions import ForeignKeyError
 
+from .models import Chef
+
 
 class FactoryTest(TestCase):
     def test_model(self):
@@ -122,6 +124,8 @@ class FactoryTest(TestCase):
             }
         )
 
+        self.assertEqual(Chef.objects.count(), 1)
+
         pizza = factory.make(
             'tests.Pizza',
             fields={
@@ -129,6 +133,7 @@ class FactoryTest(TestCase):
             }
         )
         self.assertEqual(pizza.chef, chef_gusteau)
+        self.assertEqual(Chef.objects.count(), 1)
 
     def test_foreign_keys_fail(self):
         chef_gusteau = factory.make(

@@ -84,12 +84,20 @@ Foreign keys
 
 Non-nullable ``ForeignKey`` s create related objects automatically.
 
-If you want to explicitly create a related object, you can pass it like any other value:
+If you want to explicitly create a related object, you can pass a factory like any other value:
 
 .. code-block:: python
 
     pizza = factory.m('food.Pizza')(
         chef=factory.m('auth.User)(username='Gusteau'),
+    )
+
+If you want to explicitly resue a related object, you can pass the instance like any other value:
+
+.. code-block:: python
+    chef = factory.m('auth.User)(username='Gusteau')
+    pizza = factory.m('food.Pizza')(
+        chef=chef,
     )
 
 ManyToManies
