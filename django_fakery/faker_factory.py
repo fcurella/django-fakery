@@ -60,6 +60,9 @@ class Factory(object):
         lazies = []
 
         for field_name, model_field in get_model_fields(model):
+            if field_name.endswith('_id'):
+                field_name = field_name.split('_id')[0]
+
             if isinstance(model_field, models.AutoField):
                 continue
 
@@ -70,8 +73,7 @@ class Factory(object):
                 continue
 
             if isinstance(model_field, models.ForeignKey):
-                _field_name = field_name.split('_id')[0]
-                value = fields.get(_field_name, Empty)
+                value = fields.get(field_name, Empty)
 
                 if not make_fks and ((value == Empty) or (value and value.pk is None)):
                     raise ForeignKeyError(
