@@ -42,6 +42,7 @@ Contents:
    lazies
    relationships
    hooks
+   get_or_make
    nonpersistentinstances
    blueprints
    seeding

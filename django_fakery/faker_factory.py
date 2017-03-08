@@ -26,8 +26,14 @@ class Empty(object):
 
 
 class Factory(object):
+
     def __init__(self, fake=None):
         self.fake = fake or FakerFactory.create(locale)
+
+    def _get_model(self, model):
+        if isinstance(model, string_types):
+            model = apps.get_model(*model.split('.'))
+        return model
 
     def seed(self, seed, set_global=False):
         self.fake.seed(seed)
@@ -53,8 +59,7 @@ class Factory(object):
 
         evaluator = Evaluator(fake, factory=self, iteration=iteration)
 
-        if isinstance(model, string_types):
-            model = apps.get_model(*model.split('.'))
+        model = self._get_model(model)
         instance = model()
         m2ms = {}
         lazies = []
@@ -147,6 +152,29 @@ class Factory(object):
             func(instance)
         return instance
 
+    def get_or_make(self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None):
+        if lookup is None:
+            lookup = {}
+        if fields is None:
+            fields = {}
+
+        model = self._get_model(model)
+        try:
+            return model.objects.get(**lookup), False
+        except model.DoesNotExist:
+            attrs = {}
+            attrs.update(lookup)
+            attrs.update(fields)
+            return self.make_one(model, fields=attrs, pre_save=None, post_save=None, seed=None), True
+
+    def g_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
+        build = partial(self.get_or_make, model=model, lookup=lookup, pre_save=pre_save, seed=seed)
+
+        def fn(**kwargs):
+            return build(fields=kwargs)
+
+        return fn
+
     def make(self, model, fields=None, pre_save=None, post_save=None, seed=None, quantity=None):
         if fields is None:
             fields = {}
@@ -170,5 +198,6 @@ class Factory(object):
             return build(fields=kwargs)
 
         return fn
+
 
 factory = Factory()

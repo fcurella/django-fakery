@@ -145,7 +145,7 @@ If you want to assign a value returned by a method on the instance, you can pass
 
     from django_fakery import factory, Lazy
 
-    factory.make('myapp.Model')
+    factory.m('myapp.Model')(
         myfield=Lazy('model_method', 'argument', keyword='keyword value'),
     )
 
@@ -176,6 +176,34 @@ Since settings a user's password is such a common case, we special-cased that sc
         password='password',
     )
 
+Get or Make
+-----------
+
+You can check for existance of a model instance and create it if necessary by using the ``g_m`` (short for ``get_or_make``) method:
+
+.. code-block:: python
+
+    myinstance, created = factory.g_m(
+        'myapp.Model',
+        lookup={
+            'myfield': 'myvalue',
+        }
+    )(myotherfield='somevalue')
+
+If you're looking for a more explicit API, you can use the `.get_or_make()`` method:
+
+.. code-block:: python
+
+    myinstance, created = factory.get_or_make(
+        'myapp.Model',
+        lookup={
+            'myfield': 'myvalue',
+        },
+        fields={
+            'myotherfield': 'somevalue',
+        },
+    )
+
 Non persistent instances
 ------------------------
 
@@ -189,9 +217,9 @@ You can build instances that are not saved to the database by using the `.b()` m
         field='value',
     )
 
-Note that since the instance is not saved to the database, `.build()` does not support ManyToManies or post-save hooks.
+Note that since the instance is not saved to the database, ``.build()`` does not support ManyToManies or post-save hooks.
 
-If you're looking for a more explicit API, you can use the `.build()` method:
+If you're looking for a more explicit API, you can use the `.build()`` method:
 
 .. code-block:: python
 
