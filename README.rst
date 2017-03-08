@@ -92,14 +92,6 @@ If you want to explicitly create a related object, you can pass a factory like a
         chef=factory.m('auth.User)(username='Gusteau'),
     )
 
-If you want to explicitly resue a related object, you can pass the instance like any other value:
-
-.. code-block:: python
-    chef = factory.m('auth.User)(username='Gusteau')
-    pizza = factory.m('food.Pizza')(
-        chef=chef,
-    )
-
 ManyToManies
 ------------
 
@@ -190,7 +182,7 @@ You can check for existance of a model instance and create it if necessary by us
         }
     )(myotherfield='somevalue')
 
-If you're looking for a more explicit API, you can use the `.get_or_make()`` method:
+If you're looking for a more explicit API, you can use the ``.get_or_make()`` method:
 
 .. code-block:: python
 
@@ -207,7 +199,7 @@ If you're looking for a more explicit API, you can use the `.get_or_make()`` met
 Non persistent instances
 ------------------------
 
-You can build instances that are not saved to the database by using the `.b()` method, just like you'd use `.m()`:
+You can build instances that are not saved to the database by using the ``.b()`` method, just like you'd use ``.m()``:
 
 .. code-block:: python
 
@@ -219,7 +211,7 @@ You can build instances that are not saved to the database by using the `.b()` m
 
 Note that since the instance is not saved to the database, ``.build()`` does not support ManyToManies or post-save hooks.
 
-If you're looking for a more explicit API, you can use the `.build()`` method:
+If you're looking for a more explicit API, you can use the ``.build()`` method:
 
 .. code-block:: python
 

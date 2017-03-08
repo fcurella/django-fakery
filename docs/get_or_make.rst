@@ -14,7 +14,7 @@ You can check for existance of a model instance and create it if necessary by us
         }
     )(myotherfield='somevalue')
 
-If you're looking for a more explicit API, you can use the `.get_or_make()`` method:
+If you're looking for a more explicit API, you can use the ``.get_or_make()`` method:
 
 .. code-block:: python
 
