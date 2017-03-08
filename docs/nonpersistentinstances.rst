@@ -10,9 +10,9 @@ You can build instances that are not saved to the database by using the `.b()` m
         field='value',
     )
 
-Note that since the instance is not saved to the database, `.build()` does not support ManyToManies or post-save hooks.
+Note that since the instance is not saved to the database, ``.build()`` does not support ManyToManies or post-save hooks.
 
-If you're looking for a more explicit API, you can use the `.build()` method:
+If you're looking for a more explicit API, you can use the ``.build()`` method:
 
 .. code-block:: python
 

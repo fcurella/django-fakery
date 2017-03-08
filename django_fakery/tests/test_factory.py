@@ -10,6 +10,7 @@ from .models import Chef
 
 
 class FactoryTest(TestCase):
+
     def test_model(self):
         margherita = factory.make('tests.Pizza')
 
@@ -139,7 +140,7 @@ class FactoryTest(TestCase):
         chef_gusteau = factory.make(
             'tests.Chef',
             fields={
-                'first_name': 'Gusteau'
+                'last_name': 'Gusteau'
             }
         )
 
@@ -156,7 +157,7 @@ class FactoryTest(TestCase):
         chef_skinner = factory.build(
             'tests.Chef',
             fields={
-                'first_name': 'Skinner',
+                'last_name': 'Skinner',
             }
         )
         self.assertRaises(ForeignKeyError, factory.build,
@@ -234,8 +235,78 @@ class FactoryTest(TestCase):
         chef_gusteau = factory.make(
             'tests.Chef',
             fields={
-                'first_name': 'Gusteau'
+                'last_name': 'Gusteau'
             }
         )
         self.assertTrue('@' in chef_gusteau.email_address)
         self.assertTrue('http://' in chef_gusteau.twitter_profile)
+
+    def test_get_or_make(self):
+        already_there = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Auguste',
+                'last_name': 'Gusteau',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 1)
+        chef_gusteau, created = factory.get_or_make(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Gusteau'
+            },
+            fields={
+                'first_name': 'Remi',
+            }
+        )
+        self.assertEqual(Chef.objects.count(), 1)
+        self.assertEqual(already_there, chef_gusteau)
+        self.assertFalse(created)
+
+        chef_linguini, created = factory.get_or_make(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Linguini'
+            },
+            fields={
+                'first_name': 'Alfredo',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 2)
+        self.assertTrue(created)
+        self.assertEqual(chef_linguini.first_name, 'Alfredo')
+        self.assertEqual(chef_linguini.last_name, 'Linguini')
+
+    def test_g_m(self):
+        already_there = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Auguste',
+                'last_name': 'Gusteau',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 1)
+        chef_gusteau, created = factory.g_m(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Gusteau'
+            },
+        )(first_name='Remi')
+        self.assertEqual(Chef.objects.count(), 1)
+        self.assertEqual(already_there, chef_gusteau)
+        self.assertFalse(created)
+
+        chef_linguini, created = factory.g_m(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Linguini'
+            },
+        )(first_name='Alfredo')
+
+        self.assertEqual(Chef.objects.count(), 2)
+        self.assertTrue(created)
+        self.assertEqual(chef_linguini.first_name, 'Alfredo')
+        self.assertEqual(chef_linguini.last_name, 'Linguini')
