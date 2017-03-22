@@ -90,8 +90,8 @@ if HAS_GEOS:
         def gdal_raster(faker, field, srid, *args, **kwargs):
             scale = faker.pyfloat(positive=True)
             return gdal.GDALRaster({
-                'width': faker.random_int(),
-                'height': faker.random_int(),
+                'width': faker.random_int(min=1, max=1024),
+                'height': faker.random_int(min=1, max=1024),
                 'name': faker.word(),
                 'srid': srid,
                 'scale': [scale, -scale],
