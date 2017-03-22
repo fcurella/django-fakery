@@ -11,6 +11,7 @@ class Chef(models.Model):
     slug = AutoSlugField()
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
+    uuid_id = models.UUIDField()
     email_address = models.EmailField()
     twitter_profile = models.URLField()
 

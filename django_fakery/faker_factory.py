@@ -65,7 +65,7 @@ class Factory(object):
         lazies = []
 
         for field_name, model_field in get_model_fields(model):
-            if field_name.endswith('_id'):
+            if field_name.endswith('_id') and model_field.is_relation:
                 field_name = field_name.split('_id')[0]
 
             if isinstance(model_field, models.AutoField):

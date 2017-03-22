@@ -29,6 +29,7 @@ class Migration(migrations.Migration):
                 ('slug', AutoSlugField()),
                 ('first_name', models.CharField(max_length=60)),
                 ('last_name', models.CharField(max_length=60)),
+                ('uuid_id', models.UUIDField()),
                 ('email_address', models.EmailField(max_length=60)),
                 ('twitter_profile', models.URLField(max_length=60)),
             ],
