@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+import sys
+
 from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 from django import VERSION as django_version
@@ -22,7 +24,7 @@ are defined in ``django_fakery.fakes``.
 """
 
 mappings_types = OrderedDict([
-    (models.BigIntegerField, ('random_int', [], {'min': -9223372036854775808, 'max': 9223372036854775807})),
+    (models.BigIntegerField, ('random_int', [], {'min': -sys.maxsize, 'max': sys.maxsize})),
     (models.BinaryField, (fakes.random_bytes, [1024], {})),
     (models.BooleanField, ('pybool', [], {})),
     (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
@@ -78,7 +80,7 @@ if HAS_PSYCOPG2:
         pg_fields.ArrayField: (fakes.array, [], {}),
         pg_fields.HStoreField: ('pydict', [10, True, 'str'], {}),
         pg_fields.IntegerRangeField: (fakes.integerrange, [], {'min': -2147483647, 'max': 2147483647}),
-        pg_fields.BigIntegerRangeField: (fakes.integerrange, [], {'min': -9223372036854775808, 'max': 9223372036854775807}),
+        pg_fields.BigIntegerRangeField: (fakes.integerrange, [], {'min': -sys.maxsize, 'max': sys.maxsize}),
         pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
         pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
         pg_fields.DateRangeField: (fakes.daterange, [], {}),
