@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys
+import os, sys
 
 
 if hasattr(sys, 'pypy_version_info'):
@@ -7,7 +7,18 @@ if hasattr(sys, 'pypy_version_info'):
     compat.register()
 
 from django.conf import settings
-from django.contrib.gis.geos import HAS_GEOS
+
+try:
+    from django.contrib.gis.geos.libgeos import geos_version_info
+    HAS_GEOS = geos_version_info()['version'] >= '3.3.0'
+except (ImportError, OSError):
+    HAS_GEOS = False
+
+
+DISABLE_SERVER_SIDE_CURSORS = False
+if os.environ['TRAVIS_PYTHON_VERSION'] == 'pypy':
+    DISABLE_SERVER_SIDE_CURSORS = True
+
 
 SETTINGS = {
     'DATABASES': {
@@ -15,6 +26,7 @@ SETTINGS = {
             'ENGINE': 'django.contrib.gis.db.backends.postgis' if HAS_GEOS else 'django.db.backends.postgresql_psycopg2',
             'NAME': 'travis_postgis',
             'USER': 'postgres',
+            'DISABLE_SERVER_SIDE_CURSORS': DISABLE_SERVER_SIDE_CURSORS,
         }
     },
     'INSTALLED_APPS': [

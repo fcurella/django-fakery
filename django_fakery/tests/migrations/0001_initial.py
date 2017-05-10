@@ -4,8 +4,13 @@ from __future__ import unicode_literals
 from django import VERSION as django_version
 
 from django.db import models, migrations
-from django.contrib.gis.geos import HAS_GEOS
 from autoslug import AutoSlugField
+
+try:
+    from django.contrib.gis.geos.libgeos import geos_version_info
+    HAS_GEOS = geos_version_info()['version'] >= '3.3.0'
+except (ImportError, OSError):
+    HAS_GEOS = False
 
 if HAS_GEOS:
     import django.contrib.gis.db.models.fields

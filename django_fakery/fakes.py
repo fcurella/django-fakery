@@ -1,11 +1,10 @@
 import os
 
 from django import VERSION as django_version
-from django.contrib.gis.geos import HAS_GEOS
 from django.utils import text, timezone
 from faker.generator import random
 
-from .compat import HAS_PSYCOPG2
+from .compat import HAS_PSYCOPG2, HAS_GEOS
 
 
 def comma_sep_integers(faker, field, *args, **kwargs):

@@ -2,11 +2,10 @@ from collections import OrderedDict
 
 import sys
 
-from django.contrib.gis.geos import HAS_GEOS
 from django.db import models
 from django import VERSION as django_version
 
-from .compat import HAS_PSYCOPG2
+from .compat import HAS_PSYCOPG2, HAS_GEOS
 from . import fakes
 
 
