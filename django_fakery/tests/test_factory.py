@@ -239,7 +239,10 @@ class FactoryTest(TestCase):
             }
         )
         self.assertTrue('@' in chef_gusteau.email_address)
-        self.assertTrue('http://' in chef_gusteau.twitter_profile)
+        self.assertTrue(
+            chef_gusteau.twitter_profile.startswith('http://') or 
+            chef_gusteau.twitter_profile.startswith('https://') 
+        )
 
     def test_get_or_make(self):
         already_there = factory.make(
