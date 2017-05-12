@@ -95,7 +95,7 @@ if HAS_GEOS:
                 'srid': srid,
                 'scale': [scale, -scale],
                 'bands': [
-                    {"data": range(faker.random_int())},
+                    {"data": range(faker.random_int(min=1, max=1024))},
                 ],
             })
 

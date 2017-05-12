@@ -16,7 +16,7 @@ except (ImportError, OSError):
 
 
 DISABLE_SERVER_SIDE_CURSORS = False
-if os.environ['TRAVIS_PYTHON_VERSION'] == 'pypy':
+if os.environ.get('TRAVIS_PYTHON_VERSION') == 'pypy':
     DISABLE_SERVER_SIDE_CURSORS = True
 
 
