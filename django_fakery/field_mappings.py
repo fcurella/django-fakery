@@ -4,6 +4,8 @@ import sys
 
 from django.db import models
 from django import VERSION as django_version
+from django.utils import timezone
+from django.conf import settings
 
 from .compat import HAS_PSYCOPG2, HAS_GEOS
 from . import fakes
@@ -89,6 +91,10 @@ if HAS_PSYCOPG2:
             pg_fields.JSONField: (fakes.random_dict, [], {}),
         })
 
+
+TZINFO = timezone.get_default_timezone() if settings.USE_TZ else None
+
+
 mappings_names = {
     'name': (lambda faker, field: field.unique and faker.pystr(max_chars=field.max_length or 2700) or faker.word()[:field.max_length], [], {}),  # `name` is too generic to assume it's a person
     'slug': (fakes.slug, [3], {}),  # `name` is too generic to assume it's a person
@@ -96,8 +102,8 @@ mappings_names = {
     'last_name': ('last_name', [], {}),
     'full_name': ('full_name', [], {}),
     'email': ('email', [], {}),
-    'created': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
-    'created_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
-    'updated': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
-    'updated_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d'}),
+    'created': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
+    'created_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
+    'updated': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
+    'updated_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
 }
