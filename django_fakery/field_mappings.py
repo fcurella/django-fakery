@@ -2,10 +2,10 @@ from collections import OrderedDict
 
 import sys
 
-from django.db import models
 from django import VERSION as django_version
-from django.utils import timezone
 from django.conf import settings
+from django.db import models
+from django.utils import timezone
 
 from .compat import HAS_PSYCOPG2, HAS_GEOS
 from . import fakes
