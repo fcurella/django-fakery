@@ -37,7 +37,7 @@ setup(
     ],
     install_requires=[
         "Faker>=0.7.0,<0.8.0",
-        "Django>=1.7",
+        "Django>=1.8",
         "django-autoslug==1.9.3",
     ],
     test_suite='django_fakery.tests.runtests.runtests',
