@@ -36,7 +36,7 @@ class Evaluator(object):
         return func(*resolver[1], **resolver[2])
 
     def fake_value(self, model, field):
-        if field.blank and not isinstance(field, models.BooleanField):
+        if field.blank and isinstance(field, (models.CharField, models.TextField)):
             return ''
 
         if isinstance(field, models.ForeignKey):
