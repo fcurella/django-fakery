@@ -53,6 +53,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('price', models.DecimalField(null=True, max_digits=4, decimal_places=2)),
                 ('gluten_free', models.BooleanField(default=False)),
+                ('vegan', models.BooleanField()),
                 ('description', models.TextField(blank=True)),
                 ('thickness', models.CharField(max_length=50, choices=[(0, b'thin'), (1, b'thick'), (2, b'deep dish')])),
                 ('backed_on', models.DateTimeField()),

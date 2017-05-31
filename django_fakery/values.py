@@ -7,6 +7,7 @@ from . import field_mappings
 
 
 class Evaluator(object):
+
     def __init__(self, faker, factory, iteration):
         self.faker = faker
         self.factory = factory
@@ -35,6 +36,9 @@ class Evaluator(object):
         return func(*resolver[1], **resolver[2])
 
     def fake_value(self, model, field):
+        if field.blank and not isinstance(field, models.BooleanField):
+            return ''
+
         if isinstance(field, models.ForeignKey):
             return self.factory.make_one(field.related_model, iteration=self.iteration)
 

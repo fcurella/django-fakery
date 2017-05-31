@@ -73,8 +73,8 @@ class Factory(object):
             if isinstance(model_field, models.AutoField):
                 continue
 
-            if field_name not in fields and (model_field.blank or model_field.null or model_field.default != NOT_PROVIDED):
-                continue
+            if field_name not in fields and (model_field.null or model_field.default != NOT_PROVIDED):
+                    continue
 
             if field_name not in fields and isinstance(model_field, models.ManyToManyField):
                 continue
