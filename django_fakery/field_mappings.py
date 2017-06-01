@@ -97,7 +97,7 @@ TZINFO = timezone.get_default_timezone() if settings.USE_TZ else None
 
 mappings_names = {
     'name': (lambda faker, field: field.unique and faker.pystr(max_chars=field.max_length or 2700) or faker.word()[:field.max_length], [], {}),  # `name` is too generic to assume it's a person
-    'slug': (fakes.slug, [3], {}),  # `name` is too generic to assume it's a person
+    'slug': (fakes.slug, [3], {}),
     'first_name': ('first_name', [], {}),
     'last_name': ('last_name', [], {}),
     'full_name': ('full_name', [], {}),

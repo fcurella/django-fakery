@@ -22,7 +22,7 @@ def random_bytes(faker, field, length, *args, **kwargs):
 
 
 def slug(faker, field, count, *args, **kwargs):
-    return text.slugify(" ".join(faker.words(nb=count)))
+    return text.slugify("-".join(faker.words(nb=count)))[:field.max_length]
 
 
 if HAS_GEOS:
