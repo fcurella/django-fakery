@@ -1,4 +1,4 @@
-from django_fakery import factory, Blueprint
+from django_fakery import Blueprint, factory, shortcuts
 
 
 chef = factory.blueprint(
@@ -13,7 +13,8 @@ pizza = Blueprint(
     'tests.Pizza',
     fields={
         'chef': chef,
-        'thickness': 1
+        'thickness': 1,
+        'expiration': shortcuts.future_date('+7d'),
     }
 )
 

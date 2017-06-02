@@ -49,6 +49,8 @@ When using a lambda, it will receive two arguments: ``n`` is the iteration numbe
     )
 
 
+``django-fakery`` includes some pre-built lambdas for common needs. See :doc:`shortcuts` for more info.
+
 You can create multiple objects by using the ``quantity`` parameter:
 
 .. code-block:: python

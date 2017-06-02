@@ -34,6 +34,7 @@ class Pizza(models.Model):
     description = models.TextField(blank=True)
     thickness = models.CharField(max_length=50, choices=THICKNESSES)
     baked_on = models.DateTimeField()
+    expiration = models.DateField()
     rating = models.PositiveSmallIntegerField()
 
     chef = models.ForeignKey(Chef, related_name='invented_pizzas')
