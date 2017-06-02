@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('vegan', models.BooleanField()),
                 ('description', models.TextField(blank=True)),
                 ('thickness', models.CharField(max_length=50, choices=[(0, b'thin'), (1, b'thick'), (2, b'deep dish')])),
-                ('backed_on', models.DateTimeField()),
+                ('baked_on', models.DateTimeField()),
                 ('chef', models.ForeignKey(to='tests.Chef', related_name='invented_pizzas')),
                 ('critic', models.ForeignKey(to='tests.Chef', null=True, related_name='reviewed_pizzas')),
                 ('toppings', models.ManyToManyField(to='tests.Topping')),

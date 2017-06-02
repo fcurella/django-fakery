@@ -33,7 +33,7 @@ class Pizza(models.Model):
     vegan = models.BooleanField()
     description = models.TextField(blank=True)
     thickness = models.CharField(max_length=50, choices=THICKNESSES)
-    backed_on = models.DateTimeField()
+    baked_on = models.DateTimeField()
     rating = models.PositiveSmallIntegerField()
 
     chef = models.ForeignKey(Chef, related_name='invented_pizzas')

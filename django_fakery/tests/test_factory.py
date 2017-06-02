@@ -87,12 +87,12 @@ class FactoryTest(TestCase):
     def test_sequence_callable(self):
         margheritas = factory.make(
             'tests.Pizza',
-            fields={'backed_on': timezone.now},
+            fields={'baked_on': timezone.now},
             quantity=10
         )
         self.assertEqual(len(margheritas), 10)
-        self.assertNotEqual(margheritas[0].backed_on, None)
-        self.assertNotEqual(margheritas[0].backed_on, margheritas[1].backed_on)
+        self.assertNotEqual(margheritas[0].baked_on, None)
+        self.assertNotEqual(margheritas[0].baked_on, margheritas[1].baked_on)
 
     def test_lazy_field(self):
         chef_masters = factory.make(
