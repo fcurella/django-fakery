@@ -26,7 +26,7 @@ are defined in ``django_fakery.fakes``.
 
 mappings_types = OrderedDict([
     (models.BigIntegerField, ('random_int', [], {'min': -sys.maxsize, 'max': sys.maxsize})),
-    (models.BinaryField, (fakes.random_bytes, [1024], {})),
+    (models.BinaryField, ('binary', [1024], {})),
     (models.BooleanField, ('pybool', [], {})),
     (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
     (models.DateTimeField, ('date_time', [], {})),

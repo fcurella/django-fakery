@@ -1,5 +1,3 @@
-import os
-
 from django import VERSION as django_version
 from django.utils import text, timezone
 from faker.generator import random
@@ -15,10 +13,6 @@ def decimal(faker, field, *args, **kwargs):
     right_digits = field.decimal_places
     left_digits = field.max_digits - right_digits
     return faker.pydecimal(left_digits=left_digits, right_digits=right_digits, positive=True)
-
-
-def random_bytes(faker, field, length, *args, **kwargs):
-    return os.urandom(length)
 
 
 def slug(faker, field, count, *args, **kwargs):
