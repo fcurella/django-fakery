@@ -1,4 +1,7 @@
-.. ref-nonpersistentinstances:
+.. ref-nonpersistantinstances:
+
+Non-persistant Instances
+------------------------
 
 You can build instances that are not saved to the database by using the ``.b()`` method, just like you'd use ``.m()``:
 

@@ -43,7 +43,7 @@ Contents:
    relationships
    hooks
    get_or_make
-   nonpersistentinstances
+   nonpersistantinstances
    blueprints
    seeding
 
