@@ -39,6 +39,7 @@ Contents:
    :maxdepth: 2
 
    quickstart
+   shortcuts
    lazies
    relationships
    hooks
