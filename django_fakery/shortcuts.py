@@ -52,7 +52,7 @@ def past_datetime(start='-30d'):
     * ``'years'``, ``'y'``
     * ``'weeks'``, ``'w'``
     * ``'days'``, ``'d'``
-    * ``'hours'``, ``'hours'``
+    * ``'hours'``, ``'h'``
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """
@@ -72,7 +72,7 @@ def past_date(start='-30d'):
     * ``'years'``, ``'y'``
     * ``'weeks'``, ``'w'``
     * ``'days'``, ``'d'``
-    * ``'hours'``, ``'hours'``
+    * ``'hours'``, ``'h'``
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """

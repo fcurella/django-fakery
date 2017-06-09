@@ -56,7 +56,7 @@ Valid units are:
 * ``'years'``, ``'y'``
 * ``'weeks'``, ``'w'``
 * ``'days'``, ``'d'``
-* ``'hours'``, ``'hours'``
+* ``'hours'``, ``'h'``
 * ``'minutes'``, ``'m'``
 * ``'seconds'``, ``'s'``
 
@@ -76,7 +76,7 @@ Valid units are:
 * ``'years'``, ``'y'``
 * ``'weeks'``, ``'w'``
 * ``'days'``, ``'d'``
-* ``'hours'``, ``'hours'``
+* ``'hours'``, ``'h'``
 * ``'minutes'``, ``'m'``
 * ``'seconds'``, ``'s'``
 
