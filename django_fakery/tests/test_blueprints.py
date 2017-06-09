@@ -16,7 +16,7 @@ class BlueprintTest(TestCase):
         now = make_aware(datetime.now())
         baked_pizza = pizza.make()
         difference = now - baked_pizza.baked_on
-        self.assertTrue(difference.total_seconds() < 3600)
+        self.assertTrue(difference.total_seconds() <= 3600)
 
     def test_blueprint_build(self):
         movie_night = pizza.build(quantity=10)
