@@ -15,6 +15,7 @@ pizza = Blueprint(
         'chef': chef,
         'thickness': 1,
         'expiration': shortcuts.future_date('+7d'),
+        'baked_on': shortcuts.past_datetime('-1h'),
     }
 )
 
