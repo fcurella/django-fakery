@@ -1,5 +1,6 @@
-from datetime import datetime,  timedelta
-from django.utils.timezone import make_aware
+from django.utils.timezone import get_current_timezone
+
+from django.utils import timezone
 from django.test import TestCase
 
 from .blueprints import pizza, pizza_short
@@ -13,7 +14,7 @@ class BlueprintTest(TestCase):
         self.assertEqual(movie_night[0].chef.first_name, 'Chef 0')
         self.assertEqual(movie_night[1].chef.first_name, 'Chef 1')
 
-        now = make_aware(datetime.now())
+        now = timezone.now()
         baked_pizza = pizza.make()
         difference = now - baked_pizza.baked_on
         self.assertTrue(difference.total_seconds() <= 3600)

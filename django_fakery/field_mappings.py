@@ -24,12 +24,16 @@ When ``<function>`` is a string, it's assumed to be a faker provider. Whenever
 are defined in ``django_fakery.fakes``.
 """
 
+TZINFO = timezone.get_current_timezone() if settings.USE_TZ else None
+
+
 mappings_types = OrderedDict([
     (models.BigIntegerField, ('random_int', [], {'min': -sys.maxsize, 'max': sys.maxsize})),
     (models.BinaryField, ('binary', [1024], {})),
     (models.BooleanField, ('pybool', [], {})),
+    (models.DateTimeField, ('date_time', [], {'tzinfo': TZINFO})),
+    # ``DateField`` must come after ``DateTimeField`` because it's its superclass
     (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
-    (models.DateTimeField, ('date_time', [], {})),
     (models.DecimalField, (fakes.decimal, [], {})),
     (models.EmailField, ('email', [], {})),
     (models.FileField, ('file_name', [], {})),
@@ -44,7 +48,7 @@ mappings_types = OrderedDict([
     (models.SlugField, (fakes.slug, [3], {})),
     (models.SmallIntegerField, ('random_int', [], {'min': -32768, 'max': 32767})),
     (models.TextField, (lambda faker, field: field.unique and faker.pystr(max_chars=2700) or faker.paragraph(), [], {})),
-    (models.TimeField, (lambda faker, field: faker.date_time().time(), [], {})),
+    (models.TimeField, (lambda faker, field: faker.date_time(tzinfo=TZINFO).time(), [], {})),
     (models.URLField, ('url', [], {})),
     (models.CharField, (lambda faker, field: field.unique and faker.pystr(max_chars=field.max_length) or faker.word()[:field.max_length], [], {})),
     (models.DurationField, ('time_delta', [], {})),
@@ -90,9 +94,6 @@ if HAS_PSYCOPG2:
         mappings_types.update({
             pg_fields.JSONField: (fakes.random_dict, [], {}),
         })
-
-
-TZINFO = timezone.get_default_timezone() if settings.USE_TZ else None
 
 
 mappings_names = {

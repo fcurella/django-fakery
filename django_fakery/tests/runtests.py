@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import os, sys
+import os, sys, warnings
+
+warnings.simplefilter('error', RuntimeWarning)
 
 
 if hasattr(sys, 'pypy_version_info'):
@@ -29,6 +31,8 @@ SETTINGS = {
             'DISABLE_SERVER_SIDE_CURSORS': DISABLE_SERVER_SIDE_CURSORS,
         }
     },
+    'USE_TZ': True,
+    'TIMEZONE': 'America/Chicago',
     'INSTALLED_APPS': [
         'django.contrib.auth',
         'django.contrib.contenttypes',

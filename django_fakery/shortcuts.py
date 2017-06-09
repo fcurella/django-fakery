@@ -1,4 +1,9 @@
-from django.utils.timezone import get_current_timezone
+from django.conf import settings
+from django.utils import timezone
+
+
+def get_timezone():
+    return timezone.get_current_timezone() if settings.USE_TZ else None
 
 
 def future_datetime(end='+30d'):
@@ -17,7 +22,7 @@ def future_datetime(end='+30d'):
     * ``'seconds'``, ``'s'``
     """
     return lambda n, f: f.future_datetime(
-        end_date=end, tzinfo=get_current_timezone(),
+        end_date=end, tzinfo=get_timezone(),
     )
 
 
@@ -37,7 +42,7 @@ def future_date(end='+30d'):
     * ``'seconds'``, ``'s'``
     """
     return lambda n, f: f.future_date(
-        end_date=end, tzinfo=get_current_timezone(),
+        end_date=end, tzinfo=get_timezone(),
     )
 
 
@@ -57,7 +62,7 @@ def past_datetime(start='-30d'):
     * ``'seconds'``, ``'s'``
     """
     return lambda n, f: f.past_datetime(
-        start_date=start, tzinfo=get_current_timezone(),
+        start_date=start, tzinfo=get_timezone(),
     )
 
 
@@ -77,5 +82,5 @@ def past_date(start='-30d'):
     * ``'seconds'``, ``'s'``
     """
     return lambda n, f: f.past_date(
-        start_date=start, tzinfo=get_current_timezone(),
+        start_date=start, tzinfo=get_timezone(),
     )
