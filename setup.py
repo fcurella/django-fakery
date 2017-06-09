@@ -37,7 +37,7 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     install_requires=[
-        "Faker>=0.7.15,<0.8.0",
+        "Faker>=0.7.16,<0.8.0",
         "Django>=1.8",
         "django-autoslug==1.9.3",
     ],
