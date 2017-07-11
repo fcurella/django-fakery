@@ -145,7 +145,7 @@ class Factory(object):
             post_save = []
 
         instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
-        instance.save()
+        instance.save(force_insert=True)
 
         for field, relateds in m2ms.items():
             setattr(instance, field, relateds)
