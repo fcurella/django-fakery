@@ -74,7 +74,7 @@ class Factory(object):
                 continue
 
             if field_name not in fields and (model_field.null or model_field.default != NOT_PROVIDED):
-                    continue
+                continue
 
             if field_name not in fields and isinstance(model_field, models.ManyToManyField):
                 continue
