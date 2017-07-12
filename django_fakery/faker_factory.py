@@ -145,6 +145,10 @@ class Factory(object):
             post_save = []
 
         instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
+
+        # Sometimes the model's field for the primary key as a default, which
+        # means ``instance.pk`` is already set. We pass ``force_insert`` as a
+        # way to tell downstream code that this is a new model.
         instance.save(force_insert=True)
 
         for field, relateds in m2ms.items():
