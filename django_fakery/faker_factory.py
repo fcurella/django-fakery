@@ -8,8 +8,8 @@ from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 
 from faker import Factory as FakerFactory
+from six import string_types
 
-from .compat import string_types
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .utils import get_model_fields, language_to_locale

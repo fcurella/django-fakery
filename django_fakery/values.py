@@ -1,7 +1,7 @@
 from functools import partial
 from django.db import models
 
-from .compat import string_types
+from six import string_types
 
 from . import field_mappings
 
