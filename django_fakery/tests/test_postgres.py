@@ -6,7 +6,10 @@ from django import VERSION as django_version
 from django.test import TestCase
 from django_fakery import factory
 
-from ..compat import text_type, HAS_PSYCOPG2
+from six import text_type
+
+from ..compat import HAS_PSYCOPG2
+
 
 if HAS_PSYCOPG2:
     from psycopg2.extras import DateTimeTZRange, NumericRange

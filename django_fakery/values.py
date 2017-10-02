@@ -1,9 +1,7 @@
 from functools import partial
 from django.db import models
 
-from .compat import string_types
-
-from . import field_mappings
+from six import string_types
 
 
 class Evaluator(object):
@@ -36,6 +34,8 @@ class Evaluator(object):
         return func(*resolver[1], **resolver[2])
 
     def fake_value(self, model, field):
+        from . import field_mappings
+
         if field.blank and isinstance(field, (models.CharField, models.TextField)):
             return ''
 
