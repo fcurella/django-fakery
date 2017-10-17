@@ -40,6 +40,7 @@ before_script:
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d travis_postgis
   - psql -c 'CREATE EXTENSION postgis_topology;' -U postgres -d travis_postgis
 install:
+  - pip install -U setuptools
   - pip install -q $DJANGO
   - pip install -e .
   - pip install psycopg2cffi coveralls
