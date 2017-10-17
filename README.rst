@@ -97,7 +97,7 @@ If you want to explicitly create a related object, you can pass a factory like a
 ManyToManies
 ------------
 
-Because ``ManyToManyField``s are implicitly nullable (ie: they're always allowed to have their ``.count()`` equal to ``0``), related objects on those fields are not automatically created for you.
+Because ``ManyToManyField`` s are implicitly nullable (ie: they're always allowed to have their ``.count()`` equal to ``0``), related objects on those fields are not automatically created for you.
 
 If you want to explicitly create a related objects, you can pass a list as the field's value:
 
