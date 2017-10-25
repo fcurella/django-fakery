@@ -30,7 +30,7 @@ QuickStart
 
     factory.m('app.Model')(field='value')
 
-Alternatively, you can use a more explict API:
+Alternatively, you can use a more explicit API:
 
 .. code-block:: python
 
