@@ -6,7 +6,7 @@ from django.test import TestCase
 from django_fakery import factory, Lazy
 from django_fakery.exceptions import ForeignKeyError
 
-from .models import Chef
+from tests.models import Chef
 
 
 class FactoryTest(TestCase):

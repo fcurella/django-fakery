@@ -8,7 +8,7 @@ from django_fakery import factory
 
 from six import text_type
 
-from ..compat import HAS_PSYCOPG2
+from django_fakery.compat import HAS_PSYCOPG2
 
 
 if HAS_PSYCOPG2:

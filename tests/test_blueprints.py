@@ -3,7 +3,7 @@ from django.utils.timezone import get_current_timezone
 from django.utils import timezone
 from django.test import TestCase
 
-from .blueprints import pizza, pizza_short
+from tests.blueprints import pizza, pizza_short
 
 
 class BlueprintTest(TestCase):
