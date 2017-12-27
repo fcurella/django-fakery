@@ -36,7 +36,7 @@ SETTINGS = {
     'INSTALLED_APPS': [
         'django.contrib.auth',
         'django.contrib.contenttypes',
-        'django_fakery.tests',
+        'tests',
     ],
     'SILENCED_SYSTEM_CHECKS': [
         "1_7.W001",
@@ -54,7 +54,7 @@ def runtests(*test_args):
 
     runner_class = django.test.utils.get_runner(settings)
     test_runner = runner_class(verbosity=1, interactive=True, failfast=False)
-    failures = test_runner.run_tests(['django_fakery'])
+    failures = test_runner.run_tests(['tests'])
     sys.exit(failures)
 
 

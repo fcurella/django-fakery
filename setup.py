@@ -22,7 +22,7 @@ setup(
     description='A model instances generator for Django',
     long_description=read('README.rst'),
     license='MIT',
-    packages=find_packages(exclude=['*.tests']),
+    packages=find_packages(exclude=["docs", "tests", "tests.*"]),
     platforms=["any"],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -42,5 +42,5 @@ setup(
         "django-autoslug==1.9.3",
         "six>=1.10.0",
     ],
-    test_suite='django_fakery.tests.runtests.runtests',
+    test_suite='tests.runtests.runtests',
 )
