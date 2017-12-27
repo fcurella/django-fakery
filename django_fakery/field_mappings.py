@@ -103,8 +103,8 @@ mappings_names = {
     'last_name': ('last_name', [], {}),
     'full_name': ('full_name', [], {}),
     'email': ('email', [], {}),
-    'created': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
-    'created_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
-    'updated': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
-    'updated_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '30d', 'tzinfo': TZINFO}),
+    'created': ('date_time_between', [], {'start_date': '-30d', 'end_date': '+30d', 'tzinfo': TZINFO}),
+    'created_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '+30d', 'tzinfo': TZINFO}),
+    'updated': ('date_time_between', [], {'start_date': '-30d', 'end_date': '+30d', 'tzinfo': TZINFO}),
+    'updated_at': ('date_time_between', [], {'start_date': '-30d', 'end_date': '+30d', 'tzinfo': TZINFO}),
 }
