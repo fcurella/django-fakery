@@ -4,6 +4,7 @@ import random
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 
@@ -71,6 +72,9 @@ class Factory(object):
                 field_name = _field_name
 
             if isinstance(model_field, models.AutoField):
+                continue
+
+            if isinstance(model_field, (GenericForeignKey, GenericRelation)):
                 continue
 
             if field_name not in fields and (model_field.null or model_field.default != NOT_PROVIDED):
