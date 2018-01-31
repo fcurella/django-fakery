@@ -65,11 +65,13 @@ class Factory(object):
         m2ms = {}
         lazies = []
 
-        for _field_name, model_field in get_model_fields(model):
+        model_fields = get_model_fields(model)
+        for _field_name, model_field in model_fields:
+            value = Empty
+            field_name = _field_name
+
             if _field_name.endswith('_id') and model_field.is_relation:
-                field_name = _field_name.split('_id')[0]
-            else:
-                field_name = _field_name
+                continue
 
             if isinstance(model_field, models.AutoField):
                 continue
