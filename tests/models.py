@@ -1,19 +1,20 @@
 from decimal import Decimal
 from django import VERSION as django_version
-from django.contrib.gis.geos import HAS_GEOS
+from django_fakery.compat import HAS_GEOS
 from django.contrib.postgres import fields as postgres_fields
 from django.db import models
 
-from autoslug import AutoSlugField
-
 
 class Chef(models.Model):
-    slug = AutoSlugField()
+    slug = models.SlugField()
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     uuid_id = models.UUIDField()
     email_address = models.EmailField()
     twitter_profile = models.URLField()
+
+    def __str__(self):
+        return 'Chef {} {}'.format(self.first_name, self.last_name)
 
 
 class Topping(models.Model):

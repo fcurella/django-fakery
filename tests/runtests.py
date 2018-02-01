@@ -9,12 +9,7 @@ if hasattr(sys, 'pypy_version_info'):
     compat.register()
 
 from django.conf import settings
-
-try:
-    from django.contrib.gis.geos.libgeos import geos_version_info
-    HAS_GEOS = geos_version_info()['version'] >= '3.3.0'
-except (ImportError, OSError):
-    HAS_GEOS = False
+from django_fakery.compat import HAS_GEOS
 
 
 DISABLE_SERVER_SIDE_CURSORS = False

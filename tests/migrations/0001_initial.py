@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django import VERSION as django_version
 
 from django.db import models, migrations
-from autoslug import AutoSlugField
 
 try:
     from django.contrib.gis.geos.libgeos import geos_version_info
@@ -31,7 +30,7 @@ class Migration(migrations.Migration):
             name='Chef',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('slug', AutoSlugField()),
+                ('slug', models.SlugField()),
                 ('first_name', models.CharField(max_length=60)),
                 ('last_name', models.CharField(max_length=60)),
                 ('uuid_id', models.UUIDField()),

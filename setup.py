@@ -40,7 +40,6 @@ setup(
     install_requires=[
         "Faker>=0.8.0,<0.9.0",
         "Django>=1.8",
-        "django-autoslug==1.9.3",
         "six>=1.10.0",
     ],
     test_suite='tests.runtests.runtests',
