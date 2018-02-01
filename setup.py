@@ -2,7 +2,7 @@ import os
 from setuptools import find_packages, setup
 
 
-VERSION = '1.8.7'
+VERSION = '1.8.8'
 
 
 def read(fname):
