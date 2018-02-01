@@ -65,11 +65,13 @@ class Factory(object):
         m2ms = {}
         lazies = []
 
-        for _field_name, model_field in get_model_fields(model):
+        model_fields = get_model_fields(model)
+        for _field_name, model_field in model_fields:
+            value = Empty
+            field_name = _field_name
+
             if _field_name.endswith('_id') and model_field.is_relation:
-                field_name = _field_name.split('_id')[0]
-            else:
-                field_name = _field_name
+                continue
 
             if isinstance(model_field, models.AutoField):
                 continue
@@ -83,8 +85,10 @@ class Factory(object):
             if field_name not in fields and isinstance(model_field, models.ManyToManyField):
                 continue
 
+            value = fields.get(field_name, Empty)
             if isinstance(model_field, models.ForeignKey):
-                value = fields.get(field_name, Empty)
+                if value == Empty:
+                    value = fields.get(field_name + '_id', Empty)
 
                 if not make_fks and ((value == Empty) or (value and value.pk is None)):
                     raise ForeignKeyError(
@@ -96,8 +100,10 @@ class Factory(object):
                         )
                     )
 
-            if field_name in fields:
-                value = evaluator.evaluate(fields[field_name])
+                field_name += '_id'
+
+            if value != Empty:
+                value = evaluator.evaluate(value)
             else:
                 if model_field.choices:
                     value = fake.random_element(model_field.choices)[0]
@@ -109,8 +115,7 @@ class Factory(object):
                 continue
 
             if isinstance(model_field, models.ForeignKey):
-                field_name += '_id'
-                value = value.pk if value else None
+                value = value.pk if hasattr(value, 'pk') else value
 
             if isinstance(model_field, models.ManyToManyField):
                 m2ms[field_name] = value

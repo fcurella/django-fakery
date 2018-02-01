@@ -136,6 +136,25 @@ class FactoryTest(TestCase):
         self.assertEqual(pizza.chef, chef_gusteau)
         self.assertEqual(Chef.objects.count(), 1)
 
+    def test_foreign_keys_explicit(self):
+        chef_gusteau = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Gusteau'
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 1)
+
+        pizza = factory.make(
+            'tests.Pizza',
+            fields={
+                'chef_id': chef_gusteau.pk
+            }
+        )
+        self.assertEqual(pizza.chef, chef_gusteau)
+        self.assertEqual(Chef.objects.count(), 1)
+
     def test_foreign_keys_fail(self):
         chef_gusteau = factory.make(
             'tests.Chef',
