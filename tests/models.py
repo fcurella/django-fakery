@@ -38,8 +38,8 @@ class Pizza(models.Model):
     expiration = models.DateField()
     rating = models.PositiveSmallIntegerField()
 
-    chef = models.ForeignKey(Chef, related_name='invented_pizzas')
-    critic = models.ForeignKey(Chef, null=True, related_name='reviewed_pizzas')
+    chef = models.ForeignKey(Chef, on_delete=models.CASCADE, related_name='invented_pizzas')
+    critic = models.ForeignKey(Chef, null=True, on_delete=models.CASCADE, related_name='reviewed_pizzas')
     toppings = models.ManyToManyField(Topping, related_name='pizzas')
     unique_comment = models.TextField(unique=True)
 
@@ -50,25 +50,25 @@ class Pizza(models.Model):
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
 
-if django_version < (1, 9, 0):
-    class Pizzeria(geo_models.Model):
-        hq = geo_models.PointField()
-        directions = geo_models.LineStringField()
-        floor_plan = geo_models.PolygonField()
-        locations = geo_models.MultiPointField()
-        routes = geo_models.MultiLineStringField()
-        delivery_areas = geo_models.MultiPolygonField()
-        all_the_things = geo_models.GeometryCollectionField()
-else:
-    class Pizzeria(geo_models.Model):
-        hq = geo_models.PointField()
-        directions = geo_models.LineStringField()
-        floor_plan = geo_models.PolygonField()
-        locations = geo_models.MultiPointField()
-        routes = geo_models.MultiLineStringField()
-        delivery_areas = geo_models.MultiPolygonField()
-        all_the_things = geo_models.GeometryCollectionField()
-        rast = geo_models.RasterField()
+    if django_version < (1, 9, 0):
+        class Pizzeria(geo_models.Model):
+            hq = geo_models.PointField()
+            directions = geo_models.LineStringField()
+            floor_plan = geo_models.PolygonField()
+            locations = geo_models.MultiPointField()
+            routes = geo_models.MultiLineStringField()
+            delivery_areas = geo_models.MultiPolygonField()
+            all_the_things = geo_models.GeometryCollectionField()
+    else:
+        class Pizzeria(geo_models.Model):
+            hq = geo_models.PointField()
+            directions = geo_models.LineStringField()
+            floor_plan = geo_models.PolygonField()
+            locations = geo_models.MultiPointField()
+            routes = geo_models.MultiLineStringField()
+            delivery_areas = geo_models.MultiPolygonField()
+            all_the_things = geo_models.GeometryCollectionField()
+            rast = geo_models.RasterField()
 
 
 if django_version < (1, 9, 0):

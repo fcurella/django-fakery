@@ -42,5 +42,6 @@ setup(
         "Django>=1.8",
         "six>=1.10.0",
     ],
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     test_suite='tests.runtests.runtests',
 )
