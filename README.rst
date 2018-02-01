@@ -1,6 +1,9 @@
 Django-fakery
 =============
 
+.. image:: https://badge.fury.io/py/django-fakery.svg
+    :target: https://badge.fury.io/py/django-fakery
+
 .. image:: https://travis-ci.org/fcurella/django-fakery.svg?branch=master
     :target: https://travis-ci.org/fcurella/django-fakery
 
