@@ -20,14 +20,17 @@ env:
   - DJANGO="Django>=1.9,<1.10"
   - DJANGO="Django>=1.10,<1.11"
   - DJANGO="Django>=1.11,<1.12"
+  - DJANGO="Django>=2.0,<2.1"
 matrix:
   exclude:
+    - python: 2.7
+      env: DJANGO="Django>=2.0,<2.1"
+    - python: "pypy-5.3.1"
+      env: DJANGO="Django>=2.0,<2.1"
     - python: "pypy3"
       env: DJANGO="Django>=1.9,<1.10"
     - python: "pypy3"
       env: DJANGO="Django>=1.10,<1.11"
-    - python: "pypy3"
-      env: DJANGO="Django>=1.11,<1.12"
 before_script:
   - psql -c 'CREATE DATABASE travis_postgis;' -U postgres
   - psql -c 'CREATE EXTENSION postgis;' -U postgres -d travis_postgis

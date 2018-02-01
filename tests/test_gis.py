@@ -2,9 +2,9 @@ import sys
 from unittest import skipIf, skipUnless
 
 from django import VERSION as django_version
-from django.contrib.gis.geos import HAS_GEOS
 from django.test import TestCase
 from django_fakery import factory
+from django_fakery.compat import HAS_GEOS
 
 
 PYPY3 = hasattr(sys, 'pypy_version_info') and sys.version_info.major >= 3
