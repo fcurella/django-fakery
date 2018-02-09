@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.db import models
 from django.db.models.fields import NOT_PROVIDED
+from django.forms.models import model_to_dict
 
 from faker import Factory as FakerFactory
 from six import string_types
@@ -36,6 +37,16 @@ class Factory(object):
         if isinstance(model, string_types):
             model = apps.get_model(*model.split('.'))
         return model
+
+    def _serialize_instance(self, instance):
+        attrs = dict([
+            (k, v)
+            for k, v in model_to_dict(instance).items()
+            if not isinstance(v, models.QuerySet)
+        ])
+        attrs.pop(instance._meta.pk.name, None)
+
+        return attrs
 
     def seed(self, seed, set_global=False):
         self.fake.seed(seed)
@@ -175,21 +186,20 @@ class Factory(object):
             fields = {}
         if post_save is None:
             post_save = []
-        model = self._get_model(model)
-        try:
-            instance, created = model.objects.get(**lookup), False
 
-            for func in post_save:
-                func(instance)
-            return instance, created
+        instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True)
 
-        except model.DoesNotExist:
-            attrs = {}
-            attrs.update(lookup)
-            attrs.update(fields)
-            return self.make_one(
-                model, fields=attrs, pre_save=pre_save, post_save=post_save, seed=seed
-            ), True
+        attrs = self._serialize_instance(instance)
+        for k in lookup:
+            attrs.pop(k, None)
+        instance, created = self._get_model(model).objects.get_or_create(defaults=attrs, **lookup)
+
+        for field, relateds in m2ms.items():
+            set_related(instance, field, relateds)
+
+        for func in post_save:
+            func(instance)
+        return instance, created
 
     def g_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
         build = partial(
