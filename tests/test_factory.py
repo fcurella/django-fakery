@@ -391,6 +391,8 @@ class FactoryTest(TestCase):
         )(first_name='Remi')
         self.assertEqual(Chef.objects.count(), 1)
         self.assertEqual(already_there, chef_gusteau)
+        self.assertEqual(chef_gusteau.first_name, 'Remi')
+
         self.assertFalse(created)
 
         chef_linguini, created = factory.u_m(
