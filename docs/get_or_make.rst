@@ -3,7 +3,7 @@
 Get or Make
 -----------
 
-You can check for existance of a model instance and create it if necessary by using the ``g_m`` (short for ``get_or_make``) method:
+You can check for existence of a model instance and create it if necessary by using the ``g_m`` (short for ``get_or_make``) method:
 
 .. code-block:: python
 
