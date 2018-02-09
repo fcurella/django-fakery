@@ -44,6 +44,7 @@ Contents:
    relationships
    hooks
    get_or_make
+   get_or_update
    nonpersistantinstances
    blueprints
    seeding

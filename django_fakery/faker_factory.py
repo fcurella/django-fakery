@@ -211,6 +211,38 @@ class Factory(object):
 
         return fn
 
+    def update_or_make(self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None):
+        if lookup is None:
+            lookup = {}
+        if fields is None:
+            fields = {}
+        if post_save is None:
+            post_save = []
+
+        instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True)
+
+        attrs = self._serialize_instance(instance)
+        for k in lookup:
+            attrs.pop(k, None)
+        instance, created = self._get_model(model).objects.update_or_create(defaults=attrs, **lookup)
+
+        for field, relateds in m2ms.items():
+            set_related(instance, field, relateds)
+
+        for func in post_save:
+            func(instance)
+        return instance, created
+
+    def u_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
+        build = partial(
+            self.update_or_make, model=model, lookup=lookup, pre_save=pre_save, post_save=post_save, seed=seed
+        )
+
+        def fn(**kwargs):
+            return build(fields=kwargs)
+
+        return fn
+
     def make(self, model, fields=None, pre_save=None, post_save=None, seed=None, quantity=None):
         if fields is None:
             fields = {}

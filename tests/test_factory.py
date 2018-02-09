@@ -332,3 +332,75 @@ class FactoryTest(TestCase):
         self.assertTrue(created)
         self.assertEqual(chef_linguini.first_name, 'Alfredo')
         self.assertEqual(chef_linguini.last_name, 'Linguini')
+
+    def test_update_or_make(self):
+        already_there = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Auguste',
+                'last_name': 'Gusteau',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 1)
+        chef_gusteau, created = factory.update_or_make(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Gusteau'
+            },
+            fields={
+                'first_name': 'Remi',
+            }
+        )
+        self.assertEqual(Chef.objects.count(), 1)
+        self.assertEqual(already_there, chef_gusteau)
+        self.assertEqual(chef_gusteau.first_name, 'Remi')
+
+        self.assertFalse(created)
+
+        chef_linguini, created = factory.update_or_make(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Linguini'
+            },
+            fields={
+                'first_name': 'Alfredo',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 2)
+        self.assertTrue(created)
+        self.assertEqual(chef_linguini.first_name, 'Alfredo')
+        self.assertEqual(chef_linguini.last_name, 'Linguini')
+
+    def test_u_m(self):
+        already_there = factory.make(
+            'tests.Chef',
+            fields={
+                'first_name': 'Auguste',
+                'last_name': 'Gusteau',
+            }
+        )
+
+        self.assertEqual(Chef.objects.count(), 1)
+        chef_gusteau, created = factory.u_m(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Gusteau'
+            },
+        )(first_name='Remi')
+        self.assertEqual(Chef.objects.count(), 1)
+        self.assertEqual(already_there, chef_gusteau)
+        self.assertFalse(created)
+
+        chef_linguini, created = factory.u_m(
+            'tests.Chef',
+            lookup={
+                'last_name': 'Linguini'
+            },
+        )(first_name='Alfredo')
+
+        self.assertEqual(Chef.objects.count(), 2)
+        self.assertTrue(created)
+        self.assertEqual(chef_linguini.first_name, 'Alfredo')
+        self.assertEqual(chef_linguini.last_name, 'Linguini')
