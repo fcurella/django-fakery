@@ -173,18 +173,28 @@ class Factory(object):
             lookup = {}
         if fields is None:
             fields = {}
-
+        if post_save is None:
+            post_save = []
         model = self._get_model(model)
         try:
-            return model.objects.get(**lookup), False
+            instance, created = model.objects.get(**lookup), False
+
+            for func in post_save:
+                func(instance)
+            return instance, created
+
         except model.DoesNotExist:
             attrs = {}
             attrs.update(lookup)
             attrs.update(fields)
-            return self.make_one(model, fields=attrs, pre_save=None, post_save=None, seed=None), True
+            return self.make_one(
+                model, fields=attrs, pre_save=pre_save, post_save=post_save, seed=seed
+            ), True
 
     def g_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
-        build = partial(self.get_or_make, model=model, lookup=lookup, pre_save=pre_save, seed=seed)
+        build = partial(
+            self.get_or_make, model=model, lookup=lookup, pre_save=pre_save, post_save=post_save, seed=seed
+        )
 
         def fn(**kwargs):
             return build(fields=kwargs)
