@@ -40,7 +40,7 @@ class Factory(object):
 
     def _serialize_instance(self, instance):
         model_fields = dict(get_model_fields(instance))
-        attrs  = {}
+        attrs = {}
         for k, v in model_to_dict(instance).items():
             if k == instance._meta.pk.name:
                 continue
