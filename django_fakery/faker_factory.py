@@ -39,12 +39,20 @@ class Factory(object):
         return model
 
     def _serialize_instance(self, instance):
-        attrs = dict([
-            (k, v)
-            for k, v in model_to_dict(instance).items()
-            if not isinstance(v, models.QuerySet)
-        ])
-        attrs.pop(instance._meta.pk.name, None)
+        model_fields = dict(get_model_fields(instance))
+        attrs  = {}
+        for k, v in model_to_dict(instance).items():
+            if k == instance._meta.pk.name:
+                continue
+
+            if isinstance(v, (list, models.QuerySet)):
+                continue
+
+            if isinstance(model_fields[k], models.ForeignKey) and not isinstance(v, models.Model):
+                attrs[k + '_id'] = v
+                continue
+
+            attrs[k] = v
 
         return attrs
 
@@ -224,8 +232,10 @@ class Factory(object):
         attrs = self._serialize_instance(instance)
         for k in lookup:
             attrs.pop(k, None)
-        instance, created = self._get_model(model).objects.update_or_create(defaults=attrs, **lookup)
-
+        try:
+            instance, created = self._get_model(model).objects.update_or_create(defaults=attrs, **lookup)
+        except Exception as exc:
+            raise
         for field, relateds in m2ms.items():
             set_related(instance, field, relateds)
 
