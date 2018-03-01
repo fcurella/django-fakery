@@ -37,7 +37,9 @@ install:
   - pip install -e .
   - pip install psycopg2cffi coveralls
   - if [[ "$TRAVIS_PYTHON_VERSION" != pypy* ]]; then pip install psycopg2; fi
+  - if [[ "$TRAVIS_COMMIT_MESSAGE" == "Bump version:"* ]]; then export TASK=release; else export TASK=coverage; fi
+  - if [[ "$TASK" == release ]]; then pip install wheel twine; fi
 script:
-  - coverage run --source django_fakery setup.py test
+  - make $TASK
 after_success:
   coveralls
