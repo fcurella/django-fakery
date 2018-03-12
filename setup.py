@@ -2,7 +2,7 @@ import os
 from setuptools import find_packages, setup
 
 
-VERSION = '1.10.0'
+VERSION = '1.10.1'
 
 
 def read(fname):
@@ -40,7 +40,7 @@ setup(
     install_requires=[
         "Faker>=0.8.0,<0.9.0",
         "Django>=1.8",
-        "six>=1.10.0",
+        "six>=1.10.1",
     ],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     test_suite='tests.runtests.runtests',
