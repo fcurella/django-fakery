@@ -16,6 +16,21 @@ If you want to explicitly create a related object, you can pass it like any othe
         chef=factory.m('auth.User)(username='Gusteau'),
     )
 
+
+If you'd rather not create related objects and reuse the same value for a foreign key, you can use the special value ``faker.rels.SELECT``:
+
+.. code-block:: python
+
+    from django_fakery import factory, rels
+
+
+    pizza = factory.m('food.Pizza', quantity=5)(
+        chef=rels.SELECT,
+    )
+
+``django-fakery`` will always use the first instance of the related model, creating one if necessary.
+
+
 ManyToManies
 ============
 

@@ -3,10 +3,10 @@ from decimal import Decimal
 from django.utils import timezone
 from django.test import TestCase
 
-from django_fakery import factory, Lazy
+from django_fakery import factory, Lazy, rels
 from django_fakery.exceptions import ForeignKeyError
 
-from tests.models import Chef
+from tests.models import Chef, Pizza
 
 
 class FactoryTest(TestCase):
@@ -406,3 +406,17 @@ class FactoryTest(TestCase):
         self.assertTrue(created)
         self.assertEqual(chef_linguini.first_name, 'Alfredo')
         self.assertEqual(chef_linguini.last_name, 'Linguini')
+
+    def test_rel(self):
+        pizzas = factory.make(
+            'tests.Pizza',
+             quantity=5,
+             fields={
+                 'chef': rels.SELECT,
+             },
+        )
+        self.assertEqual(Pizza.objects.count(), 5)
+        self.assertEqual(Chef.objects.count(), 1)
+
+        self.assertEqual(pizzas[0].chef, pizzas[1].chef)
+
