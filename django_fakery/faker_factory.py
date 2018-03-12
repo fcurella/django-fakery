@@ -117,7 +117,7 @@ class Factory(object):
                 if value == rels.SELECT:
                     model = model_field.related_model
                     qs = model.objects.all()
-                    cache_key = id(qs)
+                    cache_key = model
 
                     value = fks_cache.get(cache_key, Empty)
 
