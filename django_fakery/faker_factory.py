@@ -17,6 +17,7 @@ from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .utils import get_model_fields, language_to_locale
 from .values import Evaluator
+from . import rels
 
 
 user_model = get_user_model()
@@ -26,6 +27,9 @@ locale = language_to_locale(settings.LANGUAGE_CODE)
 
 class Empty(object):
     pass
+
+
+fks_cache = {}
 
 
 class Factory(object):
@@ -109,6 +113,21 @@ class Factory(object):
             if isinstance(model_field, models.ForeignKey):
                 if value == Empty:
                     value = fields.get(field_name + '_id', Empty)
+
+                if value == rels.SELECT:
+                    model = model_field.related_model
+                    qs = model.objects.all()
+                    cache_key = id(qs)
+
+                    value = fks_cache.get(cache_key, Empty)
+
+                    if value == Empty:
+                        try:
+                            value = qs[0]
+                        except IndexError:
+                            value = evaluator.fake_value(model, model_field)
+
+                        fks_cache[cache_key] = value
 
                 if not make_fks and ((value == Empty) or (value and value.pk is None)):
                     raise ForeignKeyError(
