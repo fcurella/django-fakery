@@ -17,7 +17,7 @@ If you want to explicitly create a related object, you can pass it like any othe
     )
 
 
-If you'd rather not create related objects and reuse the same value for a foreign key, you can use the special value ``faker.rels.SELECT``:
+If you'd rather not create related objects and reuse the same value for a foreign key, you can use the special value ``django_fakery.rels.SELECT``:
 
 .. code-block:: python
 
