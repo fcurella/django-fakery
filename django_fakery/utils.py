@@ -13,3 +13,8 @@ def get_model_fields(model):
     for m2m in model._meta.many_to_many:
         fields.append((m2m.name, m2m))
     return fields
+
+
+def set_related(instance, attr, value):
+    field = getattr(instance, attr)
+    field.set(value)

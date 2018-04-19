@@ -12,11 +12,3 @@ try:
     HAS_GEOS = geos_version_info()['version'] >= '3.3.0'
 except (ImportError, OSError, ImproperlyConfigured):
     HAS_GEOS = False
-
-
-def set_related(instance, attr, value):
-    field = getattr(instance, attr)
-    if hasattr(field, 'set'):
-        field.set(value)
-    else:
-        setattr(instance, attr, value)
