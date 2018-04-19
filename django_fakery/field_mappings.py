@@ -2,7 +2,6 @@ from collections import OrderedDict
 
 import sys
 
-from django import VERSION as django_version
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -55,10 +54,6 @@ mappings_types = OrderedDict([
     (models.UUIDField, ('uuid4', [], {})),
 ])
 
-if django_version < (1, 10, 0):
-    mappings_types.update({
-        models.CommaSeparatedIntegerField: (fakes.comma_sep_integers, [], {}),
-    })
 
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
@@ -71,12 +66,9 @@ if HAS_GEOS:
         geo_models.MultiLineStringField: (fakes.multilinestring, (), {'srid': 4326}),
         geo_models.MultiPolygonField: (fakes.multipolygon, (), {'srid': 4326}),
         geo_models.GeometryCollectionField: (fakes.geometrycollection, (), {'srid': 4326}),
+        geo_models.RasterField: (fakes.gdal_raster, [], {'srid': 4326}),
     })
 
-    if django_version >= (1, 9, 0):
-        mappings_types.update({
-            geo_models.RasterField: (fakes.gdal_raster, [], {'srid': 4326}),
-        })
 
 if HAS_PSYCOPG2:
     from django.contrib.postgres import fields as pg_fields
@@ -89,11 +81,8 @@ if HAS_PSYCOPG2:
         pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
         pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
         pg_fields.DateRangeField: (fakes.daterange, [], {}),
+        pg_fields.JSONField: (fakes.random_dict, [], {}),
     })
-    if django_version >= (1, 9, 0):
-        mappings_types.update({
-            pg_fields.JSONField: (fakes.random_dict, [], {}),
-        })
 
 
 mappings_names = {

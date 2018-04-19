@@ -1,7 +1,6 @@
 import sys
 from unittest import skipIf, skipUnless
 
-from django import VERSION as django_version
 from django.test import TestCase
 from django_fakery import factory
 from django_fakery.compat import HAS_GEOS
@@ -24,7 +23,5 @@ class GisTest(TestCase):
         self.assertTrue(isinstance(gigis.routes, geos.MultiLineString))
         self.assertTrue(isinstance(gigis.delivery_areas, geos.MultiPolygon))
         self.assertTrue(isinstance(gigis.all_the_things, geos.GeometryCollection))
-
-        if django_version >= (1, 9, 0):
-            self.assertTrue(isinstance(gigis.rast, gdal.GDALRaster))
+        self.assertTrue(isinstance(gigis.rast, gdal.GDALRaster))
 

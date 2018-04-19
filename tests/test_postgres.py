@@ -2,7 +2,6 @@ from datetime import datetime
 import sys
 from unittest import skipIf
 
-from django import VERSION as django_version
 from django.test import TestCase
 from django_fakery import factory
 
@@ -34,5 +33,4 @@ class PostgresTest(TestCase):
         self.assertTrue(isinstance(gigis_special.available_on, DateTimeTZRange))
         self.assertTrue(isinstance(gigis_special.available_on.lower, datetime))
         self.assertNotEqual(gigis_special.available_on.lower.tzinfo, None)
-        if django_version >= (1, 9, 0):
-            self.assertTrue(isinstance(gigis_special.nutritional_values, dict))
+        self.assertTrue(isinstance(gigis_special.nutritional_values, dict))
