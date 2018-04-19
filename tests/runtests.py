@@ -44,8 +44,7 @@ def runtests(*test_args):
 
     settings.configure(**SETTINGS)
 
-    if django.VERSION[0:2] >= (1, 7):
-        django.setup()
+    django.setup()
 
     runner_class = django.test.utils.get_runner(settings)
     test_runner = runner_class(verbosity=1, interactive=True, failfast=False)

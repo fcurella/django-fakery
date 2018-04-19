@@ -1,4 +1,3 @@
-from django import VERSION as django_version
 from django.utils import text, timezone
 from faker.generator import random
 
@@ -79,19 +78,18 @@ if HAS_GEOS:
         geometries = [single_point] + points
         return geos.GeometryCollection(*geometries)
 
-    if django_version >= (1, 9, 0):
-        def gdal_raster(faker, field, srid, *args, **kwargs):
-            scale = faker.pyfloat(positive=True)
-            return gdal.GDALRaster({
-                'width': faker.random_int(min=1, max=1024),
-                'height': faker.random_int(min=1, max=1024),
-                'name': faker.word(),
-                'srid': srid,
-                'scale': [scale, -scale],
-                'bands': [
-                    {"data": range(faker.random_int(min=1, max=1024))},
-                ],
-            })
+    def gdal_raster(faker, field, srid, *args, **kwargs):
+        scale = faker.pyfloat(positive=True)
+        return gdal.GDALRaster({
+            'width': faker.random_int(min=1, max=1024),
+            'height': faker.random_int(min=1, max=1024),
+            'name': faker.word(),
+            'srid': srid,
+            'scale': [scale, -scale],
+            'bands': [
+                {"data": range(faker.random_int(min=1, max=1024))},
+            ],
+        })
 
 
 if HAS_PSYCOPG2:
