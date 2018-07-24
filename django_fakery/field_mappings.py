@@ -3,12 +3,18 @@ from collections import OrderedDict
 import sys
 
 from django.conf import settings
+from django.contrib.postgres import fields as pg_fields
 from django.db import models
 from django.utils import timezone
 
 from .compat import HAS_PSYCOPG2, HAS_GEOS
 from . import fakes
 
+
+STRING_FIELDS = (
+    models.CharField, models.TextField,
+    pg_fields.CICharField, pg_fields.CITextField,
+)
 
 """
 This module maps fields to functions generating values.
@@ -71,9 +77,10 @@ if HAS_GEOS:
 
 
 if HAS_PSYCOPG2:
-    from django.contrib.postgres import fields as pg_fields
-
     mappings_types.update({
+        pg_fields.CICharField: mappings_types[models.CharField],
+        pg_fields.CIEmailField: mappings_types[models.EmailField],
+        pg_fields.CITextField: mappings_types[models.TextField],
         pg_fields.ArrayField: (fakes.array, [], {}),
         pg_fields.HStoreField: ('pydict', [10, True, 'str'], {}),
         pg_fields.IntegerRangeField: (fakes.integerrange, [], {'min': -2147483647, 'max': 2147483647}),

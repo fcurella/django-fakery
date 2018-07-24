@@ -3,6 +3,8 @@ from django.db import models
 
 from six import string_types
 
+from .field_mappings import STRING_FIELDS
+
 
 class Evaluator(object):
 
@@ -36,7 +38,7 @@ class Evaluator(object):
     def fake_value(self, model, field):
         from . import field_mappings
 
-        if field.blank and isinstance(field, (models.CharField, models.TextField)):
+        if field.blank and isinstance(field, STRING_FIELDS):
             return ''
 
         if isinstance(field, models.ForeignKey):
