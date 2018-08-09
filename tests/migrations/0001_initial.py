@@ -90,6 +90,7 @@ class Migration(migrations.Migration):
 
     specialtypizza_fields = [
         ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+        ('name', models.CharField(max_length=50)),
         ('toppings', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=20), size=4)),
         ('metadata', django.contrib.postgres.fields.hstore.HStoreField()),
         ('price_range', django.contrib.postgres.fields.IntegerRangeField()),

@@ -419,4 +419,3 @@ class FactoryTest(TestCase):
         self.assertEqual(Chef.objects.count(), 1)
 
         self.assertEqual(pizzas[0].chef, pizzas[1].chef)
-
