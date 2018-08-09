@@ -84,9 +84,10 @@ if django_version < (1, 9, 0):
         season = postgres_fields.DateRangeField()
 else:
     class SpecialtyPizza(models.Model):
+        name = models.CharField(max_length=50)
         toppings = postgres_fields.ArrayField(
             models.CharField(max_length=20),
-            size=4
+            size=4,
         )
         metadata = postgres_fields.HStoreField()
         price_range = postgres_fields.IntegerRangeField()

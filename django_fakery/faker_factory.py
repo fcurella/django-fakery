@@ -245,20 +245,22 @@ class Factory(object):
         if post_save is None:
             post_save = []
 
-        instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True)
-
-        attrs = self._serialize_instance(instance)
-        for k in lookup:
-            attrs.pop(k, None)
+        model_class = self._get_model(model)
         try:
-            instance, created = self._get_model(model).objects.update_or_create(defaults=attrs, **lookup)
-        except Exception as exc:
-            raise
-        for field, relateds in m2ms.items():
-            set_related(instance, field, relateds)
+            instance = model_class.objects.get(**lookup)
+        except model_class.DoesNotExist:
+            created = True
+            lookup.update(fields)
+            instance = self.make(model, lookup, pre_save, post_save, seed)
+        else:
+            created = False
+            for k, v in fields.items():
+                setattr(instance, k, v)
+            instance.save()
 
-        for func in post_save:
-            func(instance)
+            for func in post_save:
+                func(instance)
+
         return instance, created
 
     def u_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):

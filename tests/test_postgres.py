@@ -34,3 +34,72 @@ class PostgresTest(TestCase):
         self.assertTrue(isinstance(gigis_special.available_on.lower, datetime))
         self.assertNotEqual(gigis_special.available_on.lower.tzinfo, None)
         self.assertTrue(isinstance(gigis_special.nutritional_values, dict))
+
+    def test_json(self):
+        gigis_special = factory.make('tests.SpecialtyPizza', fields={
+            'nutritional_values': {
+                'Calories': 310,
+            }
+        })
+        self.assertEqual(gigis_special.nutritional_values, {'Calories': 310})
+
+        gigis_special, created = factory.update_or_make('tests.SpecialtyPizza', lookup={
+            'id': gigis_special.id,
+        }, fields={
+            'nutritional_values': {
+                'Calories': {
+                    'Total': 310,
+                    'From Fat': 120,
+                }
+            }
+        })
+        self.assertFalse(created)
+        self.assertEqual(gigis_special.nutritional_values, {
+            'Calories': {
+                'Total': 310,
+                'From Fat': 120,
+            }
+        })
+
+        summer_special, created = factory.update_or_make('tests.SpecialtyPizza', lookup={
+            'name': 'Summer Special',
+        }, fields={
+            'nutritional_values': {
+                'Calories': {
+                    'Total': 310,
+                    'From Fat': 120,
+                }
+            }
+        })
+
+        self.assertTrue(created)
+        self.assertEqual(summer_special.nutritional_values, {
+            'Calories': {
+                'Total': 310,
+                'From Fat': 120,
+            }
+        })
+
+    def test_array(self):
+        gigis_special = factory.make('tests.SpecialtyPizza', fields={
+            'toppings': ['black olives', 'green olives']
+        })
+        self.assertEqual(gigis_special.toppings, ['black olives', 'green olives'])
+
+        gigis_special, created = factory.update_or_make('tests.SpecialtyPizza', lookup={
+            'id': gigis_special.id,
+        }, fields={
+            'toppings': ['black olives', 'green olives', 'cremini mushrooms']
+
+        })
+        self.assertFalse(created)
+        self.assertEqual(gigis_special.toppings, ['black olives', 'green olives', 'cremini mushrooms'])
+
+        summer_special, created = factory.update_or_make('tests.SpecialtyPizza', lookup={
+            'name': 'Summer Special',
+        }, fields={
+            'toppings': ['black olives', 'green olives', 'cremini mushrooms']
+        })
+
+        self.assertTrue(created)
+        self.assertEqual(summer_special.toppings, ['black olives', 'green olives', 'cremini mushrooms'])
