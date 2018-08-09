@@ -246,16 +246,22 @@ class Factory(object):
             post_save = []
 
         model_class = self._get_model(model)
+
         try:
             instance = model_class.objects.get(**lookup)
         except model_class.DoesNotExist:
             created = True
-            lookup.update(fields)
-            instance = self.make(model, lookup, pre_save, post_save, seed)
+            params = {k: v for k, v in lookup.items() if '__' not in k}
+            params.update(fields)
+            instance = self.make(model, params, pre_save, post_save, seed)
         else:
             created = False
             for k, v in fields.items():
-                setattr(instance, k, v)
+                # special case for user passwords
+                if model_class == user_model and k == 'password':
+                    instance.set_password(v)
+                else:
+                    setattr(instance, k, v)
             instance.save()
 
             for func in post_save:

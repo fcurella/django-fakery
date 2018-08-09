@@ -238,6 +238,18 @@ class FactoryTest(TestCase):
         )
         self.assertTrue(user.check_password('password'))
 
+        user, created = factory.update_or_make(
+            'auth.User',
+            lookup={
+                'username': 'username',
+            },
+            fields={
+                'password': 'new_password',
+            }
+        )
+        self.assertFalse(created)
+        self.assertTrue(user.check_password('new_password'))
+
     def test_build(self):
         chef_masters = factory.build(
             'tests.Chef',
