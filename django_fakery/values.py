@@ -25,7 +25,10 @@ class Evaluator(object):
             else:
                 return value()
         if isinstance(value, string_types):
-            return value.format(self.iteration, self.faker)
+            try:
+                return value.format(self.iteration, self.faker)
+            except KeyError:
+                return value
         return value
 
     def evaluate_fake(self, resolver, field):
