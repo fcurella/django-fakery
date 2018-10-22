@@ -431,3 +431,10 @@ class FactoryTest(TestCase):
         self.assertEqual(Chef.objects.count(), 1)
 
         self.assertEqual(pizzas[0].chef, pizzas[1].chef)
+
+    def test_format(self):
+        chef = factory.make(Chef, fields={
+            'last_name': '{Linguini}'
+        })
+
+        self.assertEqual(chef.last_name, '{Linguini}')
