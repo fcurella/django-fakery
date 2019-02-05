@@ -1,16 +1,15 @@
+import io
 import os
+
 from setuptools import find_packages, setup
 
 
-VERSION = '2.0.4'
+here = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as fp:
+    README = fp.read()
 
-
-def read(fname):
-    try:
-        with open(os.path.join(os.path.dirname(__file__), fname)) as fh:
-            return fh.read()
-    except IOError:
-        return ''
+with io.open(os.path.join(here, 'VERSION')) as version_file:
+    VERSION = version_file.read().strip()
 
 
 setup(
@@ -20,7 +19,7 @@ setup(
     author='Flavio Curella',
     author_email='flavio.curella@gmail.com',
     description='A model instances generator for Django',
-    long_description=read('README.rst'),
+    long_description=README,
     license='MIT',
     packages=find_packages(exclude=["docs", "tests", "tests.*"]),
     platforms=["any"],

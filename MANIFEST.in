@@ -1,0 +1,5 @@
+include README.rst
+include VERSION
+include LICENSE
+prune tests
+prune docs
