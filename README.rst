@@ -34,7 +34,17 @@ QuickStart
 
     factory.m(MyModel)(field='value')
 
-Alternatively, you can use a more explicit API:
+
+If you ``pytest``, you can use the ``fakery`` fixture:
+
+.. code-block:: python
+
+    from myapp.models import MyModel
+
+    def test_mymodel(fakery):
+        fakery.m(MyModel)(field='value')
+
+If you'd rather, you can use a more wordy API:
 
 .. code-block:: python
 
@@ -71,7 +81,6 @@ When using a lambda, it will receive two arguments: ``n`` is the iteration numbe
     )
 
 ``django-fakery`` includes some pre-built lambdas for common needs. See shortcuts_  for more info.
-
 
 You can create multiple objects by using the ``quantity`` parameter:
 

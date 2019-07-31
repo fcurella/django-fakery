@@ -17,7 +17,16 @@ QuickStart
 
     factory.m('app.Model')(field='value')
 
-Alternatively, you can use a more explict API:
+If you ``pytest``, you can use the ``fakery`` fixture:
+
+.. code-block:: python
+
+    from myapp.models import MyModel
+
+    def test_mymodel(fakery):
+        fakery.m(MyModel)(field='value')
+
+If you'd rather, you can use a more wordy API:
 
 .. code-block:: python
 

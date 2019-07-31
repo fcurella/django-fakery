@@ -36,6 +36,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
+    entry_points={"pytest11": ["django_fakery = django_fakery.plugin"]},
     install_requires=[
         "Faker>=0.8.0,<0.9.0",
         "Django>=1.11",
