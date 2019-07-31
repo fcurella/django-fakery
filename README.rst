@@ -324,7 +324,7 @@ If you're looking for a more explicit API, you can use the ``.get_or_update()`` 
         },
     )
 
-Non persistent instances
+Non-persistent instances
 ------------------------
 
 You can build instances that are not saved to the database by using the ``.b()`` method, just like you'd use ``.m()``:
