@@ -34,13 +34,14 @@ QuickStart
 
     factory.m(MyModel)(field='value')
 
-
-If you ``pytest``, you can use the ``fakery`` fixture:
+If you use ``pytest``, you can use the ``fakery`` fixture (requires ``pytest`` and ``pytest-django``):
 
 .. code-block:: python
 
+    import pytest
     from myapp.models import MyModel
 
+    @pytest.mark.django_db
     def test_mymodel(fakery):
         fakery.m(MyModel)(field='value')
 
