@@ -8,8 +8,9 @@ You can build instances that are not saved to the database by using the ``.b()``
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
-    factory.b('app.Model')(
+    factory.b(MyModel)(
         field='value',
     )
 
@@ -20,9 +21,10 @@ If you're looking for a more explicit API, you can use the ``.build()`` method:
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
     factory.build(
-        'app.Model',
+        MyModel,
         fields={
             'field': 'value',
         }

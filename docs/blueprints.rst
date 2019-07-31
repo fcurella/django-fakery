@@ -7,9 +7,10 @@ Use a blueprint:
 
 .. code-block:: python
 
+    from django.contrib.auth.models import User
     from django_fakery import factory
 
-    user = factory.blueprint('auth.User')
+    user = factory.blueprint(User)
 
     user.make(quantity=10)
 
@@ -17,7 +18,9 @@ Blueprints can refer other blueprints:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
         )
     )
@@ -26,7 +29,9 @@ You can also override the field values you previously specified:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
             thickness=1
         )
@@ -38,7 +43,9 @@ Or, if you'd rather use the explicit api:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
             thickness=1
         )

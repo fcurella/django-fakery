@@ -12,8 +12,12 @@ If you want to explicitly create a related object, you can pass it like any othe
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
-        chef=factory.m('auth.User)(username='Gusteau'),
+    from django.contrib.auth.models import User
+    from django_fakery import factory
+    from food.models import Pizza
+
+    pizza = factory.m(Pizza)(
+        chef=factory.m(User)(username='Gusteau'),
     )
 
 
@@ -22,9 +26,9 @@ If you'd rather not create related objects and reuse the same value for a foreig
 .. code-block:: python
 
     from django_fakery import factory, rels
+    from food.models import Pizza
 
-
-    pizza = factory.m('food.Pizza', quantity=5)(
+    pizza = factory.m(Pizza, quantity=5)(
         chef=rels.SELECT,
     )
 
@@ -40,9 +44,11 @@ If you want to explicitly create a related objects, you can pass a list as the f
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
+    from food.models import Pizza, Topping
+
+    pizza = factory.m(Pizza)(
         toppings=[
-            factory.m('food.Topping')(name='Anchovies')
+            factory.m(Topping)(name='Anchovies')
         ],
     )
 
@@ -50,6 +56,8 @@ You can also pass a factory, to create multiple objects:
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
-        toppings=factory.m('food.Topping', quantity=5),
+    from food.models import Pizza, Topping
+
+    pizza = factory.m(Pizza)(
+        toppings=factory.m(Topping, quantity=5),
     )

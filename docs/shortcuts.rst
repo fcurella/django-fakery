@@ -23,7 +23,9 @@ Valid units are:
 Example::
 
     from django_fakery import factory, shortcuts
-    factory.m('app.Model')(field=shortcuts.future_datetime('+1w'))
+    from myapp.models import MyModel
+
+    factory.m(MyModel)(field=shortcuts.future_datetime('+1w'))
 
 
 ``future_date(end='+30d')``
@@ -43,7 +45,9 @@ Valid units are:
 Example::
 
     from django_fakery import factory, shortcuts
-    factory.m('app.Model')(field=shortcuts.future_date('+1w'))
+    from myapp.models import MyModel
+
+    factory.m(MyModel)(field=shortcuts.future_date('+1w'))
 
 
 ``past_datetime(start='-30d')``
@@ -63,7 +67,9 @@ Valid units are:
 Example::
 
     from django_fakery import factory, shortcuts
-    factory.m('app.Model')(field=shortcuts.past_datetime('-1w'))
+    from myapp.models import MyModel
+
+    factory.m(MyModel)(field=shortcuts.past_datetime('-1w'))
 
 
 ``past_date(start='-30d')``
@@ -83,4 +89,6 @@ Valid units are:
 Example::
 
     from django_fakery import factory, shortcuts
-    factory.m('app.Model')(field=shortcuts.past_date('-1w'))
+    from myapp.models import MyModel
+
+    factory.m(MyModel)(field=shortcuts.past_date('-1w'))

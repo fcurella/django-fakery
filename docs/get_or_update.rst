@@ -7,8 +7,10 @@ You can check for existence of a model instance and update it by using the ``g_u
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.g_u(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         }
@@ -18,8 +20,10 @@ If you're looking for a more explicit API, you can use the ``.get_or_update()`` 
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.get_or_update(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         },

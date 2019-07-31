@@ -7,8 +7,10 @@ You can check for existence of a model instance and create it if necessary by us
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.g_m(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         }
@@ -18,8 +20,10 @@ If you're looking for a more explicit API, you can use the ``.get_or_make()`` me
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.get_or_make(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         },

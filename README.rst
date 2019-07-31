@@ -30,38 +30,43 @@ QuickStart
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
-    factory.m('app.Model')(field='value')
+    factory.m(MyModel)(field='value')
 
 Alternatively, you can use a more explicit API:
 
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
     factory.make(
-        'app.Model',
+        MyModel,
         fields={
             'field': 'value',
         }
     )
 
-We will use the short API throught the documentation.
+We will use the short API thorough the documentation.
 
 The value of a field can be any python object, a callable, or a lambda:
 
 .. code-block:: python
 
-    from django_fakery import factory
     from django.utils import timezone
+    from django_fakery import factory
+    from myapp.models import MyModel
 
-    factory.m('app.Model')(created=timezone.now)
+    factory.m(MyModel)(created=timezone.now)
 
 When using a lambda, it will receive two arguments: ``n`` is the iteration number, and ``f`` is an instance of ``faker``:
 
 .. code-block:: python
 
-    user = factory.m('auth.User')(
+    from django.contrib.auth.models import User
+
+    user = factory.m(User)(
         username=lambda n, f: 'user_{}'.format(n),
     )
 
@@ -73,14 +78,17 @@ You can create multiple objects by using the ``quantity`` parameter:
 .. code-block:: python
 
     from django_fakery import factory
+    from django.contrib.auth.models import User
 
-    factory.m('app.Model', quantity=4)
+    factory.m(User, quantity=4)
 
 For convenience, when the value of a field is a string, it will be interpolated with the iteration number:
 
 .. code-block:: python
 
-    user = factory.m('auth.User', quantity=4)(
+    from myapp.models import MyModel
+
+    user = factory.m(User, quantity=4)(
         username='user_{}',        
     )
 
@@ -93,8 +101,11 @@ If you want to explicitly create a related object, you can pass a factory like a
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
-        chef=factory.m('auth.User)(username='Gusteau'),
+    from django.contrib.auth.models import User
+    from food.models import Pizza
+
+    pizza = factory.m(Pizza)(
+        chef=factory.m(User)(username='Gusteau'),
     )
 
 If you'd rather not create related objects and reuse the same value for a foreign key, you can use the special value ``django_fakery.rels.SELECT``:
@@ -102,9 +113,9 @@ If you'd rather not create related objects and reuse the same value for a foreig
 .. code-block:: python
 
     from django_fakery import factory, rels
+    from food.models import Pizza
 
-
-    pizza = factory.m('food.Pizza', quantity=5)(
+    pizza = factory.m(Pizza, quantity=5)(
         chef=rels.SELECT,
     )
 
@@ -119,9 +130,11 @@ If you want to explicitly create a related objects, you can pass a list as the f
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
+    from food.models import Pizza, Topping
+
+    pizza = factory.m(Pizza)(
         toppings=[
-            factory.m('food.Topping')(name='Anchovies')
+            factory.m(Topping)(name='Anchovies')
         ],
     )
 
@@ -129,8 +142,10 @@ You can also pass a factory, to create multiple objects:
 
 .. code-block:: python
 
-    pizza = factory.m('food.Pizza')(
-        toppings=factory.m('food.Topping', quantity=5),
+    from food.models import Pizza, Topping
+
+    pizza = factory.m(Pizza)(
+        toppings=factory.m(Topping, quantity=5),
     )
 
 .. _shortcuts:
@@ -158,7 +173,8 @@ Valid units are:
 Example::
 
     from django_fakery import factory, shortcuts
-    factory.m('app.Model')(field=shortcuts.future_datetime('+1w'))
+    from myapp.models import MyModel
+    factory.m(MyModel)(field=shortcuts.future_datetime('+1w'))
 
 
 ``future_date(end='+30d')``
@@ -187,8 +203,9 @@ For example, if you'd like to create user with email as username, and have them 
 .. code-block:: python
 
     from django_fakery import factory, Lazy
+    from django.contrib.auth.models import User
 
-    factory.m('auth.User')(
+    factory.m(auth.User)(
         username=Lazy('email'),
     )
 
@@ -198,8 +215,9 @@ If you want to assign a value returned by a method on the instance, you can pass
 .. code-block:: python
 
     from django_fakery import factory, Lazy
+    from myapp.models import MyModel
 
-    factory.m('myapp.Model')(
+    factory.m(MyModel)(
         myfield=Lazy('model_method', 'argument', keyword='keyword value'),
     )
 
@@ -210,10 +228,11 @@ You can define functions to be called right before the instance is saved or righ
 
 .. code-block:: python
 
+    from django.contrib.auth.models import User
     from django_fakery import factory
 
     factory.m(
-        'auth.User',
+        User,
         pre_save=[
             lambda u: u.set_password('password')
         ],
@@ -223,9 +242,10 @@ Since settings a user's password is such a common case, we special-cased that sc
 
 .. code-block:: python
 
+    from django.contrib.auth.models import User
     from django_fakery import factory
 
-    factory.m('auth.User')(
+    factory.m(User)(
         username='username',
         password='password',
     )
@@ -237,8 +257,10 @@ You can check for existance of a model instance and create it if necessary by us
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.g_m(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         }
@@ -248,8 +270,10 @@ If you're looking for a more explicit API, you can use the ``.get_or_make()`` me
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.get_or_make(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         },
@@ -265,8 +289,10 @@ You can check for existence of a model instance and update it by using the ``g_u
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.g_u(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         }
@@ -276,8 +302,10 @@ If you're looking for a more explicit API, you can use the ``.get_or_update()`` 
 
 .. code-block:: python
 
+    from myapp.models import MyModel
+
     myinstance, created = factory.get_or_update(
-        'myapp.Model',
+        MyModel,
         lookup={
             'myfield': 'myvalue',
         },
@@ -294,8 +322,9 @@ You can build instances that are not saved to the database by using the ``.b()``
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
-    factory.b('app.Model')(
+    factory.b(MyModel)(
         field='value',
     )
 
@@ -306,9 +335,10 @@ If you're looking for a more explicit API, you can use the ``.build()`` method:
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
     factory.build(
-        'app.Model',
+        MyModel,
         fields={
             'field': 'value',
         }
@@ -321,10 +351,10 @@ Blueprints
 Use a blueprint:
 
 .. code-block:: python
-
+    from django.contrib.auth.models import User
     from django_fakery import factory
 
-    user = factory.blueprint('auth.User')
+    user = factory.blueprint(User)
 
     user.make(quantity=10)
 
@@ -332,7 +362,9 @@ Blueprints can refer other blueprints:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
         )
     )
@@ -341,7 +373,9 @@ You can also override the field values you previously specified:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
             thickness=1
         )
@@ -353,7 +387,9 @@ Or, if you'd rather use the explicit api:
 
 .. code-block:: python
 
-    pizza = factory.blueprint('food.Pizza').fields(
+    from food.models import Pizza
+
+    pizza = factory.blueprint(Pizza).fields(
             chef=user,
             thickness=1
         )
@@ -368,9 +404,10 @@ Seeding the faker
 
 .. code-block:: python
 
+    from django.contrib.auth.models import User
     from django_fakery import factory
 
-    factory.m('auth.User', seed=1234, quantity=4)(
+    factory.m(User, seed=1234, quantity=4)(
         username='regularuser_{}'
     )
 

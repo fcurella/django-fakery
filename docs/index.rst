@@ -25,9 +25,10 @@ QuickStart
 .. code-block:: python
 
     from django_fakery import factory
+    from myapp.models import MyModel
 
     factory.make(
-        'app.Model',
+        MyModel,
         fields={
             'field': 'value',
         }
