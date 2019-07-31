@@ -360,6 +360,7 @@ Blueprints
 Use a blueprint:
 
 .. code-block:: python
+
     from django.contrib.auth.models import User
     from django_fakery import factory
 
