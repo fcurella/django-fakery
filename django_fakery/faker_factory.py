@@ -71,12 +71,12 @@ class Factory(Generic[T]):
         return Blueprint(get_model(model), *args, **kwargs)
 
     @overload
-    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):
+    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], bool, Opt[int]) -> LazyBuilt
         pass
 
     @overload
-    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):
+    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], bool, Opt[int]) -> Built
         pass
 
@@ -200,22 +200,22 @@ class Factory(Generic[T]):
         return instance, m2ms
 
     @overload
-    def build(self, model, fields, pre_save, seed, quantity, make_fks):
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], None, bool) -> LazyBuilt
         pass
 
     @overload
-    def build(self, model, fields, pre_save, seed, quantity, make_fks):
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], None, bool) -> Built
         pass
 
     @overload
-    def build(self, model, fields, pre_save, seed, quantity, make_fks):
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], int, bool) -> List[LazyBuilt]
         pass
 
     @overload
-    def build(self, model, fields, pre_save, seed, quantity, make_fks):
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], int, bool) -> List[Built]
         pass
 
@@ -240,12 +240,12 @@ class Factory(Generic[T]):
             ]
 
     @overload
-    def make_one(self, model, fields, pre_save, post_save, seed, iteration):
+    def make_one(self, model, fields, pre_save, post_save, seed, iteration):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], Opt[int]) -> models.Model
         pass
 
     @overload
-    def make_one(self, model, fields, pre_save, post_save, seed, iteration):
+    def make_one(self, model, fields, pre_save, post_save, seed, iteration):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], Opt[int]) -> T
         pass
 
@@ -281,12 +281,12 @@ class Factory(Generic[T]):
         return instance
 
     @overload
-    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):
+    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
         # type: (str, Opt[Lookup], Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Tuple[models.Model, bool]
         pass
 
     @overload
-    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):
+    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
         # type: (T, Opt[Lookup], Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Tuple[T, bool]
         pass
 
@@ -317,12 +317,12 @@ class Factory(Generic[T]):
         return instance, created
 
     @overload
-    def g_m(self, model, lookup, pre_save, post_save, seed):
+    def g_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
         # type: (str, Opt[Lookup], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Callable[..., models.Model]
         pass
 
     @overload
-    def g_m(self, model, lookup, pre_save, post_save, seed):
+    def g_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
         # type: (T, Opt[Lookup], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Callable[..., T]
         pass
 
@@ -342,12 +342,12 @@ class Factory(Generic[T]):
         return fn
 
     @overload
-    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):
+    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
         # type: (str, Opt[Lookup], Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Tuple[models.Model, bool]
         pass
 
     @overload
-    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):
+    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
         # type: (T, Opt[Lookup], Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Tuple[T, bool]
         pass
 
@@ -386,12 +386,12 @@ class Factory(Generic[T]):
         return instance, created
 
     @overload
-    def u_m(self, model, lookup, pre_save, post_save, seed):
+    def u_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
         # type: (str, Opt[Lookup], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Callable[..., models.Model]
         pass
 
     @overload
-    def u_m(self, model, lookup, pre_save, post_save, seed):
+    def u_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
         # type: (T, Opt[Lookup], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Callable[..., T]
         pass
 
@@ -411,22 +411,22 @@ class Factory(Generic[T]):
         return fn
 
     @overload
-    def make(self, model, fields, pre_save, post_save, seed, quantity):
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], None) -> models.Model
         pass
 
     @overload
-    def make(self, model, fields, pre_save, post_save, seed, quantity):
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> T
         pass
 
     @overload
-    def make(self, model, fields, pre_save, post_save, seed, quantity):
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], int) -> List[models.Model]
         pass
 
     @overload
-    def make(self, model, fields, pre_save, post_save, seed, quantity):
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> List[T]
         pass
 
@@ -450,22 +450,22 @@ class Factory(Generic[T]):
             ]
 
     @overload
-    def m(self, model, pre_save, post_save, seed, quantity):
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (str, Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], None) -> Callable[..., models.Model]
         pass
 
     @overload
-    def m(self, model, pre_save, post_save, seed, quantity):
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (T, Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> Callable[..., T]
         pass
 
     @overload
-    def m(self, model, pre_save, post_save, seed, quantity):
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (str, Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], int) -> Callable[..., List[models.Model]]
         pass
 
     @overload
-    def m(self, model, pre_save, post_save, seed, quantity):
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (T, Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> Callable[..., List[T]]
         pass
 
@@ -485,22 +485,22 @@ class Factory(Generic[T]):
         return fn
 
     @overload
-    def b(self, model, pre_save, seed, quantity, make_fks):
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (str, Opt[LazySaveHooks], Opt[Seed], None, bool) -> Callable[..., LazyBuilt]
         pass
 
     @overload
-    def b(self, model, pre_save, seed, quantity, make_fks):
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (T, Opt[SaveHooks], Opt[Seed], None, bool) -> Callable[..., Built]
         pass
 
     @overload
-    def b(self, model, pre_save, seed, quantity, make_fks):
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (str, Opt[LazySaveHooks], Opt[Seed], int, bool) -> Callable[..., List[LazyBuilt]]
         pass
 
     @overload
-    def b(self, model, pre_save, seed, quantity, make_fks):
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (T, Opt[SaveHooks], Opt[Seed], int, bool) -> Callable[..., List[Built]]
         pass
 

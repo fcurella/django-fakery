@@ -45,12 +45,12 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def make(self, fields, pre_save, post_save, seed, quantity):
+    def make(self, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> T
         pass
 
     @overload
-    def make(self, fields, pre_save, post_save, seed, quantity):
+    def make(self, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> List[T]
         pass
 
@@ -74,12 +74,12 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def build(self, fields, pre_save, seed, quantity, make_fks):
+    def build(self, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[Seed], None, bool) -> Built
         pass
 
     @overload
-    def build(self, fields, pre_save, seed, quantity, make_fks):
+    def build(self, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[Seed], int, bool) -> List[Built]
         pass
 
@@ -98,12 +98,12 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def m(self, pre_save, post_save, seed, quantity):
+    def m(self, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> Callable[..., T]
         pass
 
     @overload
-    def m(self, pre_save, post_save, seed, quantity):
+    def m(self, pre_save, post_save, seed, quantity):  # pragma: no cover
         # type: (Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> Callable[..., List[T]]
         pass
 
@@ -122,12 +122,12 @@ class Blueprint(Generic[T]):
         return fn
 
     @overload
-    def b(self, pre_save, seed, quantity, make_fks):
+    def b(self, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (Opt[SaveHooks], Opt[Seed], None, bool) -> Callable[..., Built]
         pass
 
     @overload
-    def b(self, pre_save, seed, quantity, make_fks):
+    def b(self, pre_save, seed, quantity, make_fks):  # pragma: no cover
         # type: (Opt[SaveHooks], Opt[Seed], int, bool) -> Callable[..., List[Built]]
         pass
 
