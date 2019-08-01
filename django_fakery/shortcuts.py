@@ -6,16 +6,16 @@ from django.utils import timezone
 
 from faker import Faker
 
-from .compat import NoReturn
-
 ParsableDate = Union[str, int, datetime, timedelta]
 
 
-def get_timezone() -> Optional[tzinfo]:
+def get_timezone():
+    # type: () -> Optional[tzinfo]
     return timezone.get_current_timezone() if settings.USE_TZ else None
 
 
-def future_datetime(end: ParsableDate = "+30d") -> Callable[[int, Faker], datetime]:
+def future_datetime(end="+30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], datetime]
     """
     Returns a ``datetime`` object in the future (that is, 1 second from now) up
     to the specified ``end``. ``end`` can be a string, another datetime, or a
@@ -33,7 +33,8 @@ def future_datetime(end: ParsableDate = "+30d") -> Callable[[int, Faker], dateti
     return lambda n, f: f.future_datetime(end_date=end, tzinfo=get_timezone())
 
 
-def future_date(end: ParsableDate = "+30d") -> Callable[[int, Faker], date]:
+def future_date(end="+30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], date]
     """
     Returns a ``date`` object in the future (that is, 1 day from now) up to
     the specified ``end``. ``end`` can be a string, another date, or a
@@ -51,7 +52,8 @@ def future_date(end: ParsableDate = "+30d") -> Callable[[int, Faker], date]:
     return lambda n, f: f.future_date(end_date=end, tzinfo=get_timezone())
 
 
-def past_datetime(start: ParsableDate = "-30d") -> Callable[[int, Faker], datetime]:
+def past_datetime(start="-30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], datetime]
     """
     Returns a ``datetime`` object in the past between 1 second ago and the
     specified ``start``. ``start`` can be a string, another datetime, or a
@@ -69,7 +71,8 @@ def past_datetime(start: ParsableDate = "-30d") -> Callable[[int, Faker], dateti
     return lambda n, f: f.past_datetime(start_date=start, tzinfo=get_timezone())
 
 
-def past_date(start: ParsableDate = "-30d") -> Callable[[int, Faker], date]:
+def past_date(start="-30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], date]
     """
     Returns a ``date`` object in the past between 1 day ago and the
     specified ``start``. ``start`` can be a string, another date, or a
