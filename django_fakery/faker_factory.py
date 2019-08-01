@@ -44,7 +44,7 @@ class Factory(Generic[T]):
         model_fields = dict(get_model_fields(instance))
         attrs = {}
         for k, v in model_to_dict(instance).items():
-            if k == instance._meta.pk.name:
+            if k == instance._meta.pk.name:  # type: ignore
                 continue
 
             if isinstance(v, (list, models.QuerySet)):
