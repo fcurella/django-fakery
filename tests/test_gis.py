@@ -7,7 +7,7 @@ from django.test import TestCase
 from django_fakery import factory
 from django_fakery.compat import HAS_GEOS
 
-PYPY3 = hasattr(sys, 'pypy_version_info') and sys.version_info.major >= 3
+PYPY3 = hasattr(sys, "pypy_version_info") and sys.version_info.major >= 3
 
 
 @skipUnless(HAS_GEOS, "Requires GEOS")
@@ -16,7 +16,7 @@ class GisTest(TestCase):
     def test_gis_fields(self):
         from django.contrib.gis import gdal, geos
 
-        gigis = factory.make('tests.Pizzeria')
+        gigis = factory.make("tests.Pizzeria")
         self.assertTrue(isinstance(gigis.hq, geos.Point))
         self.assertTrue(isinstance(gigis.directions, geos.LineString))
         self.assertTrue(isinstance(gigis.floor_plan, geos.Polygon))

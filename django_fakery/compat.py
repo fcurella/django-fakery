@@ -1,7 +1,13 @@
 from django.core.exceptions import ImproperlyConfigured
 
 try:
+    from typing import NoReturn
+except ImportError:
+    NoReturn = None
+
+try:
     import psycopg2
+
     HAS_PSYCOPG2 = True
 except ImportError:
     psycopg2 = None
@@ -9,6 +15,7 @@ except ImportError:
 
 try:
     from django.contrib.gis.geos.libgeos import geos_version_info
-    HAS_GEOS = geos_version_info()['version'] >= '3.3.0'
+
+    HAS_GEOS = geos_version_info()["version"] >= "3.3.0"
 except (ImportError, OSError, ImproperlyConfigured):
     HAS_GEOS = False
