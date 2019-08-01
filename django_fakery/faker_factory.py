@@ -42,7 +42,7 @@ class Factory(Generic[T]):
     def _serialize_instance(self, instance):
         # type: (models.Model) -> FieldMap
         model_fields = dict(get_model_fields(instance))
-        attrs = {}
+        attrs = {}  # type: FieldMap
         for k, v in model_to_dict(instance).items():
             if k == instance._meta.pk.name:  # type: ignore
                 continue
