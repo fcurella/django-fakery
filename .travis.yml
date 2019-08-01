@@ -4,26 +4,26 @@ branches:
   only:
     - master
 addons:
-  postgresql: "9.5"
+  postgresql: 9.6
   apt:
     packages:
-      - postgresql-9.5-postgis-2.3
+      - postgresql-9.6
+      - postgresql-client-9.6
+      - postgresql-9.6-postgis-2.4
 python:
   - 2.7
-  - 3.4
   - 3.5
   - 3.6
-  - "pypy-5.3.1"
-  - "pypy3"
+  - "pypy2.7-6.0"
+  - "pypy3.5"
 env:
-
   - DJANGO="Django>=1.11,<1.12"
   - DJANGO="Django>=2.0,<2.1"
 matrix:
   exclude:
     - python: 2.7
       env: DJANGO="Django>=2.0,<2.1"
-    - python: "pypy-5.3.1"
+    - python: "2.7-6.0"
       env: DJANGO="Django>=2.0,<2.1"
 before_script:
   - psql -c 'CREATE DATABASE travis_postgis;' -U postgres
