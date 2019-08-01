@@ -23,7 +23,7 @@ matrix:
   exclude:
     - python: 2.7
       env: DJANGO="Django>=2.0,<2.1"
-    - python: "2.7-6.0"
+    - python: "pypy2.7-6.0"
       env: DJANGO="Django>=2.0,<2.1"
 before_script:
   - psql -c 'CREATE DATABASE travis_postgis;' -U postgres
