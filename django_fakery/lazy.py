@@ -1,11 +1,9 @@
 from typing import Any
 
-from .compat import NoReturn
-
 
 class Lazy(object):
     def __init__(self, name, *args, **kwargs):
-        # type (str, *Any, **Any) -> NoReturn
+        # type (str, *Any, **Any) -> None
         self.name = name
         self.args = args
         self.kwargs = kwargs

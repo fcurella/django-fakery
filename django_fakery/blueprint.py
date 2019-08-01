@@ -3,13 +3,12 @@ from typing import Any, Callable, Generic, List
 from typing import Optional as Opt
 from typing import overload
 
-from .compat import NoReturn
 from .types import Built, FieldMap, SaveHooks, Seed, T
 
 
 class Blueprint(Generic[T]):
     def __init__(self, model, fields=None, pre_save=None, post_save=None, seed=None):
-        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> NoReturn
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> None
         from .faker_factory import factory
 
         self.factory = factory

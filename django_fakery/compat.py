@@ -1,9 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
 
-try:
-    from typing import NoReturn
-except ImportError:
-    NoReturn = None
 
 try:
     import psycopg2

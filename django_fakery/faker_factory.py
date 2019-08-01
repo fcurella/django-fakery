@@ -1,11 +1,10 @@
 import random
 
 from functools import partial
-from typing import Callable, Generic, List
+from typing import Any, Callable, Dict, Generic, List
 from typing import Optional as Opt
-from typing import Tuple, Union, overload
+from typing import Union, Tuple, overload
 
-from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -14,15 +13,13 @@ from django.db.models.fields import NOT_PROVIDED
 from django.forms.models import model_to_dict
 
 from faker import Factory as FakerFactory
-from six import string_types
 
 from . import rels
 from .blueprint import Blueprint
-from .compat import NoReturn
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .types import Built, FieldMap, LazyBuilt, LazySaveHooks, Lookup, SaveHooks, Seed, T
-from .utils import get_model_fields, language_to_locale, set_related
+from .utils import get_model_fields, language_to_locale, set_related, get_model
 from .values import Evaluator
 
 user_model = get_user_model()
@@ -34,34 +31,16 @@ class Empty(object):
     pass
 
 
-fks_cache = {}
-
-
-@overload
-def get_model(model):
-    # type: (str) -> models.Model
-    pass
-
-
-@overload
-def get_model(model):
-    # type: (T) -> T
-    pass
-
-
-def get_model(model):
-    if isinstance(model, string_types):
-        model = apps.get_model(*model.split("."))
-    return model
+fks_cache = {}  # type: Dict[str, Any]
 
 
 class Factory(Generic[T]):
     def __init__(self, fake=None):
-        # type: (Optional[Factory]) -> NoReturn
+        # type: (Opt[Factory]) -> None
         self.fake = fake or FakerFactory.create(locale)
 
     def _serialize_instance(self, instance):
-        # type (models.Model) -> FieldMap
+        # type: (models.Model) -> FieldMap
         model_fields = dict(get_model_fields(instance))
         attrs = {}
         for k, v in model_to_dict(instance).items():
@@ -82,23 +61,23 @@ class Factory(Generic[T]):
         return attrs
 
     def seed(self, seed, set_global=False):
-        # type: (Seed, bool) -> NoReturn
+        # type: (Seed, bool) -> None
         self.fake.seed(seed)
         if set_global:
             random.seed(seed)
 
     def blueprint(self, model, *args, **kwargs):
-        # type (Union[str, models.Model], *Any, **Any) -> Blueprint
+        # type: (Union[str, models.Model], *Any, **Any) -> Blueprint
         return Blueprint(get_model(model), *args, **kwargs)
 
     @overload
     def build_one(self, model, fields, pre_save, seed, make_fks, iteration):
-        # type (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], bool, Opt[int]) -> LazyBuilt
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], bool, Opt[int]) -> LazyBuilt
         pass
 
     @overload
     def build_one(self, model, fields, pre_save, seed, make_fks, iteration):
-        # type (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], bool, Opt[int]) -> Built
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], bool, Opt[int]) -> Built
         pass
 
     def build_one(
@@ -541,4 +520,4 @@ class Factory(Generic[T]):
         return fn
 
 
-factory = Factory()
+factory = Factory()  # type: Factory
