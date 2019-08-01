@@ -15,7 +15,7 @@ class Blueprint(Generic[T]):
         fields: Opt[FieldMap] = None,
         pre_save: Opt[SaveHooks] = None,
         post_save: Opt[SaveHooks] = None,
-        seed: Opt[Seed] = None,
+        seed: Opt[Seed] = None
     ):
         from .faker_factory import factory
 
@@ -39,7 +39,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks] = None,
         post_save: Opt[SaveHooks] = None,
         seed: Opt[Seed] = None,
-        iteration: Opt[int] = None,
+        iteration: Opt[int] = None
     ) -> T:
         _fields = self._fields.copy()
         if fields:
@@ -64,7 +64,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> T:
         pass
 
@@ -105,7 +105,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: None,
-        make_fks: bool,
+        make_fks: bool
     ) -> T:
         pass
 
@@ -116,7 +116,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: int,
-        make_fks: bool,
+        make_fks: bool
     ) -> List[T]:
         pass
 
@@ -142,7 +142,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> Callable[..., T]:
         pass
 
@@ -152,7 +152,7 @@ class Blueprint(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: int,
+        quantity: int
     ) -> Callable[..., List[T]]:
         pass
 

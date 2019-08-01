@@ -94,7 +94,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks] = None,
         seed: Opt[Seed] = None,
         make_fks: bool = False,
-        iteration: Opt[int] = None,
+        iteration: Opt[int] = None
     ) -> models.Model:
         pass
 
@@ -106,7 +106,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks] = None,
         seed: Opt[Seed] = None,
         make_fks: bool = False,
-        iteration: Opt[int] = None,
+        iteration: Opt[int] = None
     ) -> T:
         pass
 
@@ -117,7 +117,7 @@ class Factory(Generic[T]):
         pre_save=None,
         seed=None,
         make_fks: bool = False,
-        iteration=None,
+        iteration=None
     ):
         if fields is None:
             fields = {}
@@ -237,7 +237,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
         quantity: None,
-        make_fks: bool,
+        make_fks: bool
     ) -> models.Model:
         pass
 
@@ -249,7 +249,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: None,
-        make_fks: bool,
+        make_fks: bool
     ) -> T:
         pass
 
@@ -261,7 +261,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
         quantity: int,
-        make_fks: bool,
+        make_fks: bool
     ) -> List[models.Model]:
         pass
 
@@ -273,7 +273,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: int,
-        make_fks: bool,
+        make_fks: bool
     ) -> List[T]:
         pass
 
@@ -284,7 +284,7 @@ class Factory(Generic[T]):
         pre_save=None,
         seed=None,
         quantity=None,
-        make_fks=False,
+        make_fks=False
     ):
         if fields is None:
             fields = {}
@@ -305,7 +305,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
-        iteration: Opt[int],
+        iteration: Opt[int]
     ) -> models.Model:
         pass
 
@@ -317,7 +317,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        iteration: Opt[int],
+        iteration: Opt[int]
     ) -> T:
         pass
 
@@ -328,7 +328,7 @@ class Factory(Generic[T]):
         pre_save=None,
         post_save=None,
         seed=None,
-        iteration=None,
+        iteration=None
     ):
         if fields is None:
             fields = {}
@@ -360,7 +360,7 @@ class Factory(Generic[T]):
         fields: Opt[FieldMap],
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Tuple[models.Model, bool]:
         pass
 
@@ -372,7 +372,7 @@ class Factory(Generic[T]):
         fields: Opt[FieldMap],
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Tuple[T, bool]:
         pass
 
@@ -409,7 +409,7 @@ class Factory(Generic[T]):
         lookup: Opt[Lookup],
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Callable[..., models.Model]:
         pass
 
@@ -420,7 +420,7 @@ class Factory(Generic[T]):
         lookup: Opt[Lookup],
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Callable[..., T]:
         pass
 
@@ -447,7 +447,7 @@ class Factory(Generic[T]):
         fields: Opt[FieldMap],
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Tuple[models.Model, bool]:
         pass
 
@@ -459,7 +459,7 @@ class Factory(Generic[T]):
         fields: Opt[FieldMap],
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Tuple[T, bool]:
         pass
 
@@ -504,7 +504,7 @@ class Factory(Generic[T]):
         lookup: Opt[Lookup],
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Callable[..., models.Model]:
         pass
 
@@ -515,7 +515,7 @@ class Factory(Generic[T]):
         lookup: Opt[Lookup],
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
-        seed: Opt[Seed],
+        seed: Opt[Seed]
     ) -> Callable[..., T]:
         pass
 
@@ -542,7 +542,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> models.Model:
         pass
 
@@ -554,7 +554,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> T:
         pass
 
@@ -566,7 +566,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
-        quantity: int,
+        quantity: int
     ) -> List[models.Model]:
         pass
 
@@ -578,7 +578,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: int,
+        quantity: int
     ) -> List[T]:
         pass
 
@@ -589,7 +589,7 @@ class Factory(Generic[T]):
         pre_save=None,
         post_save=None,
         seed=None,
-        quantity=None,
+        quantity=None
     ):
         if fields is None:
             fields = {}
@@ -608,7 +608,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> Callable[..., models.Model]:
         pass
 
@@ -619,7 +619,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: None,
+        quantity: None
     ) -> Callable[..., T]:
         pass
 
@@ -630,7 +630,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         post_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
-        quantity: int,
+        quantity: int
     ) -> Callable[..., List[models.Model]]:
         pass
 
@@ -641,7 +641,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         post_save: Opt[SaveHooks],
         seed: Opt[Seed],
-        quantity: int,
+        quantity: int
     ) -> Callable[..., List[T]]:
         pass
 
@@ -667,7 +667,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
         quantity: None,
-        make_fks: bool,
+        make_fks: bool
     ) -> Callable[..., models.Model]:
         pass
 
@@ -678,7 +678,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: None,
-        make_fks: bool,
+        make_fks: bool
     ) -> Callable[..., T]:
         pass
 
@@ -689,7 +689,7 @@ class Factory(Generic[T]):
         pre_save: Opt[LazySaveHooks],
         seed: Opt[Seed],
         quantity: int,
-        make_fks: bool,
+        make_fks: bool
     ) -> Callable[..., List[models.Model]]:
         pass
 
@@ -700,7 +700,7 @@ class Factory(Generic[T]):
         pre_save: Opt[SaveHooks],
         seed: Opt[Seed],
         quantity: int,
-        make_fks: bool,
+        make_fks: bool
     ) -> Callable[..., List[T]]:
         pass
 
