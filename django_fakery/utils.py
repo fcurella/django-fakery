@@ -1,5 +1,6 @@
 from typing import overload
 
+from django.apps import apps
 from django.db import models
 
 from six import string_types

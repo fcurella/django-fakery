@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from django_fakery.utils import language_to_locale, get_model
+from django_fakery.utils import get_model, language_to_locale
 from tests.models import Chef
 
 

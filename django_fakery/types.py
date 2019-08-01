@@ -1,7 +1,6 @@
-from typing import Any, AnyStr, Callable, Dict, List, Type, Tuple, TypeVar, Union
+from typing import Any, AnyStr, Callable, Dict, List, Tuple, Type, TypeVar, Union
 
 from django.db import models
-
 
 T = TypeVar("T", bound=models.Model)
 Seed = Union[AnyStr, bytearray, int]

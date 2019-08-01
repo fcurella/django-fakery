@@ -1,6 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
 
-
 try:
     import psycopg2
 

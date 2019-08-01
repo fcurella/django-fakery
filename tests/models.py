@@ -6,7 +6,6 @@ from django.db import models
 
 from django_fakery.compat import HAS_GEOS
 
-
 if not HAS_GEOS:
 
     class Chef(models.Model):

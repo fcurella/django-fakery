@@ -3,7 +3,7 @@ import random
 from functools import partial
 from typing import Any, Callable, Dict, Generic, List
 from typing import Optional as Opt
-from typing import Union, Tuple, overload
+from typing import Tuple, Union, overload
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -19,7 +19,7 @@ from .blueprint import Blueprint
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .types import Built, FieldMap, LazyBuilt, LazySaveHooks, Lookup, SaveHooks, Seed, T
-from .utils import get_model_fields, language_to_locale, set_related, get_model
+from .utils import get_model, get_model_fields, language_to_locale, set_related
 from .values import Evaluator
 
 user_model = get_user_model()
