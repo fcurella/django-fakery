@@ -21,6 +21,7 @@ setup(
     long_description=README,
     license="MIT",
     packages=find_packages(exclude=["docs", "tests", "tests.*"]),
+    package_data={"django_fakery": ["py.typed"]},
     platforms=["any"],
     classifiers=[
         "Development Status :: 4 - Beta",
