@@ -1,5 +1,6 @@
-from functools import partial
 import random
+
+from functools import partial
 
 from django.apps import apps
 from django.conf import settings
@@ -9,15 +10,15 @@ from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 from django.forms.models import model_to_dict
 
-from faker import Factory as FakerFactory
 from six import string_types
 
+from faker import Factory as FakerFactory
+
+from . import rels
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
 from .utils import get_model_fields, language_to_locale, set_related
 from .values import Evaluator
-from . import rels
-
 
 user_model = get_user_model()
 

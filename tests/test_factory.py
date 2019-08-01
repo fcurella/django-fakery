@@ -1,11 +1,10 @@
 from decimal import Decimal
 
-from django.utils import timezone
 from django.test import TestCase
+from django.utils import timezone
 
-from django_fakery import factory, Lazy, rels
+from django_fakery import Lazy, factory, rels
 from django_fakery.exceptions import ForeignKeyError
-
 from tests.models import Chef, Pizza
 
 

@@ -1,7 +1,8 @@
 from django.utils import text, timezone
+
 from faker.generator import random
 
-from .compat import HAS_PSYCOPG2, HAS_GEOS
+from .compat import HAS_GEOS, HAS_PSYCOPG2
 
 
 def comma_sep_integers(faker, field, *args, **kwargs):

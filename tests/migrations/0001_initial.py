@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django import VERSION as django_version
+import django.contrib.postgres.fields
+import django.contrib.postgres.fields.hstore
 
-from django.db import models, migrations
+from django import VERSION as django_version
+from django.contrib.postgres.operations import HStoreExtension
+from django.db import migrations, models
 
 try:
     from django.contrib.gis.geos.libgeos import geos_version_info
@@ -14,9 +17,6 @@ except (ImportError, OSError):
 if HAS_GEOS:
     import django.contrib.gis.db.models.fields
 
-from django.contrib.postgres.operations import HStoreExtension
-import django.contrib.postgres.fields
-import django.contrib.postgres.fields.hstore
 
 
 class Migration(migrations.Migration):

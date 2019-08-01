@@ -1,6 +1,5 @@
 from django_fakery import Blueprint, factory, shortcuts
 
-
 chef = factory.blueprint(
     'tests.Chef',
     fields={

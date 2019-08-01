@@ -1,7 +1,6 @@
-from django.utils.timezone import get_current_timezone
-
-from django.utils import timezone
 from django.test import TestCase
+from django.utils import timezone
+from django.utils.timezone import get_current_timezone
 
 from tests.blueprints import pizza, pizza_short
 

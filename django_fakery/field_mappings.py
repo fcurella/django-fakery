@@ -1,15 +1,14 @@
-from collections import OrderedDict
-
 import sys
+
+from collections import OrderedDict
 
 from django.conf import settings
 from django.contrib.postgres import fields as pg_fields
 from django.db import models
 from django.utils import timezone
 
-from .compat import HAS_PSYCOPG2, HAS_GEOS
 from . import fakes
-
+from .compat import HAS_GEOS, HAS_PSYCOPG2
 
 STRING_FIELDS = (
     models.CharField, models.TextField,

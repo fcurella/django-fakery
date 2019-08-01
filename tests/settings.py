@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 from django_fakery.compat import HAS_GEOS
 

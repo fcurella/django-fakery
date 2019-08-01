@@ -1,8 +1,10 @@
 from decimal import Decimal
+
 from django import VERSION as django_version
-from django_fakery.compat import HAS_GEOS
 from django.contrib.postgres import fields as postgres_fields
 from django.db import models
+
+from django_fakery.compat import HAS_GEOS
 
 
 class Chef(models.Model):

@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-import os, sys, warnings
+import os
+import sys
+import warnings
+
+from django.conf import settings
+
+from django_fakery.compat import HAS_GEOS
 
 warnings.simplefilter('error', RuntimeWarning)
 
@@ -8,8 +14,6 @@ if hasattr(sys, 'pypy_version_info'):
     from psycopg2cffi import compat
     compat.register()
 
-from django.conf import settings
-from django_fakery.compat import HAS_GEOS
 
 
 DISABLE_SERVER_SIDE_CURSORS = False

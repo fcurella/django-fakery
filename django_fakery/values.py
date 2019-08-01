@@ -1,4 +1,5 @@
 from functools import partial
+
 from django.db import models
 
 from six import string_types

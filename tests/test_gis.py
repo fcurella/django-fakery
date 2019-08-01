@@ -1,10 +1,11 @@
 import sys
+
 from unittest import skipIf, skipUnless
 
 from django.test import TestCase
+
 from django_fakery import factory
 from django_fakery.compat import HAS_GEOS
-
 
 PYPY3 = hasattr(sys, 'pypy_version_info') and sys.version_info.major >= 3
 
@@ -24,4 +25,3 @@ class GisTest(TestCase):
         self.assertTrue(isinstance(gigis.delivery_areas, geos.MultiPolygon))
         self.assertTrue(isinstance(gigis.all_the_things, geos.GeometryCollection))
         self.assertTrue(isinstance(gigis.rast, gdal.GDALRaster))
-
