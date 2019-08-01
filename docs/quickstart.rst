@@ -17,6 +17,24 @@ QuickStart
 
     factory.m('app.Model')(field='value')
 
+If you're having issues with circular imports, you can also reference a model by using the ``M`` utility function:
+
+.. code-block:: python
+
+    from django_fakery import factory, M
+
+    factory.m(M("myapp.MyModel"))(field="value")
+
+
+If you really don't like to have to import things, you could also just reference a model by using the ``<app_label>.<ModelName>`` syntax. This is not encouraged, as it will likely break type-hinting:
+
+.. code-block:: python
+
+    from django_fakery import factory
+
+    factory.m("myapp.MyModel")(field="value")
+
+
 If you use ``pytest``, you can use the ``fakery`` fixture (requires ``pytest`` and ``pytest-django``):
 
 .. code-block:: python

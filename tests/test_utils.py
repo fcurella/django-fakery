@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from django_fakery.utils import language_to_locale
+from django_fakery.utils import get_model, language_to_locale
+from tests.models import Chef
 
 
 class UtilsTest(TestCase):
@@ -10,3 +11,10 @@ class UtilsTest(TestCase):
 
         locale = language_to_locale("en-us")
         self.assertEqual(locale, "en_US")
+
+    def test_model(self):
+        Model = get_model(Chef)
+        self.assertEqual(Chef, Model)
+
+        Model = get_model('tests.Chef')
+        self.assertEqual(Chef, Model)

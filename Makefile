@@ -1,6 +1,9 @@
 test:
 	python setup.py test
 
+mypy:
+	mypy django_fakery
+
 isort:
 	isort -rc --atomic .
 

@@ -21,6 +21,7 @@ setup(
     long_description=README,
     license="MIT",
     packages=find_packages(exclude=["docs", "tests", "tests.*"]),
+    package_data={"django_fakery": ["py.typed"]},
     platforms=["any"],
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -37,6 +38,7 @@ setup(
     ],
     entry_points={"pytest11": ["django_fakery = django_fakery.plugin"]},
     install_requires=["Faker>=2.0,<2.1", "Django>=1.11", "six>=1.10.1"],
+    extras_require={':python_version<="3.5"': ["typing"]},
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     test_suite="tests.runtests.runtests",
 )

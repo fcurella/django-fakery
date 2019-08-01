@@ -1,8 +1,10 @@
 import random
 
 from functools import partial
+from typing import Any, Callable, Dict, Generic, List
+from typing import Optional as Opt
+from typing import Tuple, Union, overload
 
-from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -10,14 +12,14 @@ from django.db import models
 from django.db.models.fields import NOT_PROVIDED
 from django.forms.models import model_to_dict
 
-from six import string_types
-
 from faker import Factory as FakerFactory
 
 from . import rels
+from .blueprint import Blueprint
 from .exceptions import ForeignKeyError
 from .lazy import Lazy
-from .utils import get_model_fields, language_to_locale, set_related
+from .types import Built, FieldMap, LazyBuilt, LazySaveHooks, Lookup, SaveHooks, Seed, T
+from .utils import get_model, get_model_fields, language_to_locale, set_related
 from .values import Evaluator
 
 user_model = get_user_model()
@@ -29,23 +31,20 @@ class Empty(object):
     pass
 
 
-fks_cache = {}
+fks_cache = {}  # type: Dict[str, Any]
 
 
-class Factory(object):
+class Factory(Generic[T]):
     def __init__(self, fake=None):
+        # type: (Opt[Factory]) -> None
         self.fake = fake or FakerFactory.create(locale)
 
-    def _get_model(self, model):
-        if isinstance(model, string_types):
-            model = apps.get_model(*model.split("."))
-        return model
-
     def _serialize_instance(self, instance):
+        # type: (models.Model) -> FieldMap
         model_fields = dict(get_model_fields(instance))
-        attrs = {}
+        attrs = {}  # type: FieldMap
         for k, v in model_to_dict(instance).items():
-            if k == instance._meta.pk.name:
+            if k == instance._meta.pk.name:  # type: ignore
                 continue
 
             if isinstance(v, (list, models.QuerySet)):
@@ -62,16 +61,34 @@ class Factory(object):
         return attrs
 
     def seed(self, seed, set_global=False):
+        # type: (Seed, bool) -> None
         self.fake.seed(seed)
         if set_global:
             random.seed(seed)
 
-    def blueprint(self, *args, **kwargs):
-        from .blueprint import Blueprint
+    def blueprint(self, model, *args, **kwargs):
+        # type: (Union[str, models.Model], *Any, **Any) -> Blueprint
+        return Blueprint(get_model(model), *args, **kwargs)
 
-        return Blueprint(*args, **kwargs)
+    @overload
+    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], bool, Opt[int]) -> LazyBuilt
+        pass
 
-    def build_one(self, model, fields=None, pre_save=None, seed=None, make_fks=False, iteration=None):
+    @overload
+    def build_one(self, model, fields, pre_save, seed, make_fks, iteration):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], bool, Opt[int]) -> Built
+        pass
+
+    def build_one(
+        self,
+        model,
+        fields=None,
+        pre_save=None,
+        seed=None,
+        make_fks=False,
+        iteration=None
+    ):
         if fields is None:
             fields = {}
 
@@ -86,7 +103,7 @@ class Factory(object):
 
         evaluator = Evaluator(fake, factory=self, iteration=iteration)
 
-        model = self._get_model(model)
+        model = get_model(model)
         instance = model()
         m2ms = {}
         lazies = []
@@ -182,19 +199,65 @@ class Factory(object):
 
         return instance, m2ms
 
-    def build(self, model, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
+    @overload
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], None, bool) -> LazyBuilt
+        pass
+
+    @overload
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], None, bool) -> Built
+        pass
+
+    @overload
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[Seed], int, bool) -> List[LazyBuilt]
+        pass
+
+    @overload
+    def build(self, model, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[Seed], int, bool) -> List[Built]
+        pass
+
+    def build(
+        self,
+        model,
+        fields=None,
+        pre_save=None,
+        seed=None,
+        quantity=None,
+        make_fks=False
+    ):
         if fields is None:
             fields = {}
 
-        if quantity:
+        if quantity is None:
+            return self.build_one(model, fields, pre_save, seed, make_fks)[0]
+        else:
             return [
                 self.build_one(model, fields, pre_save, seed, make_fks, i)[0]
                 for i in range(quantity)
             ]
-        else:
-            return self.build_one(model, fields, pre_save, seed, make_fks)[0]
 
-    def make_one(self, model, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
+    @overload
+    def make_one(self, model, fields, pre_save, post_save, seed, iteration):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], Opt[int]) -> models.Model
+        pass
+
+    @overload
+    def make_one(self, model, fields, pre_save, post_save, seed, iteration):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], Opt[int]) -> T
+        pass
+
+    def make_one(
+        self,
+        model,
+        fields=None,
+        pre_save=None,
+        post_save=None,
+        seed=None,
+        iteration=None
+    ):
         if fields is None:
             fields = {}
 
@@ -217,7 +280,19 @@ class Factory(object):
             func(instance)
         return instance
 
-    def get_or_make(self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None):
+    @overload
+    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
+        # type: (str, Opt[Lookup], Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Tuple[models.Model, bool]
+        pass
+
+    @overload
+    def get_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
+        # type: (T, Opt[Lookup], Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Tuple[T, bool]
+        pass
+
+    def get_or_make(
+        self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None
+    ):
         if lookup is None:
             lookup = {}
         if fields is None:
@@ -230,7 +305,7 @@ class Factory(object):
         attrs = self._serialize_instance(instance)
         for k in lookup:
             attrs.pop(k, None)
-        instance, created = self._get_model(model).objects.get_or_create(
+        instance, created = get_model(model).objects.get_or_create(
             defaults=attrs, **lookup
         )
 
@@ -240,6 +315,16 @@ class Factory(object):
         for func in post_save:
             func(instance)
         return instance, created
+
+    @overload
+    def g_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
+        # type: (str, Opt[Lookup], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Callable[..., models.Model]
+        pass
+
+    @overload
+    def g_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
+        # type: (T, Opt[Lookup], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Callable[..., T]
+        pass
 
     def g_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
         build = partial(
@@ -256,6 +341,16 @@ class Factory(object):
 
         return fn
 
+    @overload
+    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
+        # type: (str, Opt[Lookup], Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Tuple[models.Model, bool]
+        pass
+
+    @overload
+    def update_or_make(self, model, lookup, fields, pre_save, post_save, seed):  # pragma: no cover
+        # type: (T, Opt[Lookup], Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Tuple[T, bool]
+        pass
+
     def update_or_make(
         self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None
     ):
@@ -266,7 +361,7 @@ class Factory(object):
         if post_save is None:
             post_save = []
 
-        model_class = self._get_model(model)
+        model_class = get_model(model)
 
         try:
             instance = model_class.objects.get(**lookup)
@@ -290,6 +385,16 @@ class Factory(object):
 
         return instance, created
 
+    @overload
+    def u_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
+        # type: (str, Opt[Lookup], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed]) -> Callable[..., models.Model]
+        pass
+
+    @overload
+    def u_m(self, model, lookup, pre_save, post_save, seed):  # pragma: no cover
+        # type: (T, Opt[Lookup], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> Callable[..., T]
+        pass
+
     def u_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
         build = partial(
             self.update_or_make,
@@ -305,16 +410,64 @@ class Factory(object):
 
         return fn
 
-    def make(self, model, fields=None, pre_save=None, post_save=None, seed=None, quantity=None):
+    @overload
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], None) -> models.Model
+        pass
+
+    @overload
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> T
+        pass
+
+    @overload
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (str, Opt[FieldMap], Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], int) -> List[models.Model]
+        pass
+
+    @overload
+    def make(self, model, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> List[T]
+        pass
+
+    def make(
+        self,
+        model,
+        fields=None,
+        pre_save=None,
+        post_save=None,
+        seed=None,
+        quantity=None
+    ):
         if fields is None:
             fields = {}
-        if quantity:
+        if quantity is None:
+            return self.make_one(model, fields, pre_save, post_save, seed)
+        else:
             return [
                 self.make_one(model, fields, pre_save, post_save, seed, i)
                 for i in range(quantity)
             ]
-        else:
-            return self.make_one(model, fields, pre_save, post_save, seed)
+
+    @overload
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (str, Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], None) -> Callable[..., models.Model]
+        pass
+
+    @overload
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (T, Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> Callable[..., T]
+        pass
+
+    @overload
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (str, Opt[LazySaveHooks], Opt[LazySaveHooks], Opt[Seed], int) -> Callable[..., List[models.Model]]
+        pass
+
+    @overload
+    def m(self, model, pre_save, post_save, seed, quantity):  # pragma: no cover
+        # type: (T, Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> Callable[..., List[T]]
+        pass
 
     def m(self, model, pre_save=None, post_save=None, seed=None, quantity=None):
         make = partial(
@@ -330,6 +483,26 @@ class Factory(object):
             return make(fields=kwargs)
 
         return fn
+
+    @overload
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (str, Opt[LazySaveHooks], Opt[Seed], None, bool) -> Callable[..., LazyBuilt]
+        pass
+
+    @overload
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (T, Opt[SaveHooks], Opt[Seed], None, bool) -> Callable[..., Built]
+        pass
+
+    @overload
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (str, Opt[LazySaveHooks], Opt[Seed], int, bool) -> Callable[..., List[LazyBuilt]]
+        pass
+
+    @overload
+    def b(self, model, pre_save, seed, quantity, make_fks):  # pragma: no cover
+        # type: (T, Opt[SaveHooks], Opt[Seed], int, bool) -> Callable[..., List[Built]]
+        pass
 
     def b(self, model, pre_save=None, seed=None, quantity=None, make_fks=False):
         build = partial(
@@ -347,4 +520,4 @@ class Factory(object):
         return fn
 
 
-factory = Factory()
+factory = Factory()  # type: Factory

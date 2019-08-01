@@ -1,9 +1,9 @@
-from django_fakery import Blueprint, factory, shortcuts
+from django_fakery import factory, shortcuts
 
 chef = factory.blueprint("tests.Chef", fields={"first_name": "Chef {}"})
 
 
-pizza = Blueprint(
+pizza = factory.blueprint(
     "tests.Pizza",
     fields={
         "chef": chef,
@@ -16,4 +16,4 @@ pizza = Blueprint(
 
 chef_short = factory.blueprint("tests.Chef").fields(first_name="Chef {}")
 
-pizza_short = Blueprint("tests.Pizza").fields(chef=chef_short, thickness=1)
+pizza_short = factory.blueprint("tests.Pizza").fields(chef=chef_short, thickness=1)

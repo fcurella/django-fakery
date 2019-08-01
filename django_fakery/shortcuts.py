@@ -1,15 +1,24 @@
+from datetime import date, datetime, timedelta, tzinfo
+from typing import Callable, Optional, Union
+
 from django.conf import settings
 from django.utils import timezone
 
+from faker import Faker
+
+ParsableDate = Union[str, int, datetime, timedelta]
+
 
 def get_timezone():
+    # type: () -> Optional[tzinfo]
     return timezone.get_current_timezone() if settings.USE_TZ else None
 
 
 def future_datetime(end="+30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], datetime]
     """
     Returns a ``datetime`` object in the future (that is, 1 second from now) up
-    to the specified ``end``. ``end`` can be a string, anotther datetime, or a
+    to the specified ``end``. ``end`` can be a string, another datetime, or a
     timedelta. If it's a string, it must start with `+`, followed by and integer
     and a unit, Eg: ``'+30d'``. Defaults to `'+30d'`
 
@@ -25,6 +34,7 @@ def future_datetime(end="+30d"):
 
 
 def future_date(end="+30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], date]
     """
     Returns a ``date`` object in the future (that is, 1 day from now) up to
     the specified ``end``. ``end`` can be a string, another date, or a
@@ -43,6 +53,7 @@ def future_date(end="+30d"):
 
 
 def past_datetime(start="-30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], datetime]
     """
     Returns a ``datetime`` object in the past between 1 second ago and the
     specified ``start``. ``start`` can be a string, another datetime, or a
@@ -61,6 +72,7 @@ def past_datetime(start="-30d"):
 
 
 def past_date(start="-30d"):
+    # type: (ParsableDate) -> Callable[[int, Faker], date]
     """
     Returns a ``date`` object in the past between 1 day ago and the
     specified ``start``. ``start`` can be a string, another date, or a
