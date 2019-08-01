@@ -33,13 +33,12 @@ fks_cache = {}
 
 
 class Factory(object):
-
     def __init__(self, fake=None):
         self.fake = fake or FakerFactory.create(locale)
 
     def _get_model(self, model):
         if isinstance(model, string_types):
-            model = apps.get_model(*model.split('.'))
+            model = apps.get_model(*model.split("."))
         return model
 
     def _serialize_instance(self, instance):
@@ -52,8 +51,10 @@ class Factory(object):
             if isinstance(v, (list, models.QuerySet)):
                 continue
 
-            if isinstance(model_fields[k], models.ForeignKey) and not isinstance(v, models.Model):
-                attrs[k + '_id'] = v
+            if isinstance(model_fields[k], models.ForeignKey) and not isinstance(
+                v, models.Model
+            ):
+                attrs[k + "_id"] = v
                 continue
 
             attrs[k] = v
@@ -67,6 +68,7 @@ class Factory(object):
 
     def blueprint(self, *args, **kwargs):
         from .blueprint import Blueprint
+
         return Blueprint(*args, **kwargs)
 
     def build_one(self, model, fields=None, pre_save=None, seed=None, make_fks=False, iteration=None):
@@ -94,7 +96,7 @@ class Factory(object):
             value = Empty
             field_name = _field_name
 
-            if _field_name.endswith('_id') and model_field.is_relation:
+            if _field_name.endswith("_id") and model_field.is_relation:
                 continue
 
             if isinstance(model_field, models.AutoField):
@@ -103,16 +105,20 @@ class Factory(object):
             if isinstance(model_field, (GenericForeignKey, GenericRelation)):
                 continue
 
-            if field_name not in fields and (model_field.null or model_field.default != NOT_PROVIDED):
+            if field_name not in fields and (
+                model_field.null or model_field.default != NOT_PROVIDED
+            ):
                 continue
 
-            if field_name not in fields and isinstance(model_field, models.ManyToManyField):
+            if field_name not in fields and isinstance(
+                model_field, models.ManyToManyField
+            ):
                 continue
 
             value = fields.get(field_name, Empty)
             if isinstance(model_field, models.ForeignKey):
                 if value == Empty:
-                    value = fields.get(field_name + '_id', Empty)
+                    value = fields.get(field_name + "_id", Empty)
 
                 if value == rels.SELECT:
                     model = model_field.related_model
@@ -139,7 +145,7 @@ class Factory(object):
                         )
                     )
 
-                field_name += '_id'
+                field_name += "_id"
 
             if value != Empty:
                 value = evaluator.evaluate(value)
@@ -154,12 +160,12 @@ class Factory(object):
                 continue
 
             if isinstance(model_field, models.ForeignKey):
-                value = value.pk if hasattr(value, 'pk') else value
+                value = value.pk if hasattr(value, "pk") else value
 
             if isinstance(model_field, models.ManyToManyField):
                 m2ms[field_name] = value
             # special case for user passwords
-            if model == user_model and field_name == 'password':
+            if model == user_model and field_name == "password":
                 instance.set_password(value)
             else:
                 if field_name not in m2ms:
@@ -181,7 +187,10 @@ class Factory(object):
             fields = {}
 
         if quantity:
-            return [self.build_one(model, fields, pre_save, seed, make_fks, i)[0] for i in range(quantity)]
+            return [
+                self.build_one(model, fields, pre_save, seed, make_fks, i)[0]
+                for i in range(quantity)
+            ]
         else:
             return self.build_one(model, fields, pre_save, seed, make_fks)[0]
 
@@ -192,7 +201,9 @@ class Factory(object):
         if post_save is None:
             post_save = []
 
-        instance, m2ms = self.build_one(model, fields, pre_save, seed, make_fks=True, iteration=iteration)
+        instance, m2ms = self.build_one(
+            model, fields, pre_save, seed, make_fks=True, iteration=iteration
+        )
 
         # Sometimes the model's field for the primary key as a default, which
         # means ``instance.pk`` is already set. We pass ``force_insert`` as a
@@ -219,7 +230,9 @@ class Factory(object):
         attrs = self._serialize_instance(instance)
         for k in lookup:
             attrs.pop(k, None)
-        instance, created = self._get_model(model).objects.get_or_create(defaults=attrs, **lookup)
+        instance, created = self._get_model(model).objects.get_or_create(
+            defaults=attrs, **lookup
+        )
 
         for field, relateds in m2ms.items():
             set_related(instance, field, relateds)
@@ -230,7 +243,12 @@ class Factory(object):
 
     def g_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
         build = partial(
-            self.get_or_make, model=model, lookup=lookup, pre_save=pre_save, post_save=post_save, seed=seed
+            self.get_or_make,
+            model=model,
+            lookup=lookup,
+            pre_save=pre_save,
+            post_save=post_save,
+            seed=seed,
         )
 
         def fn(**kwargs):
@@ -238,7 +256,9 @@ class Factory(object):
 
         return fn
 
-    def update_or_make(self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None):
+    def update_or_make(
+        self, model, lookup=None, fields=None, pre_save=None, post_save=None, seed=None
+    ):
         if lookup is None:
             lookup = {}
         if fields is None:
@@ -252,14 +272,14 @@ class Factory(object):
             instance = model_class.objects.get(**lookup)
         except model_class.DoesNotExist:
             created = True
-            params = {k: v for k, v in lookup.items() if '__' not in k}
+            params = {k: v for k, v in lookup.items() if "__" not in k}
             params.update(fields)
             instance = self.make(model, params, pre_save, post_save, seed)
         else:
             created = False
             for k, v in fields.items():
                 # special case for user passwords
-                if model_class == user_model and k == 'password':
+                if model_class == user_model and k == "password":
                     instance.set_password(v)
                 else:
                     setattr(instance, k, v)
@@ -272,7 +292,12 @@ class Factory(object):
 
     def u_m(self, model, lookup=None, pre_save=None, post_save=None, seed=None):
         build = partial(
-            self.update_or_make, model=model, lookup=lookup, pre_save=pre_save, post_save=post_save, seed=seed
+            self.update_or_make,
+            model=model,
+            lookup=lookup,
+            pre_save=pre_save,
+            post_save=post_save,
+            seed=seed,
         )
 
         def fn(**kwargs):
@@ -284,12 +309,22 @@ class Factory(object):
         if fields is None:
             fields = {}
         if quantity:
-            return [self.make_one(model, fields, pre_save, post_save, seed, i) for i in range(quantity)]
+            return [
+                self.make_one(model, fields, pre_save, post_save, seed, i)
+                for i in range(quantity)
+            ]
         else:
             return self.make_one(model, fields, pre_save, post_save, seed)
 
     def m(self, model, pre_save=None, post_save=None, seed=None, quantity=None):
-        make = partial(self.make, model=model, pre_save=pre_save, post_save=post_save, seed=seed, quantity=quantity)
+        make = partial(
+            self.make,
+            model=model,
+            pre_save=pre_save,
+            post_save=post_save,
+            seed=seed,
+            quantity=quantity,
+        )
 
         def fn(**kwargs):
             return make(fields=kwargs)
@@ -297,7 +332,14 @@ class Factory(object):
         return fn
 
     def b(self, model, pre_save=None, seed=None, quantity=None, make_fks=False):
-        build = partial(self.build, model=model, pre_save=pre_save, seed=seed, quantity=quantity, make_fks=make_fks)
+        build = partial(
+            self.build,
+            model=model,
+            pre_save=pre_save,
+            seed=seed,
+            quantity=quantity,
+            make_fks=make_fks,
+        )
 
         def fn(**kwargs):
             return build(fields=kwargs)

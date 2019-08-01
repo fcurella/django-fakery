@@ -20,7 +20,9 @@ class Blueprint(object):
         self._fields = kwargs
         return self
 
-    def make_one(self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
+    def make_one(
+        self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None
+    ):
         _fields = self._fields.copy()
         if fields:
             _fields.update(fields)
@@ -33,9 +35,13 @@ class Blueprint(object):
         if post_save is None:
             post_save = self.post_save
 
-        return self.factory.make_one(self._model, _fields, pre_save, post_save, seed, iteration)
+        return self.factory.make_one(
+            self._model, _fields, pre_save, post_save, seed, iteration
+        )
 
-    def make(self, fields=None, pre_save=None, post_save=None, seed=None, quantity=None):
+    def make(
+        self, fields=None, pre_save=None, post_save=None, seed=None, quantity=None
+    ):
         _fields = self._fields.copy()
         if fields:
             _fields.update(fields)
@@ -48,9 +54,13 @@ class Blueprint(object):
         if post_save is None:
             post_save = self.post_save
 
-        return self.factory.make(self._model, _fields, pre_save, post_save, seed, quantity)
+        return self.factory.make(
+            self._model, _fields, pre_save, post_save, seed, quantity
+        )
 
-    def build(self, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
+    def build(
+        self, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False
+    ):
         _fields = self._fields.copy()
         if fields:
             _fields.update(fields)
@@ -60,10 +70,18 @@ class Blueprint(object):
         if pre_save is None:
             pre_save = self.pre_save
 
-        return self.factory.build(self._model, _fields, pre_save, seed, quantity, make_fks)
+        return self.factory.build(
+            self._model, _fields, pre_save, seed, quantity, make_fks
+        )
 
     def m(self, pre_save=None, post_save=None, seed=None, quantity=None):
-        make = partial(self.make, pre_save=pre_save, post_save=post_save, seed=seed, quantity=quantity)
+        make = partial(
+            self.make,
+            pre_save=pre_save,
+            post_save=post_save,
+            seed=seed,
+            quantity=quantity,
+        )
 
         def fn(**kwargs):
             return make(fields=kwargs)
@@ -71,7 +89,13 @@ class Blueprint(object):
         return fn
 
     def b(self, pre_save=None, seed=None, quantity=None, make_fks=False):
-        build = partial(self.build, pre_save=pre_save, seed=seed, quantity=quantity, make_fks=make_fks)
+        build = partial(
+            self.build,
+            pre_save=pre_save,
+            seed=seed,
+            quantity=quantity,
+            make_fks=make_fks,
+        )
 
         def fn(**kwargs):
             return build(fields=kwargs)

@@ -6,7 +6,7 @@ def get_timezone():
     return timezone.get_current_timezone() if settings.USE_TZ else None
 
 
-def future_datetime(end='+30d'):
+def future_datetime(end="+30d"):
     """
     Returns a ``datetime`` object in the future (that is, 1 second from now) up
     to the specified ``end``. ``end`` can be a string, anotther datetime, or a
@@ -21,12 +21,10 @@ def future_datetime(end='+30d'):
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """
-    return lambda n, f: f.future_datetime(
-        end_date=end, tzinfo=get_timezone(),
-    )
+    return lambda n, f: f.future_datetime(end_date=end, tzinfo=get_timezone())
 
 
-def future_date(end='+30d'):
+def future_date(end="+30d"):
     """
     Returns a ``date`` object in the future (that is, 1 day from now) up to
     the specified ``end``. ``end`` can be a string, another date, or a
@@ -41,12 +39,10 @@ def future_date(end='+30d'):
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """
-    return lambda n, f: f.future_date(
-        end_date=end, tzinfo=get_timezone(),
-    )
+    return lambda n, f: f.future_date(end_date=end, tzinfo=get_timezone())
 
 
-def past_datetime(start='-30d'):
+def past_datetime(start="-30d"):
     """
     Returns a ``datetime`` object in the past between 1 second ago and the
     specified ``start``. ``start`` can be a string, another datetime, or a
@@ -61,12 +57,10 @@ def past_datetime(start='-30d'):
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """
-    return lambda n, f: f.past_datetime(
-        start_date=start, tzinfo=get_timezone(),
-    )
+    return lambda n, f: f.past_datetime(start_date=start, tzinfo=get_timezone())
 
 
-def past_date(start='-30d'):
+def past_date(start="-30d"):
     """
     Returns a ``date`` object in the past between 1 day ago and the
     specified ``start``. ``start`` can be a string, another date, or a
@@ -81,6 +75,4 @@ def past_date(start='-30d'):
     * ``'minutes'``, ``'m'``
     * ``'seconds'``, ``'s'``
     """
-    return lambda n, f: f.past_date(
-        start_date=start, tzinfo=get_timezone(),
-    )
+    return lambda n, f: f.past_date(start_date=start, tzinfo=get_timezone())

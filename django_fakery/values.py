@@ -8,7 +8,6 @@ from .field_mappings import STRING_FIELDS
 
 
 class Evaluator(object):
-
     def __init__(self, faker, factory, iteration):
         self.faker = faker
         self.factory = factory
@@ -21,7 +20,7 @@ class Evaluator(object):
         if isinstance(value, Blueprint):
             return value.make_one(iteration=self.iteration)
         if callable(value):
-            if value.__name__ == '<lambda>':
+            if value.__name__ == "<lambda>":
                 return value(self.iteration, self.faker)
             else:
                 return value()
@@ -43,7 +42,7 @@ class Evaluator(object):
         from . import field_mappings
 
         if field.blank and isinstance(field, STRING_FIELDS):
-            return ''
+            return ""
 
         if isinstance(field, models.ForeignKey):
             return self.factory.make_one(field.related_model, iteration=self.iteration)
@@ -55,5 +54,7 @@ class Evaluator(object):
             if isinstance(field, field_class):
                 return self.evaluate_fake(fake, field)
 
-        model_name = '%s.%s' % (model._meta.app_label, model._meta.model_name)
-        raise ValueError('Cant generate a value for model `%s` field `%s`' % (model_name, field.name))
+        model_name = "%s.%s" % (model._meta.app_label, model._meta.model_name)
+        raise ValueError(
+            "Cant generate a value for model `%s` field `%s`" % (model_name, field.name)
+        )
