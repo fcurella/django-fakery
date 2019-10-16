@@ -23,10 +23,17 @@ class Blueprint(Generic[T]):
 
     def fields(self, **kwargs):
         # type: (**Any) -> "Blueprint"
-        self._fields = kwargs
-        return self
+        return Blueprint(
+            model=self._model,
+            fields=dict(self._fields, **kwargs),
+            pre_save=self.pre_save,
+            post_save=self.post_save,
+            seed=self.seed,
+        )
 
-    def make_one(self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None):
+    def make_one(
+        self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None
+    ):
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], Opt[int]) -> T
         _fields = self._fields.copy()
         if fields:
@@ -83,7 +90,9 @@ class Blueprint(Generic[T]):
         # type: (Opt[FieldMap], Opt[SaveHooks], Opt[Seed], int, bool) -> List[Built]
         pass
 
-    def build(self, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False):
+    def build(
+        self, fields=None, pre_save=None, seed=None, quantity=None, make_fks=False
+    ):
         _fields = self._fields.copy()
         if fields:
             _fields.update(fields)
@@ -132,7 +141,13 @@ class Blueprint(Generic[T]):
         pass
 
     def b(self, pre_save=None, seed=None, quantity=None, make_fks=False):
-        build = partial(self.build, pre_save=pre_save, seed=seed, quantity=quantity, make_fks=make_fks)
+        build = partial(
+            self.build,
+            pre_save=pre_save,
+            seed=seed,
+            quantity=quantity,
+            make_fks=make_fks,
+        )
 
         def fn(**kwargs):
             return build(fields=kwargs)
