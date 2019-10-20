@@ -47,6 +47,16 @@ class BlueprintTest(TestCase):
             "chef should still be set from the previous blueprint",
         )
 
+    def test_blueprint_fields_make_with_fields(self):
+        """check that blueprint.fields(...).make(fields=...) works as expected"""
+        p = pizza.fields(thickness=3).make(fields={"thickness": 5})
+        self.assertEqual(p.thickness, 5)
+
+    def test_blueprint_fields_make_one_with_fields(self):
+        """check that blueprint.fields(...).make_one(fields=...) works as expected"""
+        p = pizza.fields(thickness=3).make_one(fields={"thickness": 5})
+        self.assertEqual(p.thickness, 5)
+
 
 class BlueprintShortTest(TestCase):
     def test_blueprint(self):
