@@ -38,6 +38,25 @@ class BlueprintTest(TestCase):
         self.assertEqual(movie_night[0].thickness, 2)
         self.assertEqual(movie_night[1].thickness, 2)
 
+    def test_blueprint_fields_returns_copy_with_updated_fields(self):
+        thick_pizzas = pizza.fields(thickness=3).build(quantity=3)
+        self.assertEqual(thick_pizzas[0].thickness, 3, "thickness should be udpated")
+        self.assertEqual(
+            thick_pizzas[1].chef.first_name,
+            "Chef 1",
+            "chef should still be set from the previous blueprint",
+        )
+
+    def test_blueprint_fields_make_with_fields(self):
+        """check that blueprint.fields(...).make(fields=...) works as expected"""
+        p = pizza.fields(thickness=3).make(fields={"thickness": 5})
+        self.assertEqual(p.thickness, 5)
+
+    def test_blueprint_fields_make_one_with_fields(self):
+        """check that blueprint.fields(...).make_one(fields=...) works as expected"""
+        p = pizza.fields(thickness=3).make_one(fields={"thickness": 5})
+        self.assertEqual(p.thickness, 5)
+
 
 class BlueprintShortTest(TestCase):
     def test_blueprint(self):
