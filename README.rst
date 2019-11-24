@@ -198,10 +198,13 @@ Valid units are:
 * ``'minutes'``, ``'m'``
 * ``'seconds'``, ``'s'``
 
-Example::
+Example:
+
+.. code-block:: python
 
     from django_fakery import factory, shortcuts
     from myapp.models import MyModel
+
     factory.m(MyModel)(field=shortcuts.future_datetime('+1w'))
 
 
