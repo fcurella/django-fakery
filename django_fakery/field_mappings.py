@@ -1,9 +1,9 @@
 import sys
 
 from collections import OrderedDict
+from typing import Any, Tuple
 
 from django.conf import settings
-from django.contrib.postgres import fields as pg_fields
 from django.db import models
 from django.utils import timezone
 
@@ -13,10 +13,12 @@ from .compat import HAS_GEOS, HAS_PSYCOPG2
 STRING_FIELDS = (
     models.CharField,
     models.TextField,
-    pg_fields.CICharField,
-    pg_fields.CITextField,
-)
+)  # type: Tuple[Any, ...]
 
+if HAS_PSYCOPG2:
+    from django.contrib.postgres import fields as pg_fields
+
+    STRING_FIELDS += (pg_fields.CICharField, pg_fields.CITextField)
 """
 This module maps fields to functions generating values.
 
@@ -29,6 +31,7 @@ When ``<function>`` is a string, it's assumed to be a faker provider. Whenever
 ``faker`` doesn't provide a suitable provider, we ship our own function. They
 are defined in ``django_fakery.fakes``.
 """
+
 
 TZINFO = timezone.get_current_timezone() if settings.USE_TZ else None
 
