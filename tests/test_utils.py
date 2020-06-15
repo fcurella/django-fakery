@@ -16,5 +16,5 @@ class UtilsTest(TestCase):
         Model = get_model(Chef)
         self.assertEqual(Chef, Model)
 
-        Model = get_model('tests.Chef')
+        Model = get_model("tests.Chef")
         self.assertEqual(Chef, Model)
