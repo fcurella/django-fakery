@@ -1,9 +1,8 @@
 from django.test import TestCase
 from django.utils import timezone
 
-from faker import Faker
-
 from django_fakery import shortcuts
+from faker import Faker
 
 fake = Faker()
 
