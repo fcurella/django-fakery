@@ -9,8 +9,8 @@ except ImportError:
     HAS_PSYCOPG2 = False
 
 try:
-    from django.contrib.gis.geos.libgeos import geos_version_info
+    from django.contrib.gis.geos.libgeos import geos_version_tuple
 
-    HAS_GEOS = geos_version_info()["version"] >= "3.3.0"
+    HAS_GEOS = geos_version_tuple() >= (3, 3, 0)
 except (ImportError, OSError, ImproperlyConfigured):
     HAS_GEOS = False

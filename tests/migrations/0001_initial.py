@@ -4,14 +4,13 @@ from __future__ import unicode_literals
 import django.contrib.postgres.fields
 import django.contrib.postgres.fields.hstore
 
-from django import VERSION as django_version
-from django.contrib.postgres.operations import HStoreExtension
+from django.contrib.postgres.operations import CreateExtension, HStoreExtension
 from django.db import migrations, models
 
 try:
-    from django.contrib.gis.geos.libgeos import geos_version_info
+    from django.contrib.gis.geos.libgeos import geos_version_tuple
 
-    HAS_GEOS = geos_version_info()["version"] >= "3.3.0"
+    HAS_GEOS = geos_version_tuple() >= (3, 3, 0)
 except (ImportError, OSError):
     HAS_GEOS = False
 
@@ -114,6 +113,8 @@ class Migration(migrations.Migration):
     ]
 
     if HAS_GEOS:
+        operations += [CreateExtension("postgis_raster")]
+
         pizzeria_fields = [
             (
                 "id",
@@ -146,11 +147,8 @@ class Migration(migrations.Migration):
                 "all_the_things",
                 django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326),
             ),
+            ("rast", django.contrib.gis.db.models.fields.RasterField(srid=4326))
         ]
-        if django_version >= (1, 9, 0):
-            pizzeria_fields.append(
-                ("rast", django.contrib.gis.db.models.fields.RasterField(srid=4326))
-            )
         operations += [migrations.CreateModel(name="Pizzeria", fields=pizzeria_fields)]
 
     specialtypizza_fields = [
@@ -172,12 +170,8 @@ class Migration(migrations.Migration):
         ("sales", django.contrib.postgres.fields.BigIntegerRangeField()),
         ("available_on", django.contrib.postgres.fields.DateTimeRangeField()),
         ("season", django.contrib.postgres.fields.DateRangeField()),
+        ("nutritional_values", django.contrib.postgres.fields.JSONField())
     ]
-
-    if django_version >= (1, 9, 0):
-        specialtypizza_fields.append(
-            ("nutritional_values", django.contrib.postgres.fields.JSONField())
-        )
 
     operations += [
         migrations.CreateModel(name="SpecialtyPizza", fields=specialtypizza_fields)
