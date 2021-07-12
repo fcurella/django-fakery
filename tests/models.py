@@ -100,3 +100,16 @@ else:
         available_on = postgres_fields.DateTimeRangeField()
         season = postgres_fields.DateRangeField()
         nutritional_values = postgres_fields.JSONField()
+
+
+class CustomIntegerField(models.IntegerField):
+    def db_type(self, connection):
+        return "integer"
+
+    def rel_db_type(self, connection):
+        return "integer"
+
+
+class Inventory(models.Model):
+    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+    in_stock = CustomIntegerField()

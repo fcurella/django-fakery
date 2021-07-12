@@ -14,6 +14,7 @@ from django.forms.models import model_to_dict
 
 from faker import Factory as FakerFactory
 
+from . import field_mappings
 from . import rels
 from .blueprint import Blueprint
 from .exceptions import ForeignKeyError
@@ -38,6 +39,8 @@ class Factory(Generic[T]):
     def __init__(self, fake=None):
         # type: (Opt[Factory]) -> None
         self.fake = fake or FakerFactory.create(locale)
+        self.field_types = field_mappings.mappings_types
+        self.field_names = field_mappings.mappings_names
 
     def _serialize_instance(self, instance):
         # type: (models.Model) -> FieldMap
@@ -105,7 +108,13 @@ class Factory(Generic[T]):
         else:
             fake = self.fake
 
-        evaluator = Evaluator(fake, factory=self, iteration=iteration)
+        evaluator = Evaluator(
+            fake,
+            factory=self,
+            iteration=iteration,
+            mappings_types=self.field_types,
+            mappings_names=self.field_names,
+        )
 
         model = get_model(model)
         instance = model()

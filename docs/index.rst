@@ -42,6 +42,7 @@ Contents:
    quickstart
    shortcuts
    lazies
+   custom_fields
    relationships
    hooks
    get_or_make
