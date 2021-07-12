@@ -8,7 +8,7 @@ isort:
 	isort -rc --atomic .
 
 black:
-	black --target-version py27 .
+	black .
 
 release:
 	rm -rf dist
