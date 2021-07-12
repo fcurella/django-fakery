@@ -22,7 +22,7 @@ DATABASES = {
         "NAME": "django_fakery",
         "USER": "postgres",
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", None),
-        "DISABLE_SERVER_SIDE_CURSORS": DISABLE_SERVER_SIDE_CURSORS,
+        "DISABLE_SERVER_SIDE_CURSORS": True,
         "HOST": os.environ.get("POSTGRES_HOST", None),
     }
 }
