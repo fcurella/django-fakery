@@ -17,7 +17,7 @@ if hasattr(sys, "pypy_version_info"):
 
 
 DISABLE_SERVER_SIDE_CURSORS = False
-if os.environ.get("TRAVIS_PYTHON_VERSION") == "pypy":
+if os.environ.get("PYTHON_VERSION", "").startswith("pypy"):
     DISABLE_SERVER_SIDE_CURSORS = True
 
 
@@ -27,9 +27,11 @@ SETTINGS = {
             "ENGINE": "django.contrib.gis.db.backends.postgis"
             if HAS_GEOS
             else "django.db.backends.postgresql_psycopg2",
-            "NAME": "travis_postgis",
+            "NAME": "django_fakery",
             "USER": "postgres",
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", None),
             "DISABLE_SERVER_SIDE_CURSORS": DISABLE_SERVER_SIDE_CURSORS,
+            "HOST": os.environ.get("POSTGRES_HOST", None),
         }
     },
     "USE_TZ": True,
