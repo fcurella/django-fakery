@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
                 ),
                 ("toppings", models.ManyToManyField(to="tests.Topping")),
                 ("rating", models.PositiveSmallIntegerField()),
-                ("unique_comment", models.TextField(unique=True)),
+                ("unique_comment", models.TextField()),
             ],
         ),
     ]

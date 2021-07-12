@@ -43,7 +43,7 @@ class Pizza(models.Model):
         Chef, null=True, on_delete=models.CASCADE, related_name="reviewed_pizzas"
     )
     toppings = models.ManyToManyField(Topping, related_name="pizzas")
-    unique_comment = models.TextField(unique=True)
+    unique_comment = models.TextField()
 
     def get_price(self, tax):
         return (Decimal("7.99") + (Decimal("7.99") * Decimal(tax))).quantize(
