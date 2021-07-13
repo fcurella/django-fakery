@@ -1,4 +1,4 @@
-VERSION = "3.0.1"
+VERSION = "3.1.0"
 
 from django.utils.functional import SimpleLazyObject
 from django.utils.module_loading import import_string
