@@ -10,6 +10,15 @@ from django.utils import timezone
 from . import fakes
 from .compat import HAS_GEOS, HAS_PSYCOPG2
 
+
+class PrependOrderedDict(OrderedDict):
+    "Store items in the order the keys were last added"
+
+    def add(self, key, value):
+        super().__setitem__(key, value)
+        self.move_to_end(key, last=False)
+
+
 STRING_FIELDS = (
     models.CharField,
     models.TextField,
@@ -36,7 +45,7 @@ are defined in ``django_fakery.fakes``.
 TZINFO = timezone.get_current_timezone() if settings.USE_TZ else None
 
 
-mappings_types = OrderedDict(
+mappings_types = PrependOrderedDict(
     [
         (
             models.BigIntegerField,
