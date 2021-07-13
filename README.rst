@@ -141,9 +141,6 @@ custom field class and a function in ``factory.field_types``:
   )
 
 
-.. code-block:: python
-
-
 As a shortcut, you can specified any Faker function by its name:
 
 .. code-block:: python
