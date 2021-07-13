@@ -13,6 +13,7 @@ DISABLE_SERVER_SIDE_CURSORS = False
 if os.environ.get("PYTHON_VERSION", "").startswith("pypy"):
     DISABLE_SERVER_SIDE_CURSORS = True
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 DATABASES = {
     "default": {

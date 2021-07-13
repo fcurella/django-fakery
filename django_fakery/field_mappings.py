@@ -99,6 +99,13 @@ mappings_types = PrependOrderedDict(
     ]
 )
 
+try:
+    from django.db.models import JSONField
+
+    mappings_types[JSONField] = (fakes.random_dict, [], {})
+except ImportError:
+    pass
+
 
 if HAS_GEOS:
     from django.contrib.gis.db import models as geo_models
@@ -126,6 +133,8 @@ if HAS_GEOS:
 
 
 if HAS_PSYCOPG2:
+    from .compat import DecimalRangeField
+
     mappings_types.update(
         {
             pg_fields.CICharField: mappings_types[models.CharField],
@@ -143,12 +152,17 @@ if HAS_PSYCOPG2:
                 [],
                 {"min": -sys.maxsize, "max": sys.maxsize},
             ),
-            pg_fields.FloatRangeField: (fakes.floatrange, [], {}),
+            DecimalRangeField: (fakes.floatrange, [], {}),
             pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
             pg_fields.DateRangeField: (fakes.daterange, [], {}),
-            pg_fields.JSONField: (fakes.random_dict, [], {}),
         }
     )
+    try:
+        from django.db.models import JSONField
+    except ImportError:
+        from django.contrib.postgres.fields import JSONField
+
+        mappings_types[JSONField] = (fakes.random_dict, [], {})
 
 
 mappings_names = {
