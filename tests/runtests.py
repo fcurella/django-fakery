@@ -38,6 +38,7 @@ SETTINGS = {
     "TIMEZONE": "America/Chicago",
     "INSTALLED_APPS": ["django.contrib.auth", "django.contrib.contenttypes", "tests"],
     "SILENCED_SYSTEM_CHECKS": ["1_7.W001"],
+    "DEFAULT_AUTO_FIELD": "django.db.models.AutoField",
 }
 
 

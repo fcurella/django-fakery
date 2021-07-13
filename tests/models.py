@@ -6,6 +6,11 @@ from django.db import models
 
 from django_fakery.compat import HAS_GEOS
 
+try:
+    from django.db.models import JSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField
+
 
 class Chef(models.Model):
     slug = models.SlugField()
@@ -99,7 +104,7 @@ else:
         sales = postgres_fields.BigIntegerRangeField()
         available_on = postgres_fields.DateTimeRangeField()
         season = postgres_fields.DateRangeField()
-        nutritional_values = postgres_fields.JSONField()
+        nutritional_values = JSONField()
 
 
 class CustomIntegerField(models.IntegerField):

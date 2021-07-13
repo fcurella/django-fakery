@@ -8,6 +8,11 @@ from django.contrib.postgres.operations import CreateExtension, HStoreExtension
 from django.db import migrations, models
 
 try:
+    from django.db.models import JSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField
+
+try:
     from django.contrib.gis.geos.libgeos import geos_version_tuple
 
     HAS_GEOS = geos_version_tuple() >= (3, 3, 0)
@@ -147,7 +152,7 @@ class Migration(migrations.Migration):
                 "all_the_things",
                 django.contrib.gis.db.models.fields.GeometryCollectionField(srid=4326),
             ),
-            ("rast", django.contrib.gis.db.models.fields.RasterField(srid=4326))
+            ("rast", django.contrib.gis.db.models.fields.RasterField(srid=4326)),
         ]
         operations += [migrations.CreateModel(name="Pizzeria", fields=pizzeria_fields)]
 
@@ -170,7 +175,7 @@ class Migration(migrations.Migration):
         ("sales", django.contrib.postgres.fields.BigIntegerRangeField()),
         ("available_on", django.contrib.postgres.fields.DateTimeRangeField()),
         ("season", django.contrib.postgres.fields.DateRangeField()),
-        ("nutritional_values", django.contrib.postgres.fields.JSONField())
+        ("nutritional_values", JSONField()),
     ]
 
     operations += [

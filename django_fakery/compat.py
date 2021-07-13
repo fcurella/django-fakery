@@ -4,6 +4,11 @@ try:
     import psycopg2
 
     HAS_PSYCOPG2 = True
+
+    try:
+        from django.contrib.postgres.fields import DecimalRangeField
+    except ImportError:
+        from django.contrib.postgres.fields import FloatRangeField as DecimalRangeField
 except ImportError:
     psycopg2 = None
     HAS_PSYCOPG2 = False

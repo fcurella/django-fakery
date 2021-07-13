@@ -8,16 +8,29 @@ import tests.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tests', '0001_initial'),
+        ("tests", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Inventory',
+            name="Inventory",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('in_stock', tests.models.CustomIntegerField()),
-                ('pizza', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.Pizza')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("in_stock", tests.models.CustomIntegerField()),
+                (
+                    "pizza",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="tests.Pizza"
+                    ),
+                ),
             ],
         ),
     ]
