@@ -22,7 +22,7 @@ def slug(faker, field, count, *args, **kwargs):
 
 
 def random_dict(faker, field, *args, **kwargs):
-    return faker.pydict(10, True, int, str)
+    return faker.pydict(nb_elements=10, variable_nb_elements=True, value_types=(int,), allowed_types=(str,))
 
 
 if HAS_GEOS:
