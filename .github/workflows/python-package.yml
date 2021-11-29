@@ -63,7 +63,7 @@ jobs:
         if [[ "$PYTHON_VERSION" != pypy* ]]; then pip install "psycopg2-binary<2.9"; fi
         if [[ "$PYTHON_VERSION" != pypy* ]]; then sudo apt-get install gdal-bin libgdal-dev libgeos-dev; fi
         if [[ "$PYTHON_VERSION" != pypy* ]]; then pip install "numpy"; fi
-        if [[ "$PYTHON_VERSION" != pypy* ]]; then pip install "GDAL==3.2.3"; fi
+        if [[ "$PYTHON_VERSION" != pypy* ]]; then pip install "GDAL==3.3.0"; fi
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test
       run: |
