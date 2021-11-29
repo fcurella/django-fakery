@@ -1,5 +1,5 @@
 test:
-	python setup.py test
+	python -Wd setup.py test
 
 mypy:
 	mypy django_fakery
