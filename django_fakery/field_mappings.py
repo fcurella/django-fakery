@@ -49,60 +49,60 @@ mappings_types = PrependOrderedDict(
     [
         (
             models.BigIntegerField,
-            ("random_int", [], {"min": -sys.maxsize, "max": sys.maxsize}),
+            ("random_int", (), {"min": -sys.maxsize, "max": sys.maxsize}),
         ),
-        (models.BinaryField, ("binary", [1024], {})),
-        (models.BooleanField, ("pybool", [], {})),
-        (models.DateTimeField, ("date_time", [], {"tzinfo": TZINFO})),
+        (models.BinaryField, ("binary", (), {"length": 1024})),
+        (models.BooleanField, ("pybool", (), {})),
+        (models.DateTimeField, ("date_time", (), {"tzinfo": TZINFO})),
         # ``DateField`` must come after ``DateTimeField`` because it's its superclass
-        (models.DateField, (lambda faker, field: faker.date_time().date(), [], {})),
-        (models.DecimalField, (fakes.decimal, [], {})),
-        (models.EmailField, ("email", [], {})),
-        (models.FileField, ("file_name", [], {})),
-        (models.FilePathField, ("file_name", [], {})),
-        (models.FloatField, ("pyfloat", [], {})),
-        (models.ImageField, ("file_name", [], {"extension": "jpg"})),
-        (models.IntegerField, ("pyint", [], {})),
-        (models.IPAddressField, ("ipv4", [], {})),
-        (models.GenericIPAddressField, ("ipv4", [], {})),
-        (models.PositiveIntegerField, ("random_int", [], {"max": 2147483647})),
-        (models.PositiveSmallIntegerField, ("random_int", [], {"max": 32767})),
-        (models.SlugField, (fakes.slug, [3], {})),
-        (models.SmallIntegerField, ("random_int", [], {"min": -32768, "max": 32767})),
+        (models.DateField, (lambda faker, field: faker.date_time().date(), (), {})),
+        (models.DecimalField, (fakes.decimal, (), {})),
+        (models.EmailField, ("email", (), {})),
+        (models.FileField, ("file_name", (), {})),
+        (models.FilePathField, ("file_name", (), {})),
+        (models.FloatField, ("pyfloat", (), {})),
+        (models.ImageField, ("file_name", (), {"extension": "jpg"})),
+        (models.IntegerField, ("pyint", (), {})),
+        (models.IPAddressField, ("ipv4", (), {})),
+        (models.GenericIPAddressField, ("ipv4", (), {})),
+        (models.PositiveIntegerField, ("random_int", (), {"max": 2147483647})),
+        (models.PositiveSmallIntegerField, ("random_int", (), {"max": 32767})),
+        (models.SlugField, (fakes.slug, (), {"count": 3})),
+        (models.SmallIntegerField, ("random_int", (), {"min": -32768, "max": 32767})),
         (
             models.TextField,
             (
                 lambda faker, field: field.unique
                 and faker.pystr(max_chars=2700)
                 or faker.paragraph(),
-                [],
+                (),
                 {},
             ),
         ),
         (
             models.TimeField,
-            (lambda faker, field: faker.date_time(tzinfo=TZINFO).time(), [], {}),
+            (lambda faker, field: faker.date_time(tzinfo=TZINFO).time(), (), {}),
         ),
-        (models.URLField, ("url", [], {})),
+        (models.URLField, ("url", (), {})),
         (
             models.CharField,
             (
                 lambda faker, field: field.unique
                 and faker.pystr(max_chars=field.max_length)
                 or faker.word()[: field.max_length],
-                [],
+                (),
                 {},
             ),
         ),
-        (models.DurationField, ("time_delta", [], {})),
-        (models.UUIDField, ("uuid4", [], {})),
+        (models.DurationField, ("time_delta", (), {})),
+        (models.UUIDField, ("uuid4", (), {})),
     ]
 )
 
 try:
     from django.db.models import JSONField
 
-    mappings_types[JSONField] = (fakes.random_dict, [], {})
+    mappings_types[JSONField] = (fakes.random_dict, (), {})
 except ImportError:
     pass
 
@@ -127,7 +127,7 @@ if HAS_GEOS:
                 (),
                 {"srid": 4326},
             ),
-            geo_models.RasterField: (fakes.gdal_raster, [], {"srid": 4326}),
+            geo_models.RasterField: (fakes.gdal_raster, (), {"srid": 4326}),
         }
     )
 
@@ -140,21 +140,21 @@ if HAS_PSYCOPG2:
             pg_fields.CICharField: mappings_types[models.CharField],
             pg_fields.CIEmailField: mappings_types[models.EmailField],
             pg_fields.CITextField: mappings_types[models.TextField],
-            pg_fields.ArrayField: (fakes.array, [], {}),
-            pg_fields.HStoreField: ("pydict", [10, True, "str"], {}),
+            pg_fields.ArrayField: (fakes.array, (), {}),
+            pg_fields.HStoreField: ("pydict", (), {"nb_elements": 10, "variable_nb_elements": True, "value_types": (str,)}),
             pg_fields.IntegerRangeField: (
                 fakes.integerrange,
-                [],
+                (),
                 {"min": -2147483647, "max": 2147483647},
             ),
             pg_fields.BigIntegerRangeField: (
                 fakes.integerrange,
-                [],
+                (),
                 {"min": -sys.maxsize, "max": sys.maxsize},
             ),
-            DecimalRangeField: (fakes.floatrange, [], {}),
-            pg_fields.DateTimeRangeField: (fakes.datetimerange, [], {}),
-            pg_fields.DateRangeField: (fakes.daterange, [], {}),
+            DecimalRangeField: (fakes.floatrange, (), {}),
+            pg_fields.DateTimeRangeField: (fakes.datetimerange, (), {}),
+            pg_fields.DateRangeField: (fakes.daterange, (), {}),
         }
     )
     try:
@@ -162,7 +162,7 @@ if HAS_PSYCOPG2:
     except ImportError:
         from django.contrib.postgres.fields import JSONField
 
-        mappings_types[JSONField] = (fakes.random_dict, [], {})
+        mappings_types[JSONField] = (fakes.random_dict, (), {})
 
 
 mappings_names = {
@@ -170,32 +170,32 @@ mappings_names = {
         lambda faker, field: field.unique
         and faker.pystr(max_chars=field.max_length or 2700)
         or faker.word()[: field.max_length],
-        [],
+        (),
         {},
     ),  # `name` is too generic to assume it's a person
-    "slug": (fakes.slug, [3], {}),
-    "first_name": ("first_name", [], {}),
-    "last_name": ("last_name", [], {}),
-    "full_name": ("full_name", [], {}),
-    "email": ("email", [], {}),
+    "slug": (fakes.slug, (), {"count": 3}),
+    "first_name": ("first_name", (), {}),
+    "last_name": ("last_name", (), {}),
+    "full_name": ("full_name", (), {}),
+    "email": ("email", (), {}),
     "created": (
         "date_time_between",
-        [],
+        (),
         {"start_date": "-30d", "end_date": "+30d", "tzinfo": TZINFO},
     ),
     "created_at": (
         "date_time_between",
-        [],
+        (),
         {"start_date": "-30d", "end_date": "+30d", "tzinfo": TZINFO},
     ),
     "updated": (
         "date_time_between",
-        [],
+        (),
         {"start_date": "-30d", "end_date": "+30d", "tzinfo": TZINFO},
     ),
     "updated_at": (
         "date_time_between",
-        [],
+        (),
         {"start_date": "-30d", "end_date": "+30d", "tzinfo": TZINFO},
     ),
 }
