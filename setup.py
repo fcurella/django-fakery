@@ -35,7 +35,7 @@ setup(
         "Programming Language :: Python :: 3.9",
     ],
     entry_points={"pytest11": ["django_fakery = django_fakery.plugin"]},
-    install_requires=["Faker>=4.0,<5.0", "Django>=2.0", "six>=1.10.1"],
+    install_requires=["Faker>=9.0,<10.0", "Django>=2.0", "six>=1.10.1"],
     python_requires=">=3.4",
     test_suite="tests.runtests.runtests",
 )
