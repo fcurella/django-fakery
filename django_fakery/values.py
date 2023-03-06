@@ -48,7 +48,6 @@ class Evaluator(object):
         return func(*resolver[1], **resolver[2])
 
     def fake_value(self, model, field):
-
         if field.blank and isinstance(field, field_mappings.STRING_FIELDS):
             return ""
 

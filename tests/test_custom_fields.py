@@ -1,7 +1,8 @@
 from django.test import TestCase
+
 from django_fakery import factory
 
-from .models import Inventory, CustomIntegerField
+from .models import CustomIntegerField, Inventory
 
 
 class CustomFieldsTest(TestCase):

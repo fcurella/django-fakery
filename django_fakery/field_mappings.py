@@ -141,7 +141,15 @@ if HAS_PSYCOPG2:
             pg_fields.CIEmailField: mappings_types[models.EmailField],
             pg_fields.CITextField: mappings_types[models.TextField],
             pg_fields.ArrayField: (fakes.array, (), {}),
-            pg_fields.HStoreField: ("pydict", (), {"nb_elements": 10, "variable_nb_elements": True, "value_types": (str,)}),
+            pg_fields.HStoreField: (
+                "pydict",
+                (),
+                {
+                    "nb_elements": 10,
+                    "variable_nb_elements": True,
+                    "value_types": (str,),
+                },
+            ),
             pg_fields.IntegerRangeField: (
                 fakes.integerrange,
                 (),

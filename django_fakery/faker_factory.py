@@ -14,8 +14,7 @@ from django.forms.models import model_to_dict
 
 from faker import Factory as FakerFactory
 
-from . import field_mappings
-from . import rels
+from . import field_mappings, rels
 from .blueprint import Blueprint
 from .exceptions import ForeignKeyError
 from .lazy import Lazy

@@ -5,9 +5,10 @@ from unittest import skipIf
 
 from django.test import TestCase
 
+from six import text_type
+
 from django_fakery import factory
 from django_fakery.compat import HAS_PSYCOPG2
-from six import text_type
 
 if HAS_PSYCOPG2:
     from psycopg2.extras import DateTimeTZRange, NumericRange

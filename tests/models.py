@@ -93,7 +93,6 @@ if django_version < (1, 9, 0):
         available_on = postgres_fields.DateTimeRangeField()
         season = postgres_fields.DateRangeField()
 
-
 else:
 
     class SpecialtyPizza(models.Model):

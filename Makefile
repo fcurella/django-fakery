@@ -5,7 +5,7 @@ mypy:
 	mypy django_fakery
 
 isort:
-	isort -rc --atomic .
+	isort --atomic .
 
 black:
 	black .

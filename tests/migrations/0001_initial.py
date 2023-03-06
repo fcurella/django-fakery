@@ -24,7 +24,6 @@ if HAS_GEOS:
 
 
 class Migration(migrations.Migration):
-
     dependencies = []
 
     operations = [HStoreExtension()]
