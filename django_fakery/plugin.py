@@ -10,5 +10,5 @@ def fakery():
 
 
 @pytest.fixture
-def shortcuts():
+def fakery_shortcuts():
     return _shortcuts
