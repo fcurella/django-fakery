@@ -52,7 +52,8 @@ If you really don't want to import things, you could also just reference a model
     factory.m("myapp.MyModel")(field="value")
 
 
-If you use ``pytest``, you can use the ``fakery`` fixture (requires ``pytest`` and ``pytest-django``):
+If you use ``pytest``, you can use the ``fakery`` and ``fakery_shortcuts` fixtures
+(requires ``pytest`` and ``pytest-django``):
 
 .. code-block:: python
 
@@ -60,8 +61,10 @@ If you use ``pytest``, you can use the ``fakery`` fixture (requires ``pytest`` a
     from myapp.models import MyModel
 
     @pytest.mark.django_db
-    def test_mymodel(fakery):
-        fakery.m(MyModel)(field='value')
+    def test_mymodel(fakery, fakery_shortcuts):
+        fakery.m(MyModel)(field=fakery_shortcuts.future_datetime())
+
+
 
 If you'd rather, you can use a more wordy API:
 
