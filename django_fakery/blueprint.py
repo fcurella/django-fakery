@@ -7,8 +7,14 @@ from .types import Built, FieldMap, SaveHooks, Seed, T
 
 
 class Blueprint(Generic[T]):
-    def __init__(self, model, fields=None, pre_save=None, post_save=None, seed=None):
-        # type: (T, Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed]) -> None
+    def __init__(
+        self,
+        model: T,
+        fields: Opt[FieldMap] = None,
+        pre_save: Opt[SaveHooks] = None,
+        post_save: Opt[SaveHooks] = None,
+        seed: Opt[Seed] = None,
+    ):
         from .faker_factory import factory
 
         self.factory = factory
@@ -21,8 +27,7 @@ class Blueprint(Generic[T]):
 
         self.pk = -1
 
-    def fields(self, **kwargs):
-        # type: (**Any) -> "Blueprint"
+    def fields(self, **kwargs) -> "Blueprint":
         return Blueprint(
             model=self._model,
             fields=dict(self._fields, **kwargs),
@@ -32,9 +37,13 @@ class Blueprint(Generic[T]):
         )
 
     def make_one(
-        self, fields=None, pre_save=None, post_save=None, seed=None, iteration=None
-    ):
-        # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], Opt[int]) -> T
+        self,
+        fields: Opt[FieldMap] = None,
+        pre_save: Opt[SaveHooks] = None,
+        post_save: Opt[SaveHooks] = None,
+        seed: Opt[Seed] = None,
+        iteration: Opt[int] = None,
+    ) -> T:
         _fields = self._fields.copy()
         if fields:
             _fields.update(fields)
@@ -52,13 +61,25 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def make(self, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
-        # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> T
+    def make(
+        self,
+        fields: Opt[FieldMap],
+        pre_save: Opt[SaveHooks],
+        post_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: None,
+    ) -> T:  # pragma: no cover
         pass
 
     @overload
-    def make(self, fields, pre_save, post_save, seed, quantity):  # pragma: no cover
-        # type: (Opt[FieldMap], Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> List[T]
+    def make(
+        self,
+        fields: Opt[FieldMap],
+        pre_save: Opt[SaveHooks],
+        post_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: int,
+    ) -> List[T]:  # pragma: no cover
         pass
 
     def make(
@@ -81,13 +102,25 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def build(self, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
-        # type: (Opt[FieldMap], Opt[SaveHooks], Opt[Seed], None, bool) -> Built
+    def build(
+        self,
+        fields: Opt[FieldMap],
+        pre_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: None,
+        make_fks: bool,
+    ) -> Built:  # pragma: no cover
         pass
 
     @overload
-    def build(self, fields, pre_save, seed, quantity, make_fks):  # pragma: no cover
-        # type: (Opt[FieldMap], Opt[SaveHooks], Opt[Seed], int, bool) -> List[Built]
+    def build(
+        self,
+        fields: Opt[FieldMap],
+        pre_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: int,
+        make_fks: bool,
+    ) -> List[Built]:  # pragma: no cover
         pass
 
     def build(
@@ -107,13 +140,23 @@ class Blueprint(Generic[T]):
         )
 
     @overload
-    def m(self, pre_save, post_save, seed, quantity):  # pragma: no cover
-        # type: (Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], None) -> Callable[..., T]
+    def m(
+        self,
+        pre_save: Opt[SaveHooks],
+        post_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: None,
+    ) -> Callable[..., T]:  # pragma: no cover
         pass
 
     @overload
-    def m(self, pre_save, post_save, seed, quantity):  # pragma: no cover
-        # type: (Opt[SaveHooks], Opt[SaveHooks], Opt[Seed], int) -> Callable[..., List[T]]
+    def m(
+        self,
+        pre_save: Opt[SaveHooks],
+        post_save: Opt[SaveHooks],
+        seed: Opt[Seed],
+        quantity: int,
+    ) -> Callable[..., List[T]]:  # pragma: no cover
         pass
 
     def m(self, pre_save=None, post_save=None, seed=None, quantity=None):
@@ -131,13 +174,15 @@ class Blueprint(Generic[T]):
         return fn
 
     @overload
-    def b(self, pre_save, seed, quantity, make_fks):  # pragma: no cover
-        # type: (Opt[SaveHooks], Opt[Seed], None, bool) -> Callable[..., Built]
+    def b(
+        self, pre_save: Opt[SaveHooks], seed: Opt[Seed], quantity: None, make_fks: bool
+    ) -> Callable[..., Built]:  # pragma: no cover
         pass
 
     @overload
-    def b(self, pre_save, seed, quantity, make_fks):  # pragma: no cover
-        # type: (Opt[SaveHooks], Opt[Seed], int, bool) -> Callable[..., List[Built]]
+    def b(
+        self, pre_save: Opt[SaveHooks], seed: Opt[Seed], quantity: int, make_fks: bool
+    ) -> Callable[..., List[Built]]:  # pragma: no cover
         pass
 
     def b(self, pre_save=None, seed=None, quantity=None, make_fks=False):
