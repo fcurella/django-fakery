@@ -19,10 +19,10 @@ class PrependOrderedDict(OrderedDict):
         self.move_to_end(key, last=False)
 
 
-STRING_FIELDS = (
+STRING_FIELDS: Tuple[Any, ...] = (
     models.CharField,
     models.TextField,
-)  # type: Tuple[Any, ...]
+)
 
 if HAS_PSYCOPG2:
     from django.contrib.postgres import fields as pg_fields
