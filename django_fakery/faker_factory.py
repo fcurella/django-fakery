@@ -146,7 +146,7 @@ class Factory(Generic[T]):
 
             value = fields.get(field_name, Empty)
             if isinstance(model_field, models.ForeignKey):
-                if value == Empty:
+                if value is Empty:
                     value = fields.get(field_name + "_id", Empty)
 
                 if value == rels.SELECT:
@@ -156,7 +156,7 @@ class Factory(Generic[T]):
 
                     value = fks_cache.get(cache_key, Empty)
 
-                    if value == Empty:
+                    if value is Empty:
                         try:
                             value = qs[0]
                         except IndexError:
@@ -164,7 +164,7 @@ class Factory(Generic[T]):
 
                         fks_cache[cache_key] = value
 
-                if not make_fks and ((value == Empty) or (value and value.pk is None)):
+                if not make_fks and ((value is Empty) or (value and value.pk is None)):
                     raise ForeignKeyError(
                         "Field {} is a required ForeignKey, but the related {}.{} model"
                         " doesn't have the necessary primary key.".format(
@@ -176,7 +176,7 @@ class Factory(Generic[T]):
 
                 field_name += "_id"
 
-            if value != Empty:
+            if value is not Empty:
                 value = evaluator.evaluate(value)
             else:
                 if model_field.choices:
