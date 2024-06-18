@@ -85,7 +85,7 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         make_fks: bool,
         iteration: Opt[int],
@@ -234,8 +234,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        seed: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        seed: Opt[SaveHooks[T]],
         quantity: None,
         make_fks: bool,
     ) -> Built:  # pragma: no cover
@@ -258,7 +258,7 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: Opt[int],
         make_fks: bool,
@@ -302,8 +302,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         iteration: Opt[int],
     ) -> T:  # pragma: no cover
@@ -358,8 +358,8 @@ class Factory(Generic[T]):
         model: T,
         lookup: Opt[Lookup],
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
     ) -> Tuple[T, bool]:  # pragma: no cover
         pass
@@ -406,8 +406,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         lookup: Opt[Lookup],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
     ) -> Callable[..., T]:  # pragma: no cover
         pass
@@ -445,8 +445,8 @@ class Factory(Generic[T]):
         model: T,
         lookup: Opt[Lookup],
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
     ) -> Tuple[T, bool]:  # pragma: no cover
         pass
@@ -501,8 +501,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         lookup: Opt[Lookup],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
     ) -> Callable[..., T]:  # pragma: no cover
         pass
@@ -539,8 +539,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: None,
     ) -> T:  # pragma: no cover
@@ -563,8 +563,8 @@ class Factory(Generic[T]):
         self,
         model: T,
         fields: Opt[FieldMap],
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: Opt[int],
     ) -> List[T]:  # pragma: no cover
@@ -604,8 +604,8 @@ class Factory(Generic[T]):
     def m(
         self,
         model: T,
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: None,
     ) -> Callable[..., T]:  # pragma: no cover
@@ -626,8 +626,8 @@ class Factory(Generic[T]):
     def m(
         self,
         model: T,
-        pre_save: Opt[SaveHooks],
-        post_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
+        post_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: Opt[int],
     ) -> Callable[..., List[T]]:  # pragma: no cover
@@ -663,7 +663,7 @@ class Factory(Generic[T]):
     def b(
         self,
         model: T,
-        pre_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: None,
         make_fks: bool,
@@ -685,7 +685,7 @@ class Factory(Generic[T]):
     def b(
         self,
         model: T,
-        pre_save: Opt[SaveHooks],
+        pre_save: Opt[SaveHooks[T]],
         seed: Opt[Seed],
         quantity: Opt[int],
         make_fks: bool,
