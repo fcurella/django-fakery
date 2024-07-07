@@ -5,8 +5,6 @@ from unittest import skipIf
 
 from django.test import TestCase
 
-from six import text_type
-
 from django_fakery import factory
 from django_fakery.compat import HAS_PSYCOPG2
 
@@ -23,7 +21,7 @@ class PostgresTest(TestCase):
         gigis_special = factory.make("tests.SpecialtyPizza")
         self.assertTrue(isinstance(gigis_special.toppings, list))
         for topping in gigis_special.toppings:
-            self.assertTrue(isinstance(topping, text_type))
+            self.assertTrue(isinstance(topping, str))
 
         self.assertTrue(isinstance(gigis_special.metadata, dict))
         self.assertTrue(isinstance(gigis_special.price_range, NumericRange))

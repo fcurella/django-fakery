@@ -2,8 +2,6 @@ from functools import partial
 
 from django.db import models
 
-from six import string_types
-
 from . import field_mappings
 
 
@@ -33,7 +31,7 @@ class Evaluator(object):
                 return value(self.iteration, self.faker)
             else:
                 return value()
-        if isinstance(value, string_types):
+        if isinstance(value, str):
             try:
                 return value.format(self.iteration, self.faker)
             except KeyError:

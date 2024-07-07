@@ -3,8 +3,6 @@ from typing import Any, List, Type, overload
 from django.apps import apps
 from django.db import models
 
-from six import string_types
-
 from .types import T
 
 
@@ -29,7 +27,7 @@ def get_model(model: T) -> T:
 
 
 def get_model(model):
-    if isinstance(model, string_types):
+    if isinstance(model, str):
         model = apps.get_model(*model.split("."))
     return model
 
