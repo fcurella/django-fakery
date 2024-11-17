@@ -184,7 +184,7 @@ mappings_names = {
     "slug": (fakes.slug, (), {"count": 3}),
     "first_name": ("first_name", (), {}),
     "last_name": ("last_name", (), {}),
-    "full_name": ("full_name", (), {}),
+    "full_name": ("name", (), {}),
     "email": ("email", (), {}),
     "created": (
         "date_time_between",
